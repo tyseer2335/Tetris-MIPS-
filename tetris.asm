@@ -9,9 +9,13 @@
 # - Display height in pixels:   256
 # - Base Address for Display:   0x10008000 ($gp)
 ##############################################################################
-    .data
+.data
+rotation_state:  
+    .word 0  # Initial rotation state
 ADDR_DSPL:
-    .word 0x10008000
+    .word 0x10008000 
+colorFlag:    
+    .word -1  # To Alternate colours when redrawing the grid
 ADDR_KBRD:
     .word 0xffff0000
 	.text
@@ -186,10 +190,10 @@ keyboard_input:
     # Check for 'S' (move down)
     li $t9, 0x73                  # ASCII for 'S'
     beq $a0, $t9, move_down
-
+    
     # Check for 'W' (move up)
     li $t9, 0x77                  # ASCII for 'W'
-    beq $a0, $t9, move_up
+    beq $a0, $t9, rotate
 
     # Check for Escape (quit game)
     li $t9, 0x1B             # ASCII for Escape
@@ -208,17 +212,35 @@ keyboard_input:
    
    
    #---------------------------  Draw the screen  -------------------------------- 
-   move_right: 	
-    # Assume $t1 has the Tetrimino color (orange), and $t2 has the background color (white)
-    li $t1, 0xFDA403       # Tetrimino color (orange)
+move_right: 	
+ li $t1, 0xFDA403       # Tetrimino color (orange)
     li $t2, 0x222831       # Color for black
-    lw $t0, ADDR_DSPL      # Load base address for the display
+    li $t6, 0x31363F       # Color for grey
+    lw $t0, ADDR_DSPL      # Load base address for the display 
+    lw $t3, colorFlag      # Load the current color swap state 
 
-    # Clear the old position by coloring the pixels black
-    sw $t2, 0($s0)  
+
+    bltz $t3, use_black_as_first_color_right # Check the color flag and branch accordingly 
+    
+    # If color flag is not -1, use grey as the first color
+    sw $t6, 0($s0)
     sw $t2, 0($s1)
-    sw $t2, 0($s2) 
+    sw $t6, 0($s2)
     sw $t2, 0($s3)
+    j update_flag_right
+
+use_black_as_first_color_right:
+    # If color flag is -1, use black as the first color
+    sw $t2, 0($s0)
+    sw $t6, 0($s1)
+    sw $t2, 0($s2)
+    sw $t6, 0($s3)
+
+update_flag_right:
+    # Flip the color flag
+    li $t5, -1
+    mul $t3, $t3, $t5
+    sw $t3, colorFlag     # Store the updated color flag
 
     # Calculate the new position by adding 4 to each register holding a position
     addi $s0, $s0, 4  
@@ -232,21 +254,386 @@ keyboard_input:
     sw $t1, 0($s2) 
     sw $t1, 0($s3)
     
-    li $v0, 32                      # Set syscall number for sleep operation
-    li $a0, 500                     # Set sleep duration in milliseconds (1 second)
-    syscall                         # Execute the syscall to sleep
+	j sleepy
+   
+move_left:  
+    li $t1, 0xFDA403       # Tetrimino color (orange)
+    li $t2, 0x222831       # Color for black
+    li $t6, 0x31363F       # Color for grey
+    lw $t0, ADDR_DSPL      # Load base address for the display 
+    lw $t3, colorFlag      # Load the current color swap state 
+
+
+    bltz $t3, use_black_as_first_color_left # Check the color flag and branch accordingly 
+    
+    # If color flag is not -1, use grey as the first color
+    sw $t6, 0($s0)
+    sw $t2, 0($s1)
+    sw $t6, 0($s2)
+    sw $t2, 0($s3)
+    j update_flag_left
+
+
+use_black_as_first_color_left:
+    # If color flag is -1, use black as the first color
+    sw $t2, 0($s0)
+    sw $t6, 0($s1)
+    sw $t2, 0($s2)
+    sw $t6, 0($s3)
+
+update_flag_left:
+    # Flip the color flag
+    li $t5, -1
+    mul $t3, $t3, $t5
+    sw $t3, colorFlag     # Store the updated color flag
+
+    # Calculate the new position by adding 4 to each register holding a position
+    addi $s0, $s0, -4  
+    addi $s1, $s1, -4
+    addi $s2, $s2, -4  
+    addi $s3, $s3, -4
+
+    # Draw the Tetrimino in the new position
+    sw $t1, 0($s0)  
+    sw $t1, 0($s1)
+    sw $t1, 0($s2) 
+    sw $t1, 0($s3)
     
 	j sleepy
    
-   
-   move_left: 
-   
-   move_down: 
-   
-   move_up: 
-   
-   quit_game:
-   
+move_down: 
+    li $t1, 0xFDA403       # Tetrimino color (orange)
+    li $t2, 0x222831       # Color for black
+    li $t6, 0x31363F       # Color for grey
+    lw $t0, ADDR_DSPL      # Load base address for the display 
+    lw $t3, colorFlag      # Load the current color swap state 	
+	
+  # Assume $t4 holds the rotation_state
+    lw $t4, rotation_state          # Load the current rotation state
+
+    li $t5, 1                        # Set comparison value for state 1
+    li $t6, 2                        # Set comparison value for state 2
+    li $t7, 3                        # Set comparison value for state 3
+
+    # Branch based on the value of rotation_state
+    beqz $t4, rotation_state_zero   # If rotation state is 0
+    beq $t4, $t5, rotation_state_one # If rotation state is 1
+    beq $t4, $t6, rotation_state_two # If rotation state is 2
+    beq $t4, $t7, rotation_state_three # If rotation state is 3
+    j unknown_rotation_state        # Handle unexpected rotation state
+
+rotation_state_zero:
+    bltz $t3, use_black_as_first_color_down # Check the color flag and branch accordingly 
+    
+    # If color flag is not -1, use grey as the first color
+    li $t2, 0x222831       # Color for black
+    li $t6, 0x31363F       # Color for grey
+    sw $t6, 0($s0)
+    sw $t2, 0($s1)
+    sw $t6, 0($s2)
+    sw $t2, 0($s3)
+    j update_flag_down
+
+
+use_black_as_first_color_down:
+    # If color flag is -1, use black as the first color 
+    li $t2, 0x222831       # Color for black
+    li $t6, 0x31363F       # Color for grey
+    sw $t2, 0($s0)
+    sw $t6, 0($s1)
+    sw $t2, 0($s2)
+    sw $t6, 0($s3)
+
+update_flag_down:
+    # Flip the color flag
+    li $t5, -1
+    mul $t3, $t3, $t5
+    sw $t3, colorFlag     # Store the updated color flag
+
+    # Calculate the new position by adding 4 to each register holding a position
+    addi $s0, $s0, 128  
+    addi $s1, $s1, 128
+    addi $s2, $s2, 128  
+    addi $s3, $s3, 128
+
+    # Draw the Tetrimino in the new position
+    sw $t1, 0($s0)  
+    sw $t1, 0($s1)
+    sw $t1, 0($s2) 
+    sw $t1, 0($s3)
+    
+	j sleepy
+
+rotation_state_one:
+    # Handle rotation state 1 logic here
+    # Terminate or other logic
+    li $v0, 10
+    syscall
+
+rotation_state_two:
+    # Handle rotation state 2 logic here
+    li $v0, 10
+    syscall
+
+rotation_state_three:
+    # Handle rotation state 3 logic here
+    li $v0, 10
+    syscall
+
+unknown_rotation_state:
+    # Handle any unexpected rotation state
+    li $v0, 10
+    syscall
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+rotate: 
+    # Load the current rotation state
+    lw $t4, rotation_state
+    
+    # Increment the rotation state
+    addi $t4, $t4, 1
+    li $t5, 4
+    div $t4, $t5
+    mfhi $t4                # Use the remainder to keep the state within [0,3]
+    sw $t4, rotation_state  # Store the updated state back
+
+    # Based on the rotation state, select the Tetrimino's color
+    lw $t0, ADDR_DSPL       # Base address for the display
+    beq $t4, 0, rotate_L_state_1
+    beq $t4, 1, rotate_L_state_2
+    beq $t4, 2, rotate_L_state_3
+    beq $t4, 3, rotate_L_state_4
+    
+rotate_L_state_2: 
+    li $t1, 0xFDA403       # Tetrimino color (orange)
+    li $t2, 0x222831       # Color for black
+    li $t6, 0x31363F        # Color for grey
+    lw $t0, ADDR_DSPL      # Load base address for the display   
+    lw $t7, colorFlag      # Load the colorFlag
+
+    li $t8, 1
+    beq $t7, $t8, use_alternate_color
+
+    # Paint blocks with Tetrimino color
+    sw $t2, 0($s0)    
+    #sw $t2, 0($s1)  
+    sw $t2, 0($s2) 
+    sw $t6, 0($s3)  
+    j end_rotate_L_state_2 
+    
+use_alternate_color: 
+    sw $t6, 0($s0)    
+    #sw $t2, 0($s1)  
+    sw $t6, 0($s2) 
+    sw $t2, 0($s3)  
+    
+end_rotate_L_state_2:
+    # Offset the blocks (To Do Colliosn Detection)
+    addi $s0, $s0, 124 
+    #addi $s1, $s1, 0 
+    addi $s2, $s2, -4
+    addi $s3, $s3, -128  
+
+    # Paint
+    sw $t1, 0($s0) 
+    sw $t1, 0($s1) 
+    sw $t1, 0($s2)
+    sw $t1, 0($s3) 
+    
+    j sleepy
+
+rotate_L_state_3:
+    li $t1, 0xFDA403       # Tetrimino color (orange)
+    li $t2, 0x222831       # Color for black
+    li $t6, 0x31363F       # Color for grey
+    lw $t0, ADDR_DSPL      # Load base address for the display
+    lw $t7, colorFlag      # Load the colorFlag
+
+    li $t8, 1
+    beq $t7, $t8, use_grey_state_3
+    
+    # Paint blocks according to colorFlag == 1 scheme
+    sw $t2, 0($s0)
+    #sw $t2, 0($s1)    # Uncomment if $s1 needs painting
+    sw $t6, 0($s2)
+    sw $t2, 0($s3)
+    j paint_and_offset_state_3
+
+use_grey_state_3:
+    # Alternate color scheme for colorFlag == 0
+    sw $t6, 0($s0)
+    #sw $t6, 0($s1)    # Uncomment if $s1 needs painting
+    sw $t2, 0($s2)
+    sw $t6, 0($s3)
+
+paint_and_offset_state_3:
+    # Offset the blocks (For Collision Detection or positioning)
+    addi $s0, $s0, -128
+    #addi $s1, $s1, 0    # Uncomment if $s1 needs offset adjustment
+    addi $s2, $s2, 4
+    addi $s3, $s3, -132
+
+    # Re-paint Tetrimino blocks with Tetrimino color after offsetting
+    sw $t1, 0($s0)
+    sw $t1, 0($s1)   # Ensure $s1 is defined or uncommented if used
+    sw $t1, 0($s2)
+    sw $t1, 0($s3)
+    
+    j sleepy
+
+
+rotate_L_state_4:
+    li $t1, 0xFDA403       # Tetrimino color (orange)
+    li $t2, 0x222831       # Color for black
+    li $t6, 0x31363F       # Color for grey
+    lw $t0, ADDR_DSPL      # Load base address for the display
+    lw $t7, colorFlag      # Load the colorFlag
+    
+    li $t8, 1
+    beq $t7, $t8, use_grey_state_4
+
+    # Color scheme for colorFlag == 1
+    sw $t6, 0($s0)    
+    sw $t6, 0($s1)  
+    sw $t2, 0($s2) 
+    sw $t2, 0($s3)  
+    j offset_and_paint_state_4 
+    
+use_grey_state_4: 
+    # Alternate color scheme for colorFlag == 0
+    sw $t2, 0($s0)    
+    sw $t2, 0($s1)  
+    sw $t6, 0($s2) 
+    sw $t6, 0($s3)  
+    
+offset_and_paint_state_4:
+    # Offset the blocks (For Collision Detection or positioning)
+    addi $s0, $s0, 256
+    addi $s1, $s1, 4 
+    addi $s3, $s3, 260  
+
+    # Re-paint Tetrimino blocks with Tetrimino color after offsetting
+    sw $t1, 0($s0) 
+    sw $t1, 0($s1) 
+    sw $t1, 0($s2)
+    sw $t1, 0($s3) 
+    
+    j sleepy
+
+rotate_L_state_1:
+    li $t1, 0xFDA403       # Tetrimino color (orange)
+    li $t2, 0x222831       # Color for black
+    li $t6, 0x31363F       # Color for grey
+    lw $t0, ADDR_DSPL      # Load base address for the display
+    lw $t7, colorFlag      # Load the colorFlag
+    
+    li $t8, 1
+    beq $t7, $t8, use_grey_state_1
+
+    # Color scheme for colorFlag == 1
+    sw $t6, 0($s0)    
+    sw $t2, 0($s1)  
+    # The next two lines are commented out because they are not being painted in this state
+    # But if needed, here's how it would look:
+    # sw $t2, 0($s2) 
+    # sw $t2, 0($s3)
+    j offset_and_paint_state_1 
+    
+use_grey_state_1: 
+    # Alternate color scheme for colorFlag == 0
+    sw $t2, 0($s0)    
+    sw $t6, 0($s1)  
+    # Similarly, for these, you would do:
+    # sw $t6, 0($s2) 
+    # sw $t6, 0($s3)
+    
+offset_and_paint_state_1:
+    # Offset the blocks (For Collision Detection or positioning)
+    addi $s0, $s0, -252
+    addi $s1, $s1, -4 
+    # Since $s2 and $s3 are not being offset, they're commented out
+    # addi $s2, $s2, 0
+    # addi $s3, $s3, 0
+
+    # Re-paint Tetrimino blocks with Tetrimino color after offsetting
+    sw $t1, 0($s0) 
+    sw $t1, 0($s1) 
+    # sw $t1, 0($s2)
+    # sw $t1, 0($s3)
+    
+    j sleepy
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+quit_game:
+    li $v0, 10 # terminate the program gracefully
+    syscall
    
    
    
@@ -255,12 +642,14 @@ keyboard_input:
 sleepy:
     # Perform the sleep syscall once at the end of the game loop iteration
     li $v0, 32                      # Set syscall number for sleep operation
-    li $a0, 1000                    # Set sleep duration in milliseconds (1 second)
+    li $a0, 20                      # Set sleep duration in milliseconds
     syscall                         # Execute the syscall to sleep
     j game_loop                     # Jump back to the start of the game loop
 
 
     
+
+
 
 
 
