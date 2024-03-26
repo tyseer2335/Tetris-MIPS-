@@ -10,12 +10,22 @@
 # - Base Address for Display:   0x10008000 ($gp)
 ##############################################################################
 .data
+black_squares: 
+    .word 4, 12, 20, 28, 36, 44, 136, 144, 152, 160, 168
+grey_squares: 
+    .word 8, 16, 24, 32, 40, 132, 140, 148, 156, 164, 172
+taken_spots: 
+    .word 4, 8
+num_taken_spots: 
+    .word 2
+num_squares: 
+    .word 6  # Number of squares    
+    
+    
 rotation_state:  
-    .word 0  # Initial rotation state
+    .word 0  
 ADDR_DSPL:
     .word 0x10008000 
-colorFlag:    
-    .word -1  # To Alternate colours when redrawing the grid
 ADDR_KBRD:
     .word 0xffff0000
 	.text
@@ -156,6 +166,9 @@ draw_other_vertical_wall:
     sw $t1, 0($s3)    # Draw the block at the absolute address in $s3
 
 
+
+
+
 # ----------------------------------------------------------------------------
 # START GAME (Jump to Game Loop)
 # ---------------------------------------------------------------------------- 
@@ -211,36 +224,18 @@ keyboard_input:
    
    
    
-   #---------------------------  Draw the screen  -------------------------------- 
-move_right: 	
- li $t1, 0xFDA403       # Tetrimino color (orange)
+   #---------------------------  Draw the screen  --------------------------------  
+  move_right: 	
+    # Assume $t1 has the Tetrimino color (orange), and $t2 has the background color (white)
+    li $t1, 0xFDA403       # Tetrimino color (orange)
     li $t2, 0x222831       # Color for black
-    li $t6, 0x31363F       # Color for grey
-    lw $t0, ADDR_DSPL      # Load base address for the display 
-    lw $t3, colorFlag      # Load the current color swap state 
+    lw $t0, ADDR_DSPL      # Load base address for the display
 
-
-    bltz $t3, use_black_as_first_color_right # Check the color flag and branch accordingly 
-    
-    # If color flag is not -1, use grey as the first color
-    sw $t6, 0($s0)
+    # Clear the old position by coloring the pixels black
+    sw $t2, 0($s0)  
     sw $t2, 0($s1)
-    sw $t6, 0($s2)
+    sw $t2, 0($s2) 
     sw $t2, 0($s3)
-    j update_flag_right
-
-use_black_as_first_color_right:
-    # If color flag is -1, use black as the first color
-    sw $t2, 0($s0)
-    sw $t6, 0($s1)
-    sw $t2, 0($s2)
-    sw $t6, 0($s3)
-
-update_flag_right:
-    # Flip the color flag
-    li $t5, -1
-    mul $t3, $t3, $t5
-    sw $t3, colorFlag     # Store the updated color flag
 
     # Calculate the new position by adding 4 to each register holding a position
     addi $s0, $s0, 4  
@@ -256,36 +251,18 @@ update_flag_right:
     
 	j sleepy
    
-move_left:  
+   
+ move_left: 	
+    # Assume $t1 has the Tetrimino color (orange), and $t2 has the background color (white)
     li $t1, 0xFDA403       # Tetrimino color (orange)
     li $t2, 0x222831       # Color for black
-    li $t6, 0x31363F       # Color for grey
-    lw $t0, ADDR_DSPL      # Load base address for the display 
-    lw $t3, colorFlag      # Load the current color swap state 
+    lw $t0, ADDR_DSPL      # Load base address for the display
 
-
-    bltz $t3, use_black_as_first_color_left # Check the color flag and branch accordingly 
-    
-    # If color flag is not -1, use grey as the first color
-    sw $t6, 0($s0)
+    # Clear the old position by coloring the pixels black
+    sw $t2, 0($s0)  
     sw $t2, 0($s1)
-    sw $t6, 0($s2)
+    sw $t2, 0($s2) 
     sw $t2, 0($s3)
-    j update_flag_left
-
-
-use_black_as_first_color_left:
-    # If color flag is -1, use black as the first color
-    sw $t2, 0($s0)
-    sw $t6, 0($s1)
-    sw $t2, 0($s2)
-    sw $t6, 0($s3)
-
-update_flag_left:
-    # Flip the color flag
-    li $t5, -1
-    mul $t3, $t3, $t5
-    sw $t3, colorFlag     # Store the updated color flag
 
     # Calculate the new position by adding 4 to each register holding a position
     addi $s0, $s0, -4  
@@ -301,54 +278,137 @@ update_flag_left:
     
 	j sleepy
    
-move_down: 
+   
+ move_down: 	
+ 
+# ----------------------------------------------------------------------------
+# Checkerboard Repainter
+# ---------------------------------------------------------------------------- 
+
+li $t2, 0xFF0000  # Red color for painting squares
+    lw $t0, ADDR_DSPL # Load base address of the display into $t0
+    la $t1, black_squares # Load the address of the black_squares array into $t1
+    li $t3, 11  # Total number of elements in black_squares
+    li $t4, 0  # Index counter for iterating through black_squares
+
+loop_squares:
+    beq $t4, $t3, end_loop  # End loop if all squares are checked
+    lw $t5, 0($t1)          # Load the current square offset into $t5
+
+    # Initialize variables for checking taken spots
+    la $t7, taken_spots     # Address of taken_spots array
+    lw $t8, num_taken_spots # Load the number of taken spots
+    li $t9, 0  # Index counter for taken_spots
+    li $t6, 0  # Flag for checking if current square is taken
+
+check_if_taken:
+    beq $t9, $t8, not_taken # Check if all taken spots are iterated
+    lw $a0, 0($t7)          # Load the current taken spot
+    beq $t5, $a0, skip_square # If square is taken, skip painting
+    addiu $t7, $t7, 4       # Move to the next taken spot
+    addiu $t9, $t9, 1       # Increment taken spots index
+    j check_if_taken
+
+not_taken:
+    beqz $t6, paint_square # Paint square if it's not marked as taken
+
+skip_square:
+    li $t6, 1  # Mark as taken to skip painting
+    j update_index
+
+paint_square:
+    add $a1, $t0, $t5       # Calculate the absolute address for the square
+    sw $t2, 0($a1)          # Paint the square red
+
+update_index:
+    addiu $t1, $t1, 4       # Move to the next element in the array
+    addiu $t4, $t4, 1       # Increment the index counter
+    j loop_squares          # Jump back to iterate over the next square
+
+end_loop:
+    # Add logic here to continue after the loop
+    
+    
+    
+
+
+    
+    
+
+li $t2, 0x0000FF  # Red color for painting squares
+    lw $t0, ADDR_DSPL # Load base address of the display into $t0
+    la $t1, grey_squares # Load the address of the black_squares array into $t1
+    li $t3, 11  # Total number of elements in grey_squares
+    li $t4, 0  # Index counter for iterating through black_squares
+
+loop_squares2:
+    beq $t4, $t3, end_loop2  # End loop if all squares are checked
+    lw $t5, 0($t1)          # Load the current square offset into $t5
+
+    # Initialize variables for checking taken spots
+    la $t7, taken_spots     # Address of taken_spots array
+    lw $t8, num_taken_spots # Load the number of taken spots
+    li $t9, 0  # Index counter for taken_spots
+    li $t6, 0  # Flag for checking if current square is taken
+
+check_if_taken2:
+    beq $t9, $t8, not_taken2 # Check if all taken spots are iterated
+    lw $a0, 0($t7)          # Load the current taken spot
+    beq $t5, $a0, skip_square2 # If square is taken, skip painting
+    addiu $t7, $t7, 4       # Move to the next taken spot
+    addiu $t9, $t9, 1       # Increment taken spots index
+    j check_if_taken2
+
+not_taken2:
+    beqz $t6, paint_square2 # Paint square if it's not marked as taken
+
+skip_square2:
+    li $t6, 1  # Mark as taken to skip painting
+    j update_index2
+
+paint_square2:
+    add $a1, $t0, $t5       # Calculate the absolute address for the square
+    sw $t2, 0($a1)          # Paint the square red
+
+update_index2:
+    addiu $t1, $t1, 4       # Move to the next element in the array
+    addiu $t4, $t4, 1       # Increment the index counter
+    j loop_squares2          # Jump back to iterate over the next square
+
+end_loop2:
+    # Add logic here to continue after the loop
+
+
+
+
+
+    
+# ----------------------------------------------------------------------------
+# Checkerboard Repainter
+# ----------------------------------------------------------------------------  
+ 
+ 
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+    # Assume $t1 has the Tetrimino color (orange), and $t2 has the background color (white)
     li $t1, 0xFDA403       # Tetrimino color (orange)
     li $t2, 0x222831       # Color for black
-    li $t6, 0x31363F       # Color for grey
-    lw $t0, ADDR_DSPL      # Load base address for the display 
-    lw $t3, colorFlag      # Load the current color swap state 	
-	
-  # Assume $t4 holds the rotation_state
-    lw $t4, rotation_state          # Load the current rotation state
+    lw $t0, ADDR_DSPL      # Load base address for the display
 
-    li $t5, 1                        # Set comparison value for state 1
-    li $t6, 2                        # Set comparison value for state 2
-    li $t7, 3                        # Set comparison value for state 3
-
-    # Branch based on the value of rotation_state
-    beqz $t4, rotation_state_zero   # If rotation state is 0
-    beq $t4, $t5, rotation_state_one # If rotation state is 1
-    beq $t4, $t6, rotation_state_two # If rotation state is 2
-    beq $t4, $t7, rotation_state_three # If rotation state is 3
-    j unknown_rotation_state        # Handle unexpected rotation state
-
-rotation_state_zero:
-    bltz $t3, use_black_as_first_color_down # Check the color flag and branch accordingly 
-    
-    # If color flag is not -1, use grey as the first color
-    li $t2, 0x222831       # Color for black
-    li $t6, 0x31363F       # Color for grey
-    sw $t6, 0($s0)
+    # Clear the old position by coloring the pixels black
+    sw $t2, 0($s0)  
     sw $t2, 0($s1)
-    sw $t6, 0($s2)
+    sw $t2, 0($s2) 
     sw $t2, 0($s3)
-    j update_flag_down
-
-
-use_black_as_first_color_down:
-    # If color flag is -1, use black as the first color 
-    li $t2, 0x222831       # Color for black
-    li $t6, 0x31363F       # Color for grey
-    sw $t2, 0($s0)
-    sw $t6, 0($s1)
-    sw $t2, 0($s2)
-    sw $t6, 0($s3)
-
-update_flag_down:
-    # Flip the color flag
-    li $t5, -1
-    mul $t3, $t3, $t5
-    sw $t3, colorFlag     # Store the updated color flag
 
     # Calculate the new position by adding 4 to each register holding a position
     addi $s0, $s0, 128  
@@ -363,83 +423,8 @@ update_flag_down:
     sw $t1, 0($s3)
     
 	j sleepy
-
-rotation_state_one:
-    # Handle rotation state 1 logic here
-    # Terminate or other logic
-    li $v0, 10
-    syscall
-
-rotation_state_two:
-    # Handle rotation state 2 logic here
-    li $v0, 10
-    syscall
-
-rotation_state_three:
-    # Handle rotation state 3 logic here
-    li $v0, 10
-    syscall
-
-unknown_rotation_state:
-    # Handle any unexpected rotation state
-    li $v0, 10
-    syscall
-
+   
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
 rotate: 
     # Load the current rotation state
     lw $t4, rotation_state
@@ -461,12 +446,8 @@ rotate:
 rotate_L_state_2: 
     li $t1, 0xFDA403       # Tetrimino color (orange)
     li $t2, 0x222831       # Color for black
-    li $t6, 0x31363F        # Color for grey
+    li $t6, 0x31363F       # Color for grey
     lw $t0, ADDR_DSPL      # Load base address for the display   
-    lw $t7, colorFlag      # Load the colorFlag
-
-    li $t8, 1
-    beq $t7, $t8, use_alternate_color
 
     # Paint blocks with Tetrimino color
     sw $t2, 0($s0)    
@@ -474,12 +455,6 @@ rotate_L_state_2:
     sw $t2, 0($s2) 
     sw $t6, 0($s3)  
     j end_rotate_L_state_2 
-    
-use_alternate_color: 
-    sw $t6, 0($s0)    
-    #sw $t2, 0($s1)  
-    sw $t6, 0($s2) 
-    sw $t2, 0($s3)  
     
 end_rotate_L_state_2:
     # Offset the blocks (To Do Colliosn Detection)
@@ -501,10 +476,6 @@ rotate_L_state_3:
     li $t2, 0x222831       # Color for black
     li $t6, 0x31363F       # Color for grey
     lw $t0, ADDR_DSPL      # Load base address for the display
-    lw $t7, colorFlag      # Load the colorFlag
-
-    li $t8, 1
-    beq $t7, $t8, use_grey_state_3
     
     # Paint blocks according to colorFlag == 1 scheme
     sw $t2, 0($s0)
@@ -513,12 +484,6 @@ rotate_L_state_3:
     sw $t2, 0($s3)
     j paint_and_offset_state_3
 
-use_grey_state_3:
-    # Alternate color scheme for colorFlag == 0
-    sw $t6, 0($s0)
-    #sw $t6, 0($s1)    # Uncomment if $s1 needs painting
-    sw $t2, 0($s2)
-    sw $t6, 0($s3)
 
 paint_and_offset_state_3:
     # Offset the blocks (For Collision Detection or positioning)
@@ -541,10 +506,6 @@ rotate_L_state_4:
     li $t2, 0x222831       # Color for black
     li $t6, 0x31363F       # Color for grey
     lw $t0, ADDR_DSPL      # Load base address for the display
-    lw $t7, colorFlag      # Load the colorFlag
-    
-    li $t8, 1
-    beq $t7, $t8, use_grey_state_4
 
     # Color scheme for colorFlag == 1
     sw $t6, 0($s0)    
@@ -553,12 +514,6 @@ rotate_L_state_4:
     sw $t2, 0($s3)  
     j offset_and_paint_state_4 
     
-use_grey_state_4: 
-    # Alternate color scheme for colorFlag == 0
-    sw $t2, 0($s0)    
-    sw $t2, 0($s1)  
-    sw $t6, 0($s2) 
-    sw $t6, 0($s3)  
     
 offset_and_paint_state_4:
     # Offset the blocks (For Collision Detection or positioning)
@@ -579,10 +534,7 @@ rotate_L_state_1:
     li $t2, 0x222831       # Color for black
     li $t6, 0x31363F       # Color for grey
     lw $t0, ADDR_DSPL      # Load base address for the display
-    lw $t7, colorFlag      # Load the colorFlag
     
-    li $t8, 1
-    beq $t7, $t8, use_grey_state_1
 
     # Color scheme for colorFlag == 1
     sw $t6, 0($s0)    
@@ -593,13 +545,6 @@ rotate_L_state_1:
     # sw $t2, 0($s3)
     j offset_and_paint_state_1 
     
-use_grey_state_1: 
-    # Alternate color scheme for colorFlag == 0
-    sw $t2, 0($s0)    
-    sw $t6, 0($s1)  
-    # Similarly, for these, you would do:
-    # sw $t6, 0($s2) 
-    # sw $t6, 0($s3)
     
 offset_and_paint_state_1:
     # Offset the blocks (For Collision Detection or positioning)
@@ -648,6 +593,19 @@ sleepy:
 
 
     
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
