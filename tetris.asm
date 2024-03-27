@@ -95,7 +95,6 @@ draw_next_even:
     addi $t5, $t5, -8      # Decrement the column offset by 4 and repeat the process
     j draw_columns_even    # Jump back to the beginning of the column drawing loop
 
-
 # ----------------------------------------------------------------------------
 # CHECKERBOARD PATTERN (Draw Odd Columns)
 # ---------------------------------------------------------------------------- 
@@ -112,14 +111,18 @@ draw_columns_odd:
     add $t8, $t0, $t5      # $t8 is the address for this column
     li $t2, 64             # Initialize loop counter for rows
     li $t3, 0              # Counter to alternate colors
+    
 draw_checkerboard_row_odd: 
     # If $t3 is not zero, draw grey, otherwise draw black
     bne $t3, 0, draw_blue_odd  
+    
 draw_green_odd:
     sw $t6, 0($t8)         # Paint the pixel at the current address
     j draw_next_odd
+    
 draw_blue_odd:
     sw $t7, 0($t8)         # Paint the pixel at the current address
+    
 draw_next_odd:
     addi $t8, $t8, 128     # Move the address down by two units
     addi $t3, $t3, 1       # Increment the alternate counter
@@ -131,13 +134,15 @@ draw_next_odd:
     # Decrement the column offset by 4 and repeat the process
     addi $t5, $t5, -8
     j draw_columns_odd  # Jump back to the beginning of the column drawing loop
-checkerboard_done:
+
 # ----------------------------------------------------------------------------
 # DRAW HORIZONTAL WALLS (Bottom)
-# ---------------------------------------------------------------------------- 
+# ----------------------------------------------------------------------------  
+checkerboard_done:
     lw $t0, ADDR_DSPL      # Load base address for the display
     li $t1, 0xFFEDD8       # Load color Wall into $t1
     li $t2, 12             # Set the loop counter for 64 iterations
+    
 draw_horizontal_wall:
     sw $t1, 3968($t0)     # Paint the pixel at the current address   
     addi $t0, $t0, 4     # Move the address down by two units (8 bytes per unit)
@@ -181,10 +186,6 @@ draw_other_vertical_wall:
     sw $t1, 0($s2)    # Draw the block at the absolute address in $s2
     sw $t1, 0($s3)    # Draw the block at the absolute address in $s3
 
-
-
-
-
 # ----------------------------------------------------------------------------
 # START GAME (Jump to Game Loop)
 # ---------------------------------------------------------------------------- 
@@ -193,12 +194,9 @@ draw_other_vertical_wall:
 
 ##############################################################################
 # IMPLEMENT CONTROLS (MILESTONE 2)
-##############################################################################
-# ----------------------------------------------------------------------------
-# MOVE TRIMINO [i] Rightt (press D)
-# ---------------------------------------------------------------------------- 
+############################################################################## 
+#------------  1a. Check if key has been pressed  ------------------------ 
 game_loop:
-    #------------  1a. Check if key has been pressed  ------------------------ 
     li $t8 0                        # Clear $t8
     lw $t0, ADDR_KBRD               # $t0 = base address for keyboard
     lw $t8, 0($t0)                  # Load first word from keyboard
@@ -207,7 +205,8 @@ game_loop:
 
     #------------  1b. Check which key has been pressed  ----------------------         
 keyboard_input:  
-    lw $a0, 4($t0)                # Load second word from keyboard
+    lw $a0, 4($t0)                # Load second word from keyboard 
+    
     # Check for 'D' (move right)
     li $t9, 0x64                  # ASCII for 'D'
     beq $a0, $t9, move_right
@@ -223,10 +222,13 @@ keyboard_input:
     # Check for 'W' (move up)
     li $t9, 0x77                  # ASCII for 'W'
     beq $a0, $t9, rotate
+    
+  # Check for 'L' key
+    li $t9, 108             # ASCII code for 'L'
+    beq $a0, $t9, Exit
 
-    # Check for Escape (quit game)
-    li $t9, 0x1B             # ASCII for Escape
-    beq $a0, $t9, quit_game
+
+
     
     b game_loop
 
@@ -241,17 +243,11 @@ keyboard_input:
    
    
    #---------------------------  Draw the screen  --------------------------------  
-  move_right: 	
+  move_right: 	 
+    jal checkerboard_repainter  
     # Assume $t1 has the Tetrimino color (orange), and $t2 has the background color (white)
     li $t1, 0xFDA403       # Tetrimino color (orange)
-    li $t2, 0x222831       # Color for black
     lw $t0, ADDR_DSPL      # Load base address for the display
-
-    # Clear the old position by coloring the pixels black
-    sw $t2, 0($s0)  
-    sw $t2, 0($s1)
-    sw $t2, 0($s2) 
-    sw $t2, 0($s3)
 
     # Calculate the new position by adding 4 to each register holding a position
     addi $s0, $s0, 4  
@@ -267,18 +263,11 @@ keyboard_input:
     
 	j sleepy
    
-   
- move_left: 	
+ move_left: 	 
+    jal checkerboard_repainter  
     # Assume $t1 has the Tetrimino color (orange), and $t2 has the background color (white)
     li $t1, 0xFDA403       # Tetrimino color (orange)
-    li $t2, 0x222831       # Color for black
     lw $t0, ADDR_DSPL      # Load base address for the display
-
-    # Clear the old position by coloring the pixels black
-    sw $t2, 0($s0)  
-    sw $t2, 0($s1)
-    sw $t2, 0($s2) 
-    sw $t2, 0($s3)
 
     # Calculate the new position by adding 4 to each register holding a position
     addi $s0, $s0, -4  
@@ -294,14 +283,14 @@ keyboard_input:
     
 	j sleepy
    
-   
  move_down: 	
- 
+    jal checkerboard_repainter  
+    j next_step_jumper
 # ----------------------------------------------------------------------------
-# Checkerboard Repainter
+# Checkerboard Repainter (START)
 # ---------------------------------------------------------------------------- 
-
-li $t2, 0xFF0000  # Red color for painting squares
+checkerboard_repainter:
+li $t2, 0x31363F # Red color for painting squares 0x31363F
     lw $t0, ADDR_DSPL # Load base address of the display into $t0
     la $t1, black_squares # Load the address of the black_squares array into $t1
     lw $t3, num_squares  # Total number of elements in black_squares
@@ -343,15 +332,8 @@ update_index:
 
 end_loop:
     # Add logic here to continue after the loop
-    
-    
-    
 
-
-    
-    
-
-li $t2, 0x0000FF  # Red color for painting squares
+li $t2, 0x222831 # Red color for painting squares 0x222831
     lw $t0, ADDR_DSPL # Load base address of the display into $t0
     la $t1, grey_squares # Load the address of the black_squares array into $t1
     lw $t3, num_squares  # Total number of elements in grey_squares
@@ -394,26 +376,14 @@ update_index2:
 end_loop2:
     # Add logic here to continue after the loop
 
-
-
-
-
-    
+ jr $ra   
 # ----------------------------------------------------------------------------
-# Checkerboard Repainter
+# Checkerboard Repainter (END)
 # ----------------------------------------------------------------------------  
- 
-
- 
+next_step_jumper:
     # Assume $t1 has the Tetrimino color (orange), and $t2 has the background color (white)
     li $t1, 0xFDA403       # Tetrimino color (orange)
     lw $t0, ADDR_DSPL      # Load base address for the display
-
-    # # Clear the old position by coloring the pixels black
-    # sw $t2, 0($s0)  
-    # sw $t2, 0($s1)
-    # sw $t2, 0($s2) 
-    # sw $t2, 0($s3)
 
     # Calculate the new position by adding 4 to each register holding a position
     addi $s0, $s0, 128  
@@ -429,7 +399,6 @@ end_loop2:
     
 	j sleepy
    
-	
 rotate: 
     # Load the current rotation state
     lw $t4, rotation_state
@@ -449,26 +418,18 @@ rotate:
     beq $t4, 3, rotate_L_state_4
     
 rotate_L_state_2: 
-    li $t1, 0xFDA403       # Tetrimino color (orange)
-    li $t2, 0x222831       # Color for black
-    li $t6, 0x31363F       # Color for grey
     lw $t0, ADDR_DSPL      # Load base address for the display   
 
-    # Paint blocks with Tetrimino color
-    sw $t2, 0($s0)    
-    #sw $t2, 0($s1)  
-    sw $t2, 0($s2) 
-    sw $t6, 0($s3)  
-    j end_rotate_L_state_2 
-    
-end_rotate_L_state_2:
     # Offset the blocks (To Do Colliosn Detection)
     addi $s0, $s0, 124 
     #addi $s1, $s1, 0 
     addi $s2, $s2, -4
     addi $s3, $s3, -128  
+    
+    jal checkerboard_repainter 
 
-    # Paint
+    # Paint 
+    li $t1, 0xFDA403       # Tetrimino color (orange)
     sw $t1, 0($s0) 
     sw $t1, 0($s1) 
     sw $t1, 0($s2)
@@ -477,29 +438,19 @@ end_rotate_L_state_2:
     j sleepy
 
 rotate_L_state_3:
-    li $t1, 0xFDA403       # Tetrimino color (orange)
-    li $t2, 0x222831       # Color for black
-    li $t6, 0x31363F       # Color for grey
     lw $t0, ADDR_DSPL      # Load base address for the display
-    
-    # Paint blocks according to colorFlag == 1 scheme
-    sw $t2, 0($s0)
-    #sw $t2, 0($s1)    # Uncomment if $s1 needs painting
-    sw $t6, 0($s2)
-    sw $t2, 0($s3)
-    j paint_and_offset_state_3
 
-
-paint_and_offset_state_3:
     # Offset the blocks (For Collision Detection or positioning)
     addi $s0, $s0, -128
     #addi $s1, $s1, 0    # Uncomment if $s1 needs offset adjustment
     addi $s2, $s2, 4
     addi $s3, $s3, -132
 
-    # Re-paint Tetrimino blocks with Tetrimino color after offsetting
+     jal checkerboard_repainter 
+
+    li $t1, 0xFDA403       # Tetrimino color (orange)
     sw $t1, 0($s0)
-    sw $t1, 0($s1)   # Ensure $s1 is defined or uncommented if used
+    sw $t1, 0($s1)   
     sw $t1, 0($s2)
     sw $t1, 0($s3)
     
@@ -507,26 +458,17 @@ paint_and_offset_state_3:
 
 
 rotate_L_state_4:
-    li $t1, 0xFDA403       # Tetrimino color (orange)
-    li $t2, 0x222831       # Color for black
-    li $t6, 0x31363F       # Color for grey
     lw $t0, ADDR_DSPL      # Load base address for the display
 
-    # Color scheme for colorFlag == 1
-    sw $t6, 0($s0)    
-    sw $t6, 0($s1)  
-    sw $t2, 0($s2) 
-    sw $t2, 0($s3)  
-    j offset_and_paint_state_4 
-    
-    
-offset_and_paint_state_4:
     # Offset the blocks (For Collision Detection or positioning)
     addi $s0, $s0, 256
     addi $s1, $s1, 4 
     addi $s3, $s3, 260  
 
-    # Re-paint Tetrimino blocks with Tetrimino color after offsetting
+     jal checkerboard_repainter 
+    
+    # Re-paint Tetrimino blocks with Tetrimino color after offsetting 
+    li $t1, 0xFDA403       # Tetrimino color (orange)
     sw $t1, 0($s0) 
     sw $t1, 0($s1) 
     sw $t1, 0($s2)
@@ -535,23 +477,8 @@ offset_and_paint_state_4:
     j sleepy
 
 rotate_L_state_1:
-    li $t1, 0xFDA403       # Tetrimino color (orange)
-    li $t2, 0x222831       # Color for black
-    li $t6, 0x31363F       # Color for grey
     lw $t0, ADDR_DSPL      # Load base address for the display
-    
 
-    # Color scheme for colorFlag == 1
-    sw $t6, 0($s0)    
-    sw $t2, 0($s1)  
-    # The next two lines are commented out because they are not being painted in this state
-    # But if needed, here's how it would look:
-    # sw $t2, 0($s2) 
-    # sw $t2, 0($s3)
-    j offset_and_paint_state_1 
-    
-    
-offset_and_paint_state_1:
     # Offset the blocks (For Collision Detection or positioning)
     addi $s0, $s0, -252
     addi $s1, $s1, -4 
@@ -559,16 +486,22 @@ offset_and_paint_state_1:
     # addi $s2, $s2, 0
     # addi $s3, $s3, 0
 
-    # Re-paint Tetrimino blocks with Tetrimino color after offsetting
+     jal checkerboard_repainter 
+
+    # Re-paint Tetrimino blocks with Tetrimino color after offsetting 
+    li $t1, 0xFDA403       # Tetrimino color (orange)
     sw $t1, 0($s0) 
     sw $t1, 0($s1) 
-    # sw $t1, 0($s2)
-    # sw $t1, 0($s3)
+    sw $t1, 0($s2)
+    sw $t1, 0($s3)
     
     j sleepy
 
 
 
+Exit:
+li $v0, 10 # terminate the program gracefully
+syscall
 
 
 
@@ -580,10 +513,6 @@ offset_and_paint_state_1:
 
 
 
-
-quit_game:
-    li $v0, 10 # terminate the program gracefully
-    syscall
    
    
    
@@ -620,9 +549,6 @@ sleepy:
 
 
 
-# Exit:
-# li $v0, 10 # terminate the program gracefully
-# syscall
 
 
 
