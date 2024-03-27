@@ -11,17 +11,33 @@
 ##############################################################################
 .data
 black_squares: 
-    .word 4, 12, 20, 28, 36, 44, 136, 144, 152, 160, 168
+    .word 4, 12, 20, 28, 36, 136, 144, 152, 160, 168, 260, 268, 276, 284, 292, 392, 400, 408, 416, 424, 516, 524, 532,  
+    540, 548, 648, 656, 664, 672, 680, 772, 780, 788, 796, 804, 904, 912, 920, 928, 936, 1028, 1036, 1044, 1052, 1060,  
+    1160, 1168, 1176, 1184, 1192, 1284, 1292, 1300, 1308, 1316, 1416, 1424, 1432, 1440, 1448, 1540, 1548, 1556, 1564,  
+    1572, 1672, 1680, 1688, 1696, 1704, 1796, 1804, 1812, 1820, 1828, 1928, 1936, 1944, 1952, 1960, 2052, 2060, 2068,  
+    2076, 2084, 2184, 2192, 2200, 2208, 2216, 2308, 2316, 2324, 2332, 2340, 2440, 2448, 2456, 2464, 2472, 2564, 2572,  
+    2580, 2588, 2596, 2696, 2704, 2712, 2720, 2728, 2820, 2828, 2836, 2844, 2852, 2952, 2960, 2968, 2976, 2984, 3076,  
+    3084, 3092, 3100, 3108, 3208, 3216, 3224, 3232, 3240, 3332, 3340, 3348, 3356, 3364, 3464, 3472, 3480, 3488, 3496,  
+    3588, 3596, 3604, 3612, 3620, 3720, 3728, 3736, 3744, 3752, 3844, 3852, 3860, 3868, 3876, 44, 300, 556, 812, 1068, 
+    1324, 1580, 1836, 2092, 2348, 2604, 2860, 3116, 3372, 3628, 3884       # Blue 
 grey_squares: 
-    .word 8, 16, 24, 32, 40, 132, 140, 148, 156, 164, 172
+    .word 
+    8, 16, 24, 32, 40, 132, 140, 148, 156, 164, 172, 264, 272, 280, 288, 296, 388, 396, 404, 412, 420, 428, 520, 528, 536, 544,  
+    552, 644, 652, 660, 668, 676, 684, 776, 784, 792, 800, 808, 900, 908, 916, 924, 932, 940, 1032, 1040, 1048, 1056, 1064, 1156,  
+    1164, 1172, 1180, 1188, 1196, 1288, 1296, 1304, 1312, 1320, 1412, 1420, 1428, 1436, 1444, 1452, 1544, 1552, 1560, 1568, 1576, 
+    1668, 1676, 1684, 1692, 1700, 1708, 1800, 1808, 1816, 1824, 1832, 1924, 1932, 1940, 1948, 1956, 1964, 2056, 2064, 2072, 2080, 
+    2088, 2180, 2188, 2196, 2204, 2212, 2220, 2312, 2320, 2328, 2336, 2344, 2436, 2444, 2452, 2460, 2468, 2476, 2568, 2576, 2584, 
+    2592, 2600, 2692, 2700, 2708, 2716, 2724, 2732, 2824, 2832, 2840, 2848, 2856, 2948, 2956, 2964, 2972, 2980, 2988, 3080, 3088, 
+    3096, 3104, 3112, 3204, 3212, 3220, 3228, 3236, 3244, 3336, 3344, 3352, 3360, 3368, 3460, 3468, 3476, 3484, 3492, 3500, 3592, 
+    3600, 3608, 3616, 3624, 3716, 3724, 3732, 3740, 3748, 3756, 3848, 3856, 3864, 3872, 3880   # Red
 taken_spots: 
-    .word 4, 8
+    .word 
 num_taken_spots: 
     .word 2
 num_squares: 
-    .word 6  # Number of squares    
-    
-    
+    .word 171       
+taken_spots_by_trimino: 
+    .word 24, 152, 280, 284
 rotation_state:  
     .word 0  
 ADDR_DSPL:
@@ -288,7 +304,7 @@ keyboard_input:
 li $t2, 0xFF0000  # Red color for painting squares
     lw $t0, ADDR_DSPL # Load base address of the display into $t0
     la $t1, black_squares # Load the address of the black_squares array into $t1
-    li $t3, 11  # Total number of elements in black_squares
+    lw $t3, num_squares  # Total number of elements in black_squares
     li $t4, 0  # Index counter for iterating through black_squares
 
 loop_squares:
@@ -338,7 +354,7 @@ end_loop:
 li $t2, 0x0000FF  # Red color for painting squares
     lw $t0, ADDR_DSPL # Load base address of the display into $t0
     la $t1, grey_squares # Load the address of the black_squares array into $t1
-    li $t3, 11  # Total number of elements in grey_squares
+    lw $t3, num_squares  # Total number of elements in grey_squares
     li $t4, 0  # Index counter for iterating through black_squares
 
 loop_squares2:
@@ -387,28 +403,17 @@ end_loop2:
 # Checkerboard Repainter
 # ----------------------------------------------------------------------------  
  
- 
 
- 
- 
- 
- 
- 
- 
- 
- 
- 
  
     # Assume $t1 has the Tetrimino color (orange), and $t2 has the background color (white)
     li $t1, 0xFDA403       # Tetrimino color (orange)
-    li $t2, 0x222831       # Color for black
     lw $t0, ADDR_DSPL      # Load base address for the display
 
-    # Clear the old position by coloring the pixels black
-    sw $t2, 0($s0)  
-    sw $t2, 0($s1)
-    sw $t2, 0($s2) 
-    sw $t2, 0($s3)
+    # # Clear the old position by coloring the pixels black
+    # sw $t2, 0($s0)  
+    # sw $t2, 0($s1)
+    # sw $t2, 0($s2) 
+    # sw $t2, 0($s3)
 
     # Calculate the new position by adding 4 to each register holding a position
     addi $s0, $s0, 128  
