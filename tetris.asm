@@ -54,9 +54,39 @@ walls:
     28488, 28616, 28744, 28872, 29000, 29128, 29256, 29384, 29512, 29640, 29768, 29896, 30024, 30152, 30280, 30408, 30536, 30664, 30792, 30920, 31048, 31176, 31304, 31432, 31560, 31688, 31816, 31944, 32072, 32200, 32328, 32456,  
     32584, 32712, 32840, 32968, 33096, 33224, 33352, 33480, 33608, 33736, 33864, 33992, 34120, 34248, 34376, 34504, 34632, 34760, 34888, 35016, 35144, 35272, 35400, 35528, 35656, 35784, 35912, 36040, 36168, 36296, 36424, 36552
     
+good_spots: 
+    .word 4, 12, 20, 28, 36, 136, 144, 152, 160, 168, 260, 268, 276, 284, 292, 392, 400, 408, 416, 424, 516, 524, 532,  
+    540, 548, 648, 656, 664, 672, 680, 772, 780, 788, 796, 804, 904, 912, 920, 928, 936, 1028, 1036, 1044, 1052, 1060,  
+    1160, 1168, 1176, 1184, 1192, 1284, 1292, 1300, 1308, 1316, 1416, 1424, 1432, 1440, 1448, 1540, 1548, 1556, 1564,  
+    1572, 1672, 1680, 1688, 1696, 1704, 1796, 1804, 1812, 1820, 1828, 1928, 1936, 1944, 1952, 1960, 2052, 2060, 2068,  
+    2076, 2084, 2184, 2192, 2200, 2208, 2216, 2308, 2316, 2324, 2332, 2340, 2440, 2448, 2456, 2464, 2472, 2564, 2572,  
+    2580, 2588, 2596, 2696, 2704, 2712, 2720, 2728, 2820, 2828, 2836, 2844, 2852, 2952, 2960, 2968, 2976, 2984, 3076,  
+    3084, 3092, 3100, 3108, 3208, 3216, 3224, 3232, 3240, 3332, 3340, 3348, 3356, 3364, 3464, 3472, 3480, 3488, 3496,  
+    3588, 3596, 3604, 3612, 3620, 3720, 3728, 3736, 3744, 3752, 3844, 3852, 3860, 3868, 3876, 44, 300, 556, 812, 1068, 
+    1324, 1580, 1836, 2092, 2348, 2604, 2860, 3116, 3372, 3628, 3884, 8, 16, 24, 32, 40, 132, 140, 148, 156, 164, 172, 264, 272,  
+    280, 288, 296, 388, 396, 404, 412, 420, 428, 520, 528, 536, 544,  
+    552, 644, 652, 660, 668, 676, 684, 776, 784, 792, 800, 808, 900, 908, 916, 924, 932, 940, 1032, 1040, 1048, 1056, 1064, 1156,  
+    1164, 1172, 1180, 1188, 1196, 1288, 1296, 1304, 1312, 1320, 1412, 1420, 1428, 1436, 1444, 1452, 1544, 1552, 1560, 1568, 1576, 
+    1668, 1676, 1684, 1692, 1700, 1708, 1800, 1808, 1816, 1824, 1832, 1924, 1932, 1940, 1948, 1956, 1964, 2056, 2064, 2072, 2080, 
+    2088, 2180, 2188, 2196, 2204, 2212, 2220, 2312, 2320, 2328, 2336, 2344, 2436, 2444, 2452, 2460, 2468, 2476, 2568, 2576, 2584, 
+    2592, 2600, 2692, 2700, 2708, 2716, 2724, 2732, 2824, 2832, 2840, 2848, 2856, 2948, 2956, 2964, 2972, 2980, 2988, 3080, 3088, 
+    3096, 3104, 3112, 3204, 3212, 3220, 3228, 3236, 3244, 3336, 3344, 3352, 3360, 3368, 3460, 3468, 3476, 3484, 3492, 3500, 3592, 
+    3600, 3608, 3616, 3624, 3716, 3724, 3732, 3740, 3748, 3756, 3848, 3856, 3864, 3872, 3880,  
+    
+    
+    
+    
+all_check: 
+    .word 0     
+    
+    
+    
+num_good_spots: 
+    .word 280
+    
     
 num_walls: 
-    .word 522
+    .word 384 
 taken_spots: 
     .word 
 num_taken_spots: 
@@ -140,7 +170,7 @@ skip_square:
 
 paint_square:
     add $a1, $t0, $t5       # Calculate the absolute address for the square
-    sw $t2, 0($a1)          # Paint the square red
+    sw $t2, 0($a1)          # Paint the square
 
 update_index:
     addiu $t1, $t1, 4       # Move to the next element in the array
@@ -201,9 +231,6 @@ checkerboard_done:
 # ----------------------------------------------------------------------------
 # DRAW TRIMINO (L - Shape [Orange])
 # ---------------------------------------------------------------------------- 
-    lw $t0, ADDR_DSPL      # Load base address for the display
-    li $t1, 0xFDA403       # Load t1 with the colour Orange
-    
     li $s0, 24     # Top left pixel of the Tetrimino
     li $s1, 152    # Next pixel down
     li $s2, 280    # Next pixel down
@@ -216,9 +243,8 @@ jal paint_block
 j done_paint 
 paint_block: 
 
-    li $t1, 0xFDA403       # Tetrimino color (orange)
-    # Assuming $s0 to $s3 contain correct offsets for each block of the Tetrimino
-    # Add base address to each offset to get the absolute address
+    lw $t0, ADDR_DSPL      # Load base address for the display
+    li $t1, 0xFDA403       # Load t1 with the colour Orange
     
     add $s0, $s0, $t0
     add $s1, $s1, $t0
@@ -295,136 +321,165 @@ keyboard_input:
 
 
     
+move_right: 
+    jal checkerboard_repainter 
     
-   
-move_right: 	 
-    jal checkerboard_repainter  
-    li $t1, 0xFDA403       # Tetrimino color (orange)
-    lw $t0, ADDR_DSPL      # Load base address for the display
-
-    # Calculate the new position by adding 4 to each register holding a position
     addi $s0, $s0, 4  
     addi $s1, $s1, 4
     addi $s2, $s2, 4  
     addi $s3, $s3, 4
-
-    jal paint_block
-
+    
     la $t0, walls          # Load the address of the words array into $t0
     lw $t1, num_walls      # Load the array length into $t1
     li $t2, 0              # Initialize index to 0 (for array iteration)
     li $t5, 0              # Initialize match found flag to 0
 
-
-
-looper:
-    beq $t2, $t1, checkMatch # If index equals array length, check for match
+find_collisson_right:
+    beq $t2, $t1, check_collison_right # If index equals array length, check for match
 
     lw $t4, 0($t0)         # Load the current word from the array into $t4
-    # Compare $t4 with $s0, $s1, $s2, $s3
-    beq $t4, $s0, setMatchFlag
-    beq $t4, $s1, setMatchFlag
-    beq $t4, $s2, setMatchFlag
-    beq $t4, $s3, setMatchFlag
+   
+    beq $t4, $s0, match_collision_right  # Compare $t4 with $s0, $s1, $s2, $s3
+    beq $t4, $s1, match_collision_right
+    beq $t4, $s2, match_collision_right
+    beq $t4, $s3, match_collision_right
 
     addi $t0, $t0, 4       # Move to the next word in the array
     addi $t2, $t2, 1       # Increment the index
-    j looper                 # Jump back to the start of the loop
+    j find_collisson_right               # Jump back to the start of the loop
 
-setMatchFlag:
+match_collision_right:
     li $t5, 1              # Set match found flag
-    j checkMatch           
+    j check_collison_right           
 
-checkMatch:
+check_collison_right:
     # Determine pixel location based on match
-    beq $t5, 1, collison_found   # If match found, jump to color at location 4
-    j no_collison_found          # Otherwise, jump to color at location 152
+    beq $t5, 1, found_collision_right  # If match found, jump to collision
+    j no_collision_right          # Otherwise, no collision
 
+no_collision_right:
+    jal paint_block
+    j end_collison_right                 
 
-collison_found: 
-
+found_collision_right:
     addi $s0, $s0, -4  
     addi $s1, $s1, -4
     addi $s2, $s2, -4  
     addi $s3, $s3, -4
-
-
-    j done_collison
-
-no_collison_found: 
-
-
-    add $s0, $s0, $t0
-    add $s1, $s1, $t0
-    add $s2, $s2, $t0
-    add $s3, $s3, $t0
-
-    sw $t1, 0($s0)    # Draw the block at the absolute address in $s0
-    sw $t1, 0($s1)    # Draw the block at the absolute address in $s1
-    sw $t1, 0($s2)    # Draw the block at the absolute address in $s2
-    sw $t1, 0($s3)    # Draw the block at the absolute address in $s3
-        
-        
-    sub $s0, $s0, $t0
-    sub $s1, $s1, $t0
-    sub $s2, $s2, $t0
-    sub $s3, $s3, $t0  
-
-
     
-    j done_collison
+    jal paint_block
+    j end_collison_right                   
 
-done_collison:
+end_collison_right:
+    j sleepy
+    
+    
+move_left: 
+    jal checkerboard_repainter 
+    
+    addi $s0, $s0, -4  
+    addi $s1, $s1, -4
+    addi $s2, $s2, -4  
+    addi $s3, $s3, -4
+    
+    la $t0, walls          # Load the address of the words array into $t0
+    lw $t1, num_walls      # Load the array length into $t1
+    li $t2, 0              # Initialize index to 0 (for array iteration)
+    li $t5, 0              # Initialize match found flag to 0
 
+find_collisson_left:
+    beq $t2, $t1, check_collison_left # If index equals array length, check for match
+
+    lw $t4, 0($t0)         # Load the current word from the array into $t4
+   
+    beq $t4, $s0, match_collision_left  # Compare $t4 with $s0, $s1, $s2, $s3
+    beq $t4, $s1, match_collision_left
+    beq $t4, $s2, match_collision_left
+    beq $t4, $s3, match_collision_left
+
+    addi $t0, $t0, 4       # Move to the next word in the array
+    addi $t2, $t2, 1       # Increment the index
+    j find_collisson_left               # Jump back to the start of the loop
+
+match_collision_left:
+    li $t5, 1              # Set match found flag
+    j check_collison_left           
+
+check_collison_left:
+    # Determine pixel location based on match
+    beq $t5, 1, found_collision_left  # If match found, jump to collision
+    j no_collision_left          # Otherwise, no collision
+
+no_collision_left:
+    jal paint_block
+    j end_collison_left                
+
+found_collision_left:
+    addi $s0, $s0, 4  
+    addi $s1, $s1, 4
+    addi $s2, $s2, 4  
+    addi $s3, $s3, 4
+    
+    jal paint_block
+    j end_collison_left                  
+
+end_collison_left:
     j sleepy
 
-
-
-
-
+       
+move_down: 
+    jal checkerboard_repainter 
     
-    
-    
-   
- move_left: 	 
-    jal checkerboard_repainter  
-    # Assume $t1 has the Tetrimino color (orange), and $t2 has the background color (white)
-    li $t1, 0xFDA403       # Tetrimino color (orange)
-    lw $t0, ADDR_DSPL      # Load base address for the display
-
-    # Calculate the new position by adding 4 to each register holding a position
-    addi $s0, $s0, -4  
-    addi $s1, $s1, -4
-    addi $s2, $s2, -4  
-    addi $s3, $s3, -4
-
-    jal paint_block 
-    
-    
-    li $v0, 1       # System call code for printing an integer.
-    move $a0, $s3   # Move the value you want to print from $t0 to $a0.
-    syscall         #
-    
-	j sleepy
-
-   
-   
- move_down: 	
-    jal checkerboard_repainter  
-
-    # Assume $t1 has the Tetrimino color (orange), and $t2 has the background color (white)
-    li $t1, 0xFDA403       # Tetrimino color (orange)
-    lw $t0, ADDR_DSPL      # Load base address for the display
-
-    # Calculate the new position by adding 4 to each register holding a position
-    addi $s0, $s0, 128  
+    addi $s0, $s0, 128 
     addi $s1, $s1, 128
-    addi $s2, $s2, 128  
+    addi $s2, $s2, 128 
     addi $s3, $s3, 128
-
-    jal paint_block   
     
-	j sleepy
+    la $t0, walls          # Load the address of the words array into $t0
+    lw $t1, num_walls      # Load the array length into $t1
+    li $t2, 0              # Initialize index to 0 (for array iteration)
+    li $t5, 0              # Initialize match found flag to 0
+
+find_collisson_down:
+    beq $t2, $t1, check_collison_down # If index equals array length, check for match
+
+    lw $t4, 0($t0)         # Load the current word from the array into $t4
+   
+    beq $t4, $s0, match_collision_down  # Compare $t4 with $s0, $s1, $s2, $s3
+    beq $t4, $s1, match_collision_down
+    beq $t4, $s2, match_collision_down
+    beq $t4, $s3, match_collision_down
+
+    addi $t0, $t0, 4       # Move to the next word in the array
+    addi $t2, $t2, 1       # Increment the index
+    j find_collisson_down               # Jump back to the start of the loop
+
+match_collision_down:
+    li $t5, 1              # Set match found flag
+    j check_collison_down           
+
+check_collison_down:
+    # Determine pixel location based on match
+    beq $t5, 1, found_collision_down  # If match found, jump to collision
+    j no_collision_down          # Otherwise, no collision
+
+no_collision_down:
+    jal paint_block
+    j end_collison_down                
+
+found_collision_down:
+    addi $s0, $s0, -128  
+    addi $s1, $s1, -128
+    addi $s2, $s2, -128  
+    addi $s3, $s3, -128
+    
+    jal paint_block
+    j end_collison_down                  
+
+end_collison_down:
+    j sleepy
+
+   
    
 rotate: 
     # Load the current rotation state
@@ -444,63 +499,386 @@ rotate:
     beq $t4, 2, rotate_L_state_3
     beq $t4, 3, rotate_L_state_4
     
-rotate_L_state_2: 
-    lw $t0, ADDR_DSPL      # Load base address for the display   
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 
-    # Offset the blocks (To Do Colliosn Detection)
+
+
+rotate_L_state_2: 
+    jal checkerboard_repainter 
+    
     addi $s0, $s0, 124 
     #addi $s1, $s1, 0 
     addi $s2, $s2, -4
     addi $s3, $s3, -128  
     
-    jal checkerboard_repainter  
+    la $t0, walls          # Load the address of the words array into $t0
+    lw $t1, num_walls      # Load the array length into $t1
+    li $t2, 0              # Initialize index to 0 (for array iteration)
+    li $t5, 0              # Initialize match found flag to 0
+
+find_collisson_L_state_2:
+    beq $t2, $t1, check_collison_L_state_2 # If index equals array length, check for match
+
+    lw $t4, 0($t0)         # Load the current word from the array into $t4
+   
+    beq $t4, $s0, match_collision_L_state_2  # Compare $t4 with $s0, $s1, $s2, $s3
+    beq $t4, $s1, match_collision_L_state_2
+    beq $t4, $s2, match_collision_L_state_2
+    beq $t4, $s3, match_collision_L_state_2
+
+    addi $t0, $t0, 4       # Move to the next word in the array
+    addi $t2, $t2, 1       # Increment the index
+    j find_collisson_L_state_2               # Jump back to the start of the loop
+
+match_collision_L_state_2:
+    li $t5, 1              # Set match found flag
+    j check_collison_L_state_2           
+
+check_collison_L_state_2:
+    # Determine pixel location based on match
+    beq $t5, 1, found_collision_L_state_2  # If match found, jump to collision
+    j no_collision_L_state_2          # Otherwise, no collision
+
+no_collision_L_state_2:
     jal paint_block
+    j end_collison_L_state_2                
+
+found_collision_L_state_2:
+    addi $s0, $s0, -124 
+    #addi $s1, $s1, 0 
+    addi $s2, $s2, 4
+    addi $s3, $s3, 128  
     
+    # Load the address of rotation_state into $t0
+    la $t0, rotation_state
+
+    # Load the current value of rotation_state into $t1
+    lw $t1, 0($t0)
+
+    # Check if rotation_state is 0, to wrap around to 3
+    beq $t1, 0, wrap_around
+
+    # If not 0, simply decrement rotation_state
+    addi $t1, $t1, -1
+    j store_update
+
+    wrap_around:
+    # Wrap around to 3 if it was 0
+    li $t1, 3
+
+    store_update:
+    # Store the updated value back to rotation_state
+    sw $t1, 0($t0)
+    
+    
+    jal paint_block
+    j end_collison_L_state_2                  
+
+end_collison_L_state_2: 
+
     j sleepy
 
-rotate_L_state_3:
-    lw $t0, ADDR_DSPL      # Load base address for the display
 
-    # Offset the blocks (For Collision Detection or positioning)
+
+
+
+
+
+
+
+
+
+
+
+
+
+rotate_L_state_3: 
+    jal checkerboard_repainter 
+    
     addi $s0, $s0, -128
-    #addi $s1, $s1, 0    # Uncomment if $s1 needs offset adjustment
+    # No adjustment for $s1
     addi $s2, $s2, 4
     addi $s3, $s3, -132
-
-    jal checkerboard_repainter  
-    jal paint_block
     
+    la $t0, walls          # Load the address of the words array into $t0
+    lw $t1, num_walls      # Load the array length into $t1
+    li $t2, 0              # Initialize index to 0 (for array iteration)
+    li $t5, 0              # Initialize match found flag to 0
+
+find_collisson_L_state_3:
+    beq $t2, $t1, check_collison_L_state_3 # If index equals array length, check for match
+
+    lw $t4, 0($t0)         # Load the current word from the array into $t4
+   
+    beq $t4, $s0, match_collision_L_state_3  # Compare $t4 with $s0, $s1, $s2, $s3
+    beq $t4, $s1, match_collision_L_state_3
+    beq $t4, $s2, match_collision_L_state_3
+    beq $t4, $s3, match_collision_L_state_3
+
+    addi $t0, $t0, 4       # Move to the next word in the array
+    addi $t2, $t2, 1       # Increment the index
+    j find_collisson_L_state_3               # Jump back to the start of the loop
+
+match_collision_L_state_3:
+    li $t5, 1              # Set match found flag
+    j check_collison_L_state_3           
+
+check_collison_L_state_3:
+    # Determine pixel location based on match
+    beq $t5, 1, found_collision_L_state_3  # If match found, jump to collision
+    j no_collision_L_state_3          # Otherwise, no collision
+
+no_collision_L_state_3:
+    jal paint_block
+    j end_collison_L_state_3                
+
+found_collision_L_state_3:
+    addi $s0, $s0, 128
+    # No adjustment for $s1
+    addi $s2, $s2, -4
+    addi $s3, $s3, 132 
+    
+        # Load the address of rotation_state into $t0
+    la $t0, rotation_state
+
+    # Load the current value of rotation_state into $t1
+    lw $t1, 0($t0)
+
+    # Check if rotation_state is 0, to wrap around to 3
+    beq $t1, 0, wrap_around
+
+    # If not 0, simply decrement rotation_state
+    addi $t1, $t1, -1
+    j store_update
+
+    wrap_around:
+    # Wrap around to 3 if it was 0
+    li $t1, 3
+
+    store_update:
+    # Store the updated value back to rotation_state
+    sw $t1, 0($t0)
+    
+    jal paint_block
+    j end_collison_L_state_3                  
+
+end_collison_L_state_3:
     j sleepy
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 rotate_L_state_4:
-    lw $t0, ADDR_DSPL      # Load base address for the display
+    jal checkerboard_repainter  # Refresh the game board before attempting rotation
 
-    # Offset the blocks (For Collision Detection or positioning)
+    # Offset the blocks for collision detection or positioning
     addi $s0, $s0, 256
-    addi $s1, $s1, 4 
-    addi $s3, $s3, 260  
+    addi $s1, $s1, 4
+    # $s2 does not change
+    addi $s3, $s3, 260
 
-    jal checkerboard_repainter  
-    jal paint_block  
-    
-    
+    # Prepare for collision detection with the array (assuming walls or similar)
+    la $t0, walls              # Load the address of the walls array
+    lw $t1, num_walls          # Load the number of elements in the walls array
+    li $t2, 0                  # Initialize index for array iteration
+    li $t5, 0                  # Initialize collision flag to 0
+
+find_collision_L_state_4:
+    beq $t2, $t1, check_collision_L_state_4 # End loop if we've checked all elements
+
+    lw $t4, 0($t0)         # Load current element for comparison
+    beq $t4, $s0, match_collision_L_state_4
+    beq $t4, $s1, match_collision_L_state_4
+    # $s2 comparison could be added here if $s2 is also subject to change
+    beq $t4, $s3, match_collision_L_state_4
+
+    addiu $t0, $t0, 4       # Move to the next element
+    addiu $t2, $t2, 1       # Increment index
+    j find_collision_L_state_4           # Repeat for next element
+
+match_collision_L_state_4:
+    li $t5, 1              # Collision detected
+    j check_collision_L_state_4
+
+check_collision_L_state_4:
+    beq $t5, 1, collision_found_L_state_4  # Branch if collision detected
+    j no_collision_L_state_4
+
+no_collision_L_state_4:
+    # If no collision, proceed with painting the Tetrimino
+    jal paint_block
+    j end_collision_L_state_4
+
+collision_found_L_state_4:
+    # Reverse the offset adjustment due to collision
+    addi $s0, $s0, -256
+    addi $s1, $s1, -4
+    # No adjustment needed for $s2 if it wasn't changed
+    addi $s3, $s3, -260
+
+    # Load the address of rotation_state into $t0
+    la $t0, rotation_state
+
+    # Load the current value of rotation_state into $t1
+    lw $t1, 0($t0)
+
+    # Check if rotation_state is 0, to wrap around to 3
+    beq $t1, 0, wrap_around
+
+    # If not 0, simply decrement rotation_state
+    addi $t1, $t1, -1
+    j store_update
+
+    wrap_around:
+    # Wrap around to 3 if it was 0
+    li $t1, 3
+
+    store_update:
+    # Store the updated value back to rotation_state
+    sw $t1, 0($t0)
+
+    jal paint_block
+    j end_collision_L_state_4
+
+end_collision_L_state_4:
     j sleepy
 
+
+    
+    
+    
+    
+    
+    
+    
 rotate_L_state_1:
-    lw $t0, ADDR_DSPL      # Load base address for the display
+    jal checkerboard_repainter  # Refresh the game board before attempting rotation
 
-    # Offset the blocks (For Collision Detection or positioning)
+    # Temporarily adjust the blocks for collision detection or positioning
     addi $s0, $s0, -252
-    addi $s1, $s1, -4 
-    # Since $s2 and $s3 are not being offset, they're commented out
-    # addi $s2, $s2, 0
-    # addi $s3, $s3, 0
+    addi $s1, $s1, -4
+    # Since $s2 and $s3 are not being offset, they're not adjusted here
 
-    jal checkerboard_repainter  
-    jal paint_block 
-    
+    # Prepare for collision detection with the array (assuming walls or similar)
+    la $t0, walls              # Load the address of the walls array
+    lw $t1, num_walls          # Load the number of elements in the walls array
+    li $t2, 0                  # Initialize index for array iteration
+    li $t5, 0                  # Initialize collision flag to 0
+
+find_collision_L_state_1:
+    beq $t2, $t1, check_collision_L_state_1 # End loop if we've checked all elements
+
+    lw $t4, 0($t0)             # Load current element for comparison
+    beq $t4, $s0, match_collision_L_state_1
+    beq $t4, $s1, match_collision_L_state_1
+    # Checks for $s2 and $s3 could be added here if they are subject to change
+
+    addiu $t0, $t0, 4          # Move to the next element
+    addiu $t2, $t2, 1          # Increment index
+    j find_collision_L_state_1 # Repeat for next element
+
+match_collision_L_state_1:
+    li $t5, 1                  # Collision detected
+    j check_collision_L_state_1
+
+check_collision_L_state_1:
+    beq $t5, 1, collision_found_L_state_1  # Branch if collision detected
+    j no_collision_L_state_1
+
+no_collision_L_state_1:
+    # If no collision, proceed with painting the Tetrimino
+    jal paint_block
+    j end_collision_L_state_1
+
+collision_found_L_state_1:
+    # Reverse the offset adjustment due to collision
+    addi $s0, $s0, 252
+    addi $s1, $s1, 4
+    # No adjustment needed for $s2 and $s3 if they weren't changed
+
+    # Load the address of rotation_state into $t0
+    la $t0, rotation_state
+
+    # Load the current value of rotation_state into $t1
+    lw $t1, 0($t0)
+
+    # Check if rotation_state is 0, to wrap around to 3
+    beq $t1, 0, wrap_around
+
+    # If not 0, simply decrement rotation_state
+    addi $t1, $t1, -1
+    j store_update
+
+    wrap_around:
+    # Wrap around to 3 if it was 0
+    li $t1, 3
+
+    store_update:
+    # Store the updated value back to rotation_state
+    sw $t1, 0($t0)
+
+
+
+    jal paint_block
+    j end_collision_L_state_1
+
+end_collision_L_state_1:
     j sleepy
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 
 Exit:
 li $v0, 10 # terminate the program gracefully
