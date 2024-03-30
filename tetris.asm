@@ -10,6 +10,40 @@
 # - Base Address for Display:   0x10008000 ($gp)
 ##############################################################################
 .data
+row_1:  .word 3844, 3848, 3844, 3852, 3856, 3860, 3864, 3868, 3872, 3876, 3880, 3884
+row_2:  .word 3716, 3720, 3716, 3724, 3728, 3732, 3736, 3740, 3744, 3748, 3752, 3756
+row_3:  .word 3588, 3592, 3596, 3600, 3604, 3608, 3612, 3616, 3620, 3624, 3628, 3632
+row_4:  .word 3460, 3464, 3468, 3472, 3476, 3480, 3484, 3488, 3492, 3496, 3500, 3504
+row_5:  .word 3332, 3336, 3340, 3344, 3348, 3352, 3356, 3360, 3364, 3368, 3372, 3376
+row_6:  .word 3204, 3208, 3212, 3216, 3220, 3224, 3228, 3232, 3236, 3240, 3244, 3248
+row_7:  .word 3076, 3080, 3084, 3088, 3092, 3096, 3100, 3104, 3108, 3112, 3116, 3120
+row_8:  .word 2948, 2952, 2956, 2960, 2964, 2968, 2972, 2976, 2980, 2984, 2988, 2992
+row_9:  .word 2820, 2824, 2828, 2832, 2836, 2840, 2844, 2848, 2852, 2856, 2860, 2864
+row_10: .word 2692, 2696, 2700, 2704, 2708, 2712, 2716, 2720, 2724, 2728, 2732, 2736
+row_11: .word 2564, 2568, 2572, 2576, 2580, 2584, 2588, 2592, 2596, 2600, 2604, 2608
+row_12: .word 2436, 2440, 2444, 2448, 2452, 2456, 2460, 2464, 2468, 2472, 2476, 2480
+row_13: .word 2308, 2312, 2316, 2320, 2324, 2328, 2332, 2336, 2340, 2344, 2348, 2352
+row_14: .word 2180, 2184, 2188, 2192, 2196, 2200, 2204, 2208, 2212, 2216, 2220, 2224
+row_15: .word 2052, 2056, 2060, 2064, 2068, 2072, 2076, 2080, 2084, 2088, 2092, 2096
+row_16: .word 1924, 1928, 1932, 1936, 1940, 1944, 1948, 1952, 1956, 1960, 1964, 1968
+row_17: .word 1796, 1800, 1804, 1808, 1812, 1816, 1820, 1824, 1828, 1832, 1836, 1840
+row_18: .word 1668, 1672, 1676, 1680, 1684, 1688, 1692, 1696, 1700, 1704, 1708, 1712
+row_19: .word 1540, 1544, 1548, 1552, 1556, 1560, 1564, 1568, 1572, 1576, 1580, 1584
+row_20: .word 1412, 1416, 1420, 1424, 1428, 1432, 1436, 1440, 1444, 1448, 1452, 1456
+row_21: .word 1284, 1288, 1292, 1296, 1300, 1304, 1308, 1312, 1316, 1320, 1324, 1328
+row_22: .word 1156, 1160, 1164, 1168, 1172, 1176, 1180, 1184, 1188, 1192, 1196, 1200
+row_23: .word 1028, 1032, 1036, 1040, 1044, 1048, 1052, 1056, 1060, 1064, 1068, 1072
+row_24: .word 900,  904,  908,  912,  916,  920,  924,  928,  932,  936,  940,  944
+row_25: .word 772,  776,  780,  784,  788,  792,  796,  800,  804,  808,  812,  816
+row_26: .word 644,  648,  652,  656,  660,  664,  668,  672,  676,  680,  684,  688
+row_27: .word 516,  520,  524,  528,  532,  536,  540,  544,  548,  552,  556,  560
+row_28: .word 388,  392,  396,  400,  404,  408,  412,  416,  420,  424,  428,  432
+row_29: .word 260,  264,  268,  272,  276,  280,  284,  288,  292,  296,  300,  304
+row_30: .word 132,  136,  140,  144,  148,  152,  156,  160,  164,  168,  172,  176
+row_31: .word 4,    8,    12,   16,   20,   24,   28,   32,   36,   40,   44,   48
+
+
+
 black_squares: 
     .word 4, 12, 20, 28, 36, 136, 144, 152, 160, 168, 260, 268, 276, 284, 292, 392, 400, 408, 416, 424, 516, 524, 532,  
     540, 548, 648, 656, 664, 672, 680, 772, 780, 788, 796, 804, 904, 912, 920, 928, 936, 1028, 1036, 1044, 1052, 1060,  
@@ -43,60 +77,23 @@ walls:
     4164, 4292, 4420, 4548, 4676, 4804, 4932, 5060, 5188, 5316, 5444, 5572, 5700, 5828, 5956, 6084, 6212, 6340, 6468, 6596, 6724, 6852, 6980, 7108, 7236, 7364, 7492, 7620, 7748, 7876, 8004 
     8132, 8260, 8388, 8516, 8644, 8772, 8900, 9028, 9156, 9284, 9412, 9540, 9668, 9796, 9924, 10052, 10180, 10308, 10436, 10564, 10692, 10820, 10948, 11076, 11204, 11332, 11460, 11588, 11716, 11844, 11972, 
     12096, 12220, 12344, 12468, 12592, 12716, 12840, 12964, 13088, 13212, 13336, 13460, 13584, 13708, 13832, 13956, 14080, 14204, 14328, 14452, 14576, 14700, 14824, 14948, 15072, 15196, 15320, 15444, 15568, 15692, 15816, 
-    72, 200, 328, 456, 584, 712, 840, 968, 1096, 1224, 1352, 1480, 1608, 1736, 1864, 1992, 2120, 2248, 2376, 2504, 2632, 2760, 2888, 3016, 3144, 3272, 3400, 3528, 3656, 3784, 3912, 4040
-    4168, 4296, 4424, 4552, 4680, 4808, 4936, 5064, 5192, 5320, 5448, 5576, 5704, 5832, 5960, 6088, 6216, 6344, 6472, 6600, 6728, 6856, 6984, 7112, 7240, 7368, 7496, 7624, 7752, 7880, 
-    8008, 8136, 8264, 8392, 8520, 8648, 8776, 8904, 9032, 9160, 9288, 9416, 9544, 9672, 9800, 9928, 10056, 10184, 10312, 10440, 10568, 10696, 10824, 10952, 11080, 11208, 11336, 11464, 11592, 11720, 11848, 11976, 12104, 
-    
-    12232, 12360, 12488, 12616, 12744, 12872, 13000, 13128, 13256, 13384, 13512, 13640, 13768, 13896, 14024, 14152, 14280, 14408, 14536, 14664, 14792, 14920, 15048, 15176, 15304, 15432, 15560, 15688, 15816, 15944, 16072, 16200, 
-    16200, 16328, 16456, 16584, 16712, 16840, 16968, 17096, 17224, 17352, 17480, 17608, 17736, 17864, 17992, 18120, 18248, 18376, 18504, 18632, 18760, 18888, 19016, 19144, 19272, 19400, 19528, 19656, 19784, 19912, 20040, 20168,  
-    20296, 20424, 20552, 20680, 20808, 20936, 21064, 21192, 21320, 21448, 21576, 21704, 21832, 21960, 22088, 22216, 22344, 22472, 22600, 22728, 22856, 22984, 23112, 23240, 23368, 23496, 23624, 23752, 23880, 24008, 24136, 24264, 
-    24392, 24520, 24648, 24776, 24904, 25032, 25160, 25288, 25416, 25544, 25672, 25800, 25928, 26056, 26184, 26312, 26440, 26568, 26696, 26824, 26952, 27080, 27208, 27336, 27464, 27592, 27720, 27848, 27976, 28104, 28232, 28360, 
-    28488, 28616, 28744, 28872, 29000, 29128, 29256, 29384, 29512, 29640, 29768, 29896, 30024, 30152, 30280, 30408, 30536, 30664, 30792, 30920, 31048, 31176, 31304, 31432, 31560, 31688, 31816, 31944, 32072, 32200, 32328, 32456,  
-    32584, 32712, 32840, 32968, 33096, 33224, 33352, 33480, 33608, 33736, 33864, 33992, 34120, 34248, 34376, 34504, 34632, 34760, 34888, 35016, 35144, 35272, 35400, 35528, 35656, 35784, 35912, 36040, 36168, 36296, 36424, 36552
-    
-good_spots: 
-    .word 4, 12, 20, 28, 36, 136, 144, 152, 160, 168, 260, 268, 276, 284, 292, 392, 400, 408, 416, 424, 516, 524, 532,  
-    540, 548, 648, 656, 664, 672, 680, 772, 780, 788, 796, 804, 904, 912, 920, 928, 936, 1028, 1036, 1044, 1052, 1060,  
-    1160, 1168, 1176, 1184, 1192, 1284, 1292, 1300, 1308, 1316, 1416, 1424, 1432, 1440, 1448, 1540, 1548, 1556, 1564,  
-    1572, 1672, 1680, 1688, 1696, 1704, 1796, 1804, 1812, 1820, 1828, 1928, 1936, 1944, 1952, 1960, 2052, 2060, 2068,  
-    2076, 2084, 2184, 2192, 2200, 2208, 2216, 2308, 2316, 2324, 2332, 2340, 2440, 2448, 2456, 2464, 2472, 2564, 2572,  
-    2580, 2588, 2596, 2696, 2704, 2712, 2720, 2728, 2820, 2828, 2836, 2844, 2852, 2952, 2960, 2968, 2976, 2984, 3076,  
-    3084, 3092, 3100, 3108, 3208, 3216, 3224, 3232, 3240, 3332, 3340, 3348, 3356, 3364, 3464, 3472, 3480, 3488, 3496,  
-    3588, 3596, 3604, 3612, 3620, 3720, 3728, 3736, 3744, 3752, 3844, 3852, 3860, 3868, 3876, 44, 300, 556, 812, 1068, 
-    1324, 1580, 1836, 2092, 2348, 2604, 2860, 3116, 3372, 3628, 3884, 8, 16, 24, 32, 40, 132, 140, 148, 156, 164, 172, 264, 272,  
-    280, 288, 296, 388, 396, 404, 412, 420, 428, 520, 528, 536, 544,  
-    552, 644, 652, 660, 668, 676, 684, 776, 784, 792, 800, 808, 900, 908, 916, 924, 932, 940, 1032, 1040, 1048, 1056, 1064, 1156,  
-    1164, 1172, 1180, 1188, 1196, 1288, 1296, 1304, 1312, 1320, 1412, 1420, 1428, 1436, 1444, 1452, 1544, 1552, 1560, 1568, 1576, 
-    1668, 1676, 1684, 1692, 1700, 1708, 1800, 1808, 1816, 1824, 1832, 1924, 1932, 1940, 1948, 1956, 1964, 2056, 2064, 2072, 2080, 
-    2088, 2180, 2188, 2196, 2204, 2212, 2220, 2312, 2320, 2328, 2336, 2344, 2436, 2444, 2452, 2460, 2468, 2476, 2568, 2576, 2584, 
-    2592, 2600, 2692, 2700, 2708, 2716, 2724, 2732, 2824, 2832, 2840, 2848, 2856, 2948, 2956, 2964, 2972, 2980, 2988, 3080, 3088, 
-    3096, 3104, 3112, 3204, 3212, 3220, 3228, 3236, 3244, 3336, 3344, 3352, 3360, 3368, 3460, 3468, 3476, 3484, 3492, 3500, 3592, 
-    3600, 3608, 3616, 3624, 3716, 3724, 3732, 3740, 3748, 3756, 3848, 3856, 3864, 3872, 3880,  
-    
-    
-    
-    
-all_check: 
-    .word 0     
-    
-    
-    
-num_good_spots: 
-    .word 280
-    
-    
+    72, 200, 328, 456, 584, 712, 840, 968, 1096, 1224, 1352, 1480, 1608, 1736, 1864, 1992, 2120, 2248, 2376, 2504, 2632, 2760, 2888    
 num_walls: 
-    .word 384 
+    .word 120
 taken_spots: 
-    .word 
+    .space 800
 num_taken_spots: 
-    .word 2
+    .word 0
 num_squares: 
-    .word 171       
-taken_spots_by_trimino: 
-    .word 24, 152, 280, 284 
-possible_taken_spots_by_trimino: 
-    .word -1, -1, -1, -1
+    .word 171   
+ground:
+    .word 3844, 3848, 3852, 3856, 3860, 3864, 3868, 3872, 3876, 3880, 3884    
+num_ground:
+    .word 11  
+pieces: 
+    .word 
+num_pieces: 
+    .word 0    
 rotation_state:  
     .word 0  
 ADDR_DSPL:
@@ -105,54 +102,70 @@ ADDR_KBRD:
     .word 0xffff0000
 	.text
 	.globl main
-	
 main: 
 ##############################################################################
-# DRAW THE SCENE (MILESTONE 1)
-##############################################################################
-# ----------------------------------------------------------------------------
 # DRAW WALL
-# ---------------------------------------------------------------------------- 
+##############################################################################
     li $t2, 0xFFEDD8              # White color for painting squares
     lw $t0, ADDR_DSPL             # Load base address of the display into $t0
     la $t1, walls                 # Load the address of the walls array into $t1
     lw $t3, num_walls             # Load the total number of elements in walls array from num_walls
     li $t4, 0                     # Index counter for iterating through walls array
-
 loop_walls:
     beq $t4, $t3, end_loop_walls  # End loop if all walls are checked
     lw $t5, 0($t1)                # Load the current wall offset into $t5
     add $t6, $t0, $t5             # Calculate the absolute address for the wall
     sw $t2, 0($t6)                # Paint the wall white
-
     addiu $t1, $t1, 4             # Move to the next element in the array
     addiu $t4, $t4, 1             # Increment the index counter
     j loop_walls                  # Jump back to iterate over the next wall
-
 end_loop_walls: 
-# ----------------------------------------------------------------------------
-# CHECKERBOARD PATTERN (Used Later also to repaint board)
-# ----------------------------------------------------------------------------
+    lw $t0, ADDR_DSPL      # Load base address for the display
+    li $t1, 0xFFEDD8       # Load color Wall into $t1
+    li $t3, 56             # Initial offset for drawing
+    li $t5, 64             # Set the loop counter for 64 iterations for vertical line drawing
+outer_loop:
+    move $t2, $t5          # Reset the loop counter for 64 iterations for each vertical line
+    add $t6, $t0, $t3      # Calculate the current base address plus offset for drawing
+draw_vertical_wall: 
+    sw $t1, 0($t6)         # Draw at the current position+offset
+    addi $t6, $t6, 128     # Move the address down by two units (8 bytes per unit)
+    addi $t2, $t2, -1      # Decrement the loop counter 
+    bnez $t2, draw_vertical_wall  # If the loop counter is not zero, continue the loop
+    addi $t3, $t3, 4       # Increment the offset for the next line
+    # Check if we've completed all desired offsets
+    blt $t3, 128, outer_loop # If the offset is less than 124, prepare for the next line
+##############################################################################
+# DRAW GROUND WALLS (Bottom)
+##############################################################################
+ la $t0, ground       # Load the base address of the ground array into $t0
+    li $t1, 3840         # Initialize the starting position of the bottom wall
+    li $t2, 12           # Set the loop counter for 12 iterations
+save_ground_positions:
+    sw $t1, 0($t0)       # Save the position into the ground array
+    addi $t1, $t1, 4     # Move to the next position (4 bytes per position)
+    addi $t0, $t0, 4     # Move to the next space in the ground array
+    addi $t2, $t2, -1    # Decrement the loop counter
+    bnez $t2, save_ground_positions  # If the loop counter is not zero, continue the loop  
+##############################################################################
+# DRAW CHECKERBOARD PATTERN FUNCTION (Used Later also to repaint board)
+##############################################################################
 jal checkerboard_repainter
 j checkerboard_done
-
 checkerboard_repainter:
 li $t2, 0x31363F                  # Red color for painting squares 0x31363F
     lw $t0, ADDR_DSPL             # Load base address of the display into $t0
     la $t1, black_squares         # Load the address of the black_squares array into $t1
     lw $t3, num_squares           # Total number of elements in black_squares
     li $t4, 0                     # Index counter for iterating through black_squares
-
 loop_squares:
     beq $t4, $t3, end_loop         # End loop if all squares are checked
     lw $t5, 0($t1)                 # Load the current square offset into $t5
-
     # Initialize variables for checking taken spots
     la $t7, taken_spots     # Address of taken_spots array
     lw $t8, num_taken_spots # Load the number of taken spots
     li $t9, 0  # Index counter for taken_spots
     li $t6, 0  # Flag for checking if current square is taken
-
 check_if_taken:
     beq $t9, $t8, not_taken # Check if all taken spots are iterated
     lw $a0, 0($t7)          # Load the current taken spot
@@ -160,42 +173,32 @@ check_if_taken:
     addiu $t7, $t7, 4       # Move to the next taken spot
     addiu $t9, $t9, 1       # Increment taken spots index
     j check_if_taken
-
 not_taken:
     beqz $t6, paint_square # Paint square if it's not marked as taken
-
 skip_square:
     li $t6, 1  # Mark as taken to skip painting
     j update_index
-
 paint_square:
     add $a1, $t0, $t5       # Calculate the absolute address for the square
     sw $t2, 0($a1)          # Paint the square
-
 update_index:
     addiu $t1, $t1, 4       # Move to the next element in the array
     addiu $t4, $t4, 1       # Increment the index counter
     j loop_squares          # Jump back to iterate over the next square
-
 end_loop:
-    # Add logic here to continue after the loop
-
 li $t2, 0x222831 # Red color for painting squares 0x222831
     lw $t0, ADDR_DSPL # Load base address of the display into $t0
     la $t1, grey_squares # Load the address of the black_squares array into $t1
     lw $t3, num_squares  # Total number of elements in grey_squares
     li $t4, 0  # Index counter for iterating through black_squares
-
 loop_squares2:
     beq $t4, $t3, end_loop2  # End loop if all squares are checked
     lw $t5, 0($t1)          # Load the current square offset into $t5
-
     # Initialize variables for checking taken spots
     la $t7, taken_spots     # Address of taken_spots array
     lw $t8, num_taken_spots # Load the number of taken spots
     li $t9, 0  # Index counter for taken_spots
     li $t6, 0  # Flag for checking if current square is taken
-
 check_if_taken2:
     beq $t9, $t8, not_taken2 # Check if all taken spots are iterated
     lw $a0, 0($t7)          # Load the current taken spot
@@ -203,282 +206,659 @@ check_if_taken2:
     addiu $t7, $t7, 4       # Move to the next taken spot
     addiu $t9, $t9, 1       # Increment taken spots index
     j check_if_taken2
-
 not_taken2:
     beqz $t6, paint_square2 # Paint square if it's not marked as taken
-
 skip_square2:
     li $t6, 1  # Mark as taken to skip painting
     j update_index2
-
 paint_square2:
     add $a1, $t0, $t5       # Calculate the absolute address for the square
     sw $t2, 0($a1)          # Paint the square red
-
 update_index2:
     addiu $t1, $t1, 4       # Move to the next element in the array
     addiu $t4, $t4, 1       # Increment the index counter
     j loop_squares2         # Jump back to iterate over the next square
-
 end_loop2:
     lw $t0, ADDR_DSPL
     li $t1, 0xFFEDD8 	# $t1 stores the red colour code
     sw $t1, 0($t0) 		# paint the first pixle of wall because for some reason its grey
 jr $ra  
-
 checkerboard_done:
-    
-# ----------------------------------------------------------------------------
+##############################################################################
 # DRAW TRIMINO (L - Shape [Orange])
-# ---------------------------------------------------------------------------- 
+##############################################################################
+jal start_the_L
+j start_the_L_done
+start_the_L:  
+    la $t0, rotation_state  # Load the address of rotation_state into $t0
+    li $t1, 0               # Load the value 0 into $t1
+    sw $t1, 0($t0) 
     li $s0, 24     # Top left pixel of the Tetrimino
     li $s1, 152    # Next pixel down
     li $s2, 280    # Next pixel down
-    li $s3, 284    # Pixel to the right of the last one, making the 'L' shape
-
+    li $s3, 284    # Pixel to the right of the last one, making the 'L' shape 
+jr $ra  
+start_the_L_done:
 # ----------------------------------------------------------------------------
-# REPAINT BLOCK
+# REPAINT BLOCK FUNCTION
 # ----------------------------------------------------------------------------      
 jal paint_block
 j done_paint 
 paint_block: 
-
     lw $t0, ADDR_DSPL      # Load base address for the display
     li $t1, 0xFDA403       # Load t1 with the colour Orange
-    
     add $s0, $s0, $t0
     add $s1, $s1, $t0
     add $s2, $s2, $t0
     add $s3, $s3, $t0
-
     sw $t1, 0($s0)    # Draw the block at the absolute address in $s0
     sw $t1, 0($s1)    # Draw the block at the absolute address in $s1
     sw $t1, 0($s2)    # Draw the block at the absolute address in $s2
     sw $t1, 0($s3)    # Draw the block at the absolute address in $s3
-        
     sub $s0, $s0, $t0
     sub $s1, $s1, $t0
     sub $s2, $s2, $t0
     sub $s3, $s3, $t0
-     
-     jr $ra  
-
+    jr $ra  
 # ----------------------------------------------------------------------------
 # START GAME (Jump to Game Loop)
 # ----------------------------------------------------------------------------  
 done_paint:
  j game_loop          # Jump to the game loop
-
-
-##############################################################################
-# IMPLEMENT CONTROLS (MILESTONE 2)
-############################################################################## 
 #------------  1a. Check if key has been pressed  ------------------------ 
 game_loop:
-    li $t8 0                        # Clear $t8
+    la $t0, ground         # Load the address of the words array into $t0
+    lw $t1, num_ground     # Load the array length into $t1
+    li $t2, 0              # Initialize index to 0 (for array iteration)
+    li $t5, 0              # Initialize match found flag to 0
+
+
+
+
+
+
+
+
+
+
+look_for_bottom_collision:
+    beq $t2, $t1, check_bottom_collision # If index equals array length, check for match
+
+    lw $t4, 0($t0)         # Load the current word from the array into $t4
+    # Compare $t4 with $s0, $s1, $s2, $s3
+    beq $t4, $s0, match_collision_bottom
+    beq $t4, $s1, match_collision_bottom
+    beq $t4, $s2, match_collision_bottom
+    beq $t4, $s3, match_collision_bottom
+
+    addi $t0, $t0, 4       # Move to the next word in the array
+    addi $t2, $t2, 1       # Increment the index
+    j look_for_bottom_collision               # Jump back to the start of the loop
+
+match_collision_bottom:
+    li $t5, 1              # Set match found flag
+    j check_bottom_collision           
+
+check_bottom_collision:
+    # Determine pixel location based on match
+    beq $t5, 1, bottom_collision_detected  # If match found, jump to color at location 4
+    j bottom_collision_not_detected          # Otherwise, jump to color at location 152
+
+bottom_collision_detected:
+    jal paint_block
+    
+    
+    
+    # Code to append $s0-$s3 to taken_spots
+    lw $t0, num_taken_spots   # Load the current number of elements in the array into $t0
+    la $t1, taken_spots       # Load the address of the start of the array into $t1
+
+    sll $t2, $t0, 2           # Calculate the byte offset ($t0 * 4) in the array for the new elements
+    add $t1, $t1, $t2         # Add the offset to the base address of the array to find where to append
+
+    # Store the values from $s0 to $s3 into the array
+    sw $s0, 0($t1)            # Store $s0 in the array
+    sw $s1, 4($t1)            # Store $s1 in the array
+    sw $s2, 8($t1)            # Store $s2 in the array
+    sw $s3, 12($t1)           # Store $s3 in the array
+
+    addi $t0, $t0, 4          # Increment the number of elements in the array by 4
+    sw $t0, num_taken_spots   # Update num_taken_spots
+
+    jal start_the_L 
+    
+    j sleepy
+
+bottom_collision_not_detected:
+    j done_check_bottom                   
+
+done_check_bottom:
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+##############################################################################
+# CHECK WHEN TO POP ROW 2
+############################################################################## 
+    jal checkRowsInTakenSpots_row2     
+    jal checkRowsInTakenSpots_row2     
+    j next_row2
+checkRowsInTakenSpots_row2 :
+    la $a0, row_2                  # Address of rows
+    li $a1, 12                     # Length of rows
+    li $t5, 0                      # Rows index reset
+    li $s5, 1                      # Assume allMatched is true initially reset
+rowLoop_row2: 
+     # Check if all rows are matched after loop
+    bge $t5, $a1, checkAllMatched_row2 
+    lw $t6, 0($a0)                 # Load current row element
+    la $a2, taken_spots            # Address of taken_spots, reset for each row element
+    lw $a3, num_taken_spots        # Length of taken_spots, reset for each check
+    li $t7, 0                      # Taken_spots index reset for each row element
+    li $s4, 0                      # Match found flag reset for current row element
+takenLoop_row2:
+    bge $t7, $a3, checkMatch_row2  # End of taken_spots, check match
+    lw $t8, 0($a2)                 # Load current taken_spots element
+    beq $t6, $t8, setMatch_row2    # Match found, set flag
+    addi $a2, $a2, 4               # Next taken_spots element
+    addi $t7, $t7, 1               # Increment taken_spots index
+    j takenLoop_row2
+setMatch_row2:
+    li $s4, 1                      # Set match found flag for current row element
+checkMatch_row2:
+    beqz $s4, unsetAllMatch_row2   # No match found, unset allMatched flag
+    addi $a0, $a0, 4               # Next row element
+    addi $t5, $t5, 1               # Increment rows index
+    j rowLoop_row2                 # Back to start of rowLoop
+unsetAllMatch_row2:
+    li $s5, 0                      # Set allMatched to false
+    addi $a0, $a0, 4               # Next row element
+    addi $t5, $t5, 1               # Increment rows index
+    j rowLoop_row2                 # Continue checking remaining rows
+
+checkAllMatched_row2:
+    beqz $s5, no_pop_row2           # If not all matched, jump to colorLocation152
+    j pop_rows_row2                 # All matched, jump to colorLocation4
+pop_rows_row2:
+         lw $t0, ADDR_DSPL          # Load the base address of the display into $t0.
+         la $t1, row_2              # Load the address of the rows array into $t1.
+         li $t2, 12                 # Load the length of the rows array into $t2.
+         li $t3, 0                  # Index for iterating through rows.
+         li $t4, 0xEABE6C           # White color.
+color_row2:
+         bge $t3, $t2, endProgram_row2  # If we've colored all rows, exit the loop.
+         lw $t5, 0($t1)            # Load the current row's offset into $t5.
+         add $t6, $t0, $t5         # Calculate the actual memory address to color.
+         sw $t4, 0($t6)            # Write white to the calculated address.
+         addi $t1, $t1, 4          # Move to the next element in the rows array.
+         addi $t3, $t3, 1          # Increment our index.
+          j color_row2             # Jump back to the start of the loop to color the next row.
+endProgram_row2:
+        la $a0, row_2            # Address of rows
+        li $a1, 12               # Length of rows
+        la $a2, taken_spots      # Address of taken_spots
+        lw $a3, num_taken_spots  # Length of taken_spots
+        li $t0, 0
+iterateTakenSpots_row_2:
+        bge $t0, $a3, exit_row_2  # If done iterating through taken_spots, exit the loop
+        lw $t1, 0($a2)            # Load the current taken_spot element
+        la $t2, row_2             # Reset address of rows for each taken_spot element
+        li $t3, 0                 # Reset index for iterating through rows
+checkAgainstRows_row_2:
+        bge $t3, $a1, incrementTaken_row_2
+        lw $t4, 0($t2)         
+        beq $t1, $t4, markAsRemoved_row_2  
+        addi $t2, $t2, 4          # Move to the next row element
+        addi $t3, $t3, 1          # Increment rows index
+        j checkAgainstRows_row_2
+markAsRemoved_row_2:  
+        li $t5, -4                # The value used to mark elements as "removed"
+        sw $t5, 0($a2)            # Mark the current taken_spot element as "removed"
+incrementTaken_row_2:
+        addi $a2, $a2, 4          # Move to the next taken_spot element
+        addi $t0, $t0, 1          # Increment taken_spots index
+        j iterateTakenSpots_row_2
+exit_row_2:
+        li $v0, 32                      # Set syscall number for sleep operation
+        li $a0, 1000                    # Set sleep duration in milliseconds
+        syscall                         # Execute the syscall to sleep 
+        jal checkerboard_repainter
+        lw $t0, ADDR_DSPL               # Load the base address of the display into $t0.
+        la $t1, taken_spots             # Load the address of the taken_spots array into $t1.
+        lw $t2, num_taken_spots         # Load the length of the taken_spots array into $t2.
+        li $t3, 0                       # Initialize index for iterating through taken_spots.
+        li $t4, 0xEABE6C                # Load the color value for red into $t4.
+color_spots_and_add:
+    bge $t3, $t2, end_loop3             # Check if all spots have been colored; if so, exit loop.
+    lw $t5, 0($t1)                      # Load the current offset from the taken_spots array into $t5.
+    li $t6, -4
+    beq $t5, $t6, skip_coloring_and_adding
+    li $t7, 3716
+    bge $t5, $t7, skip_coloring_and_adding
+    add $t8, $t0, $t5
+    sw $t4, 0($t8)
+    addi $t5, $t5, 128
+    sw $t5, 0($t1)
+skip_coloring_and_adding:
+    addi $t1, $t1, 4                 # Move to the next element in the taken_spots array.
+    addi $t3, $t3, 1                 # Increment the index.
+    j color_spots_and_add            # Jump back to color the next spot and add 128.
+end_loop3: 
+        li $v0, 32                   # Set syscall number for sleep operation
+        li $a0, 1000                 # Set sleep duration in milliseconds
+        syscall                      # Execute the syscall to sleep  
+        jal checkerboard_repainter
+    lw $t0, ADDR_DSPL               # Load the base address of the display into $t0
+    la $t1, taken_spots             # Load the address of the ground array into $t1
+    lw $t2, num_taken_spots         # Load the number of elements in ground into $t2
+    li $t3, 0                       # Initialize index for iterating through ground
+    li $t4, 0xFDA403                # Load the green color value into $t4
+iterate_row2:
+    bge $t3, $t2, finish_row2       # If all ground spots have been checked, exit loop
+    lw $t5, 0($t1)                  # Load the current ground offset into $t5
+    add $t6, $t0, $t5               # Calculate the memory address to color
+    sw $t4, 0($t6)                  # Write the green color to the calculated address
+    addi $t1, $t1, 4                # Move to the next element in ground
+    addi $t3, $t3, 1                # Increment the ground index
+    j iterate_row2                  # Jump back to iterate through the next ground spot
+finish_row2:
+    jal checkerboard_repainter
+    j sleepy
+no_pop_row2:
+    jr $ra                         # Return from procedure
+next_row2:
+##############################################################################
+# CHECK WHEN TO POP ROW 3
+##############################################################################  
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     lw $t0, ADDR_KBRD               # $t0 = base address for keyboard
     lw $t8, 0($t0)                  # Load first word from keyboard
     beq $t8, 1, keyboard_input      # If first word 1, key is pressed 
     j sleepy                        # If no key is pressed, go to end of loop
+#------------  1b. Check which key has been pressed  ----------------------        
 
-    #------------  1b. Check which key has been pressed  ----------------------         
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 keyboard_input:  
     lw $a0, 4($t0)                # Load second word from keyboard 
-    
     # Check for 'D' (move right)
     li $t9, 0x64                  # ASCII for 'D'
     beq $a0, $t9, move_right
-
     # Check for 'A' (move left)
     li $t9, 0x61                  # ASCII for 'A'
     beq $a0, $t9, move_left
-
     # Check for 'S' (move down)
     li $t9, 0x73                  # ASCII for 'S'
     beq $a0, $t9, move_down
-    
     # Check for 'W' (move up)
     li $t9, 0x77                  # ASCII for 'W'
     beq $a0, $t9, rotate
-    
    # Check for 'L' key
     li $t9, 108                   # ASCII code for 'L'
     beq $a0, $t9, Exit
-    
     b game_loop
+#----------------  2a,b, 3. Check for collisions, Update & Draw ------------------
 
 
-   #-----------------------  2a. Check for collisions  -------------------------
-
-
-
-   #------------------  2b. Update locations (paddle, ball)  --------------------
-   
-   
-   
-   
-   #---------------------------  Draw the screen  --------------------------------  
-
-
-    
 move_right: 
-    jal checkerboard_repainter 
+    jal checkerboard_repainter
     
-    addi $s0, $s0, 4  
+    # Offset positions for moving down
+    addi $s0, $s0, 4 
     addi $s1, $s1, 4
-    addi $s2, $s2, 4  
+    addi $s2, $s2, 4 
     addi $s3, $s3, 4
     
-    la $t0, walls          # Load the address of the words array into $t0
-    lw $t1, num_walls      # Load the array length into $t1
-    li $t2, 0              # Initialize index to 0 (for array iteration)
-    li $t5, 0              # Initialize match found flag to 0
+    # First, check against walls
+    la $t0, walls
+    lw $t1, num_walls
+    li $t2, 0
+    
+find_collision_right_walls:
+    beq $t2, $t1, check_taken_spots_right  # Go to check taken spots if no collision with walls
+    
+    lw $t3, 0($t0)
+    
+    beq $t3, $s0, wall_collision_right
+    beq $t3, $s1, wall_collision_right
+    beq $t3, $s2, wall_collision_right
+    beq $t3, $s3, wall_collision_right
+    
+    addi $t0, $t0, 4
+    addi $t2, $t2, 1
+    j find_collision_right_walls
 
-find_collisson_right:
-    beq $t2, $t1, check_collison_right # If index equals array length, check for match
+check_taken_spots_right:
+    # Check against num_taken_spots
+    la $t0, taken_spots
+    lw $t1, num_taken_spots
+    li $t2, 0
 
-    lw $t4, 0($t0)         # Load the current word from the array into $t4
-   
-    beq $t4, $s0, match_collision_right  # Compare $t4 with $s0, $s1, $s2, $s3
-    beq $t4, $s1, match_collision_right
-    beq $t4, $s2, match_collision_right
-    beq $t4, $s3, match_collision_right
+find_collision_right_taken_spots:
+    beq $t2, $t1, no_collision  # Proceed if no collisions found
+    
+    lw $t3, 0($t0)
+    
+    beq $t3, $s0, piece_collision_right
+    beq $t3, $s1, piece_collision_right
+    beq $t3, $s2, piece_collision_right
+    beq $t3, $s3, piece_collision_right
+    
+    addi $t0, $t0, 4
+    addi $t2, $t2, 1
+    j find_collision_right_taken_spots
 
-    addi $t0, $t0, 4       # Move to the next word in the array
-    addi $t2, $t2, 1       # Increment the index
-    j find_collisson_right               # Jump back to the start of the loop
-
-match_collision_right:
-    li $t5, 1              # Set match found flag
-    j check_collison_right           
-
-check_collison_right:
-    # Determine pixel location based on match
-    beq $t5, 1, found_collision_right  # If match found, jump to collision
-    j no_collision_right          # Otherwise, no collision
-
-no_collision_right:
-    jal paint_block
-    j end_collison_right                 
-
-found_collision_right:
+wall_collision_right:
     addi $s0, $s0, -4  
     addi $s1, $s1, -4
     addi $s2, $s2, -4  
     addi $s3, $s3, -4
     
     jal paint_block
-    j end_collison_right                   
+    j end_collision_right
 
-end_collison_right:
+piece_collision_right:
+    addi $s0, $s0, -4  
+    addi $s1, $s1, -4
+    addi $s2, $s2, -4  
+    addi $s3, $s3, -4
+    
+    jal paint_block
+    j end_collision_right
+no_collision_right:
+    jal paint_block
+    j end_collision_right 
+end_collision_right:
     j sleepy
+    
     
     
 move_left: 
-    jal checkerboard_repainter 
+    jal checkerboard_repainter
     
-    addi $s0, $s0, -4  
+    # Offset positions for moving down
+    addi $s0, $s0, -4 
     addi $s1, $s1, -4
-    addi $s2, $s2, -4  
+    addi $s2, $s2, -4 
     addi $s3, $s3, -4
     
-    la $t0, walls          # Load the address of the words array into $t0
-    lw $t1, num_walls      # Load the array length into $t1
-    li $t2, 0              # Initialize index to 0 (for array iteration)
-    li $t5, 0              # Initialize match found flag to 0
+    # First, check against walls
+    la $t0, walls
+    lw $t1, num_walls
+    li $t2, 0
+    
+find_collision_left_walls:
+    beq $t2, $t1, check_taken_spots_left  # Go to check taken spots if no collision with walls
+    
+    lw $t3, 0($t0)
+    
+    beq $t3, $s0, wall_collision_left
+    beq $t3, $s1, wall_collision_left
+    beq $t3, $s2, wall_collision_left
+    beq $t3, $s3, wall_collision_left
+    
+    addi $t0, $t0, 4
+    addi $t2, $t2, 1
+    j find_collision_left_walls
 
-find_collisson_left:
-    beq $t2, $t1, check_collison_left # If index equals array length, check for match
+check_taken_spots_left:
+    # Check against num_taken_spots
+    la $t0, taken_spots
+    lw $t1, num_taken_spots
+    li $t2, 0
 
-    lw $t4, 0($t0)         # Load the current word from the array into $t4
-   
-    beq $t4, $s0, match_collision_left  # Compare $t4 with $s0, $s1, $s2, $s3
-    beq $t4, $s1, match_collision_left
-    beq $t4, $s2, match_collision_left
-    beq $t4, $s3, match_collision_left
+find_collision_left_taken_spots:
+    beq $t2, $t1, no_collision  # Proceed if no collisions found
+    
+    lw $t3, 0($t0)
+    
+    beq $t3, $s0, piece_collision_left
+    beq $t3, $s1, piece_collision_left
+    beq $t3, $s2, piece_collision_left
+    beq $t3, $s3, piece_collision_left
+    
+    addi $t0, $t0, 4
+    addi $t2, $t2, 1
+    j find_collision_left_taken_spots
 
-    addi $t0, $t0, 4       # Move to the next word in the array
-    addi $t2, $t2, 1       # Increment the index
-    j find_collisson_left               # Jump back to the start of the loop
-
-match_collision_left:
-    li $t5, 1              # Set match found flag
-    j check_collison_left           
-
-check_collison_left:
-    # Determine pixel location based on match
-    beq $t5, 1, found_collision_left  # If match found, jump to collision
-    j no_collision_left          # Otherwise, no collision
-
-no_collision_left:
-    jal paint_block
-    j end_collison_left                
-
-found_collision_left:
+wall_collision_left:
     addi $s0, $s0, 4  
     addi $s1, $s1, 4
     addi $s2, $s2, 4  
     addi $s3, $s3, 4
     
     jal paint_block
-    j end_collison_left                  
+    j end_collision_left
 
-end_collison_left:
+piece_collision_left:
+    addi $s0, $s0, 4  
+    addi $s1, $s1, 4
+    addi $s2, $s2, 4  
+    addi $s3, $s3, 4
+    
+    jal paint_block
+    j end_collision_left
+no_collision_left:
+    jal paint_block
+    j end_collision_left  
+end_collision_left:
     j sleepy
 
-       
+   
 move_down: 
-    jal checkerboard_repainter 
+    jal checkerboard_repainter
     
+    # Offset positions for moving down
     addi $s0, $s0, 128 
     addi $s1, $s1, 128
     addi $s2, $s2, 128 
     addi $s3, $s3, 128
     
-    la $t0, walls          # Load the address of the words array into $t0
-    lw $t1, num_walls      # Load the array length into $t1
-    li $t2, 0              # Initialize index to 0 (for array iteration)
-    li $t5, 0              # Initialize match found flag to 0
+    # First, check against walls
+    la $t0, walls
+    lw $t1, num_walls
+    li $t2, 0
+    
+find_collision_down_walls:
+    beq $t2, $t1, check_taken_spots  # Go to check taken spots if no collision with walls
+    
+    lw $t3, 0($t0)
+    
+    beq $t3, $s0, wall_collision
+    beq $t3, $s1, wall_collision
+    beq $t3, $s2, wall_collision
+    beq $t3, $s3, wall_collision
+    
+    addi $t0, $t0, 4
+    addi $t2, $t2, 1
+    j find_collision_down_walls
 
-find_collisson_down:
-    beq $t2, $t1, check_collison_down # If index equals array length, check for match
+check_taken_spots:
+    # Check against num_taken_spots
+    la $t0, taken_spots
+    lw $t1, num_taken_spots
+    li $t2, 0
 
-    lw $t4, 0($t0)         # Load the current word from the array into $t4
-   
-    beq $t4, $s0, match_collision_down  # Compare $t4 with $s0, $s1, $s2, $s3
-    beq $t4, $s1, match_collision_down
-    beq $t4, $s2, match_collision_down
-    beq $t4, $s3, match_collision_down
+find_collision_down_taken_spots:
+    beq $t2, $t1, no_collision  # Proceed if no collisions found
+    
+    lw $t3, 0($t0)
+    
+    beq $t3, $s0, piece_collision
+    beq $t3, $s1, piece_collision
+    beq $t3, $s2, piece_collision
+    beq $t3, $s3, piece_collision
+    
+    addi $t0, $t0, 4
+    addi $t2, $t2, 1
+    j find_collision_down_taken_spots
 
-    addi $t0, $t0, 4       # Move to the next word in the array
-    addi $t2, $t2, 1       # Increment the index
-    j find_collisson_down               # Jump back to the start of the loop
-
-match_collision_down:
-    li $t5, 1              # Set match found flag
-    j check_collison_down           
-
-check_collison_down:
-    # Determine pixel location based on match
-    beq $t5, 1, found_collision_down  # If match found, jump to collision
-    j no_collision_down          # Otherwise, no collision
-
-no_collision_down:
-    jal paint_block
-    j end_collison_down                
-
-found_collision_down:
+wall_collision:
     addi $s0, $s0, -128  
     addi $s1, $s1, -128
     addi $s2, $s2, -128  
     addi $s3, $s3, -128
     
     jal paint_block
-    j end_collison_down                  
+    j end_collision_down
 
-end_collison_down:
+piece_collision:
+    addi $s0, $s0, -128  
+    addi $s1, $s1, -128
+    addi $s2, $s2, -128  
+    addi $s3, $s3, -128
+    jal paint_block
+    
+    
+    
+    
+    
+    
+    
+    lw $t0, num_taken_spots   # Load the current number of elements in the array into $t0
+    la $t1, taken_spots       # Load the address of the start of the array into $t1
+
+    sll $t2, $t0, 2           # Calculate the byte offset ($t0 * 4) in the array for the new elements
+    add $t1, $t1, $t2         # Add the offset to the base address of the array to find where to append
+
+    sw $s0, 0($t1)            # Store $s0 in the array
+    sw $s1, 4($t1)            # Store $s1 in the array
+    sw $s2, 8($t1)            # Store $s2 in the array
+    sw $s3, 12($t1)           # Store $s3 in the array
+
+    addi $t0, $t0, 4          # Increment the number of elements in the array by 4
+    sw $t0, num_taken_spots   # Update num_taken_spots
+    
+    
+    
+    
+
+    
+    
+    
+    
+    
+    jal start_the_L
+    jal paint_block
+    j end_collision_down
+no_collision:
+    jal paint_block
+    j end_collision_down  
+end_collision_down:
     j sleepy
 
+   
    
    
 rotate: 
@@ -501,16 +881,6 @@ rotate:
     
     
     
-    
-    
-    
-    
-    
-    
-    
-    
-
-
 
 rotate_L_state_2: 
     jal checkerboard_repainter 
@@ -682,18 +1052,6 @@ end_collison_L_state_3:
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 rotate_L_state_4:
     jal checkerboard_repainter  # Refresh the game board before attempting rotation
 
@@ -768,14 +1126,6 @@ collision_found_L_state_4:
 
 end_collision_L_state_4:
     j sleepy
-
-
-    
-    
-    
-    
-    
-    
     
 rotate_L_state_1:
     jal checkerboard_repainter  # Refresh the game board before attempting rotation
@@ -856,19 +1206,7 @@ end_collision_L_state_1:
     
     
     
-    
-    
-    
-    
-    
-    
-    
 
-
-    
-    
-    
-    
     
     
     
@@ -883,6 +1221,7 @@ end_collision_L_state_1:
 Exit:
 li $v0, 10 # terminate the program gracefully
 syscall
+
 
 
 
