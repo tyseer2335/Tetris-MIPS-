@@ -388,7 +388,6 @@ unsetAllMatch_row2:
     addi $a0, $a0, 4               # Next row element
     addi $t5, $t5, 1               # Increment rows index
     j rowLoop_row2                 # Continue checking remaining rows
-
 checkAllMatched_row2:
     beqz $s5, no_pop_row2           # If not all matched, jump to colorLocation152
     j pop_rows_row2                 # All matched, jump to colorLocation4
@@ -433,7 +432,7 @@ incrementTaken_row_2:
         j iterateTakenSpots_row_2
 exit_row_2:
         li $v0, 32                      # Set syscall number for sleep operation
-        li $a0, 1000                    # Set sleep duration in milliseconds
+        li $a0, 500                    # Set sleep duration in milliseconds
         syscall                         # Execute the syscall to sleep 
         jal checkerboard_repainter
         lw $t0, ADDR_DSPL               # Load the base address of the display into $t0.
@@ -441,24 +440,24 @@ exit_row_2:
         lw $t2, num_taken_spots         # Load the length of the taken_spots array into $t2.
         li $t3, 0                       # Initialize index for iterating through taken_spots.
         li $t4, 0xEABE6C                # Load the color value for red into $t4.
-color_spots_and_add:
-    bge $t3, $t2, end_loop3             # Check if all spots have been colored; if so, exit loop.
+color_spots_and_add_row2:
+    bge $t3, $t2, end_loop_row2             # Check if all spots have been colored; if so, exit loop.
     lw $t5, 0($t1)                      # Load the current offset from the taken_spots array into $t5.
     li $t6, -4
-    beq $t5, $t6, skip_coloring_and_adding
+    beq $t5, $t6, skip_coloring_and_adding_row2
     li $t7, 3716
-    bge $t5, $t7, skip_coloring_and_adding
+    bge $t5, $t7, skip_coloring_and_adding_row2
     add $t8, $t0, $t5
     sw $t4, 0($t8)
     addi $t5, $t5, 128
     sw $t5, 0($t1)
-skip_coloring_and_adding:
+skip_coloring_and_adding_row2:
     addi $t1, $t1, 4                 # Move to the next element in the taken_spots array.
     addi $t3, $t3, 1                 # Increment the index.
-    j color_spots_and_add            # Jump back to color the next spot and add 128.
-end_loop3: 
+    j color_spots_and_add_row2            # Jump back to color the next spot and add 128.
+end_loop_row2: 
         li $v0, 32                   # Set syscall number for sleep operation
-        li $a0, 1000                 # Set sleep duration in milliseconds
+        li $a0, 500                 # Set sleep duration in milliseconds
         syscall                      # Execute the syscall to sleep  
         jal checkerboard_repainter
     lw $t0, ADDR_DSPL               # Load the base address of the display into $t0
