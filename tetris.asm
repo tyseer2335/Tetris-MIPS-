@@ -12,36 +12,38 @@
 .data
 row_1:  .word 3844, 3848, 3844, 3852, 3856, 3860, 3864, 3868, 3872, 3876, 3880, 3884
 row_2:  .word 3716, 3720, 3716, 3724, 3728, 3732, 3736, 3740, 3744, 3748, 3752, 3756
-row_3:  .word 3588, 3592, 3596, 3600, 3604, 3608, 3612, 3616, 3620, 3624, 3628, 3632
-row_4:  .word 3460, 3464, 3468, 3472, 3476, 3480, 3484, 3488, 3492, 3496, 3500, 3504
-row_5:  .word 3332, 3336, 3340, 3344, 3348, 3352, 3356, 3360, 3364, 3368, 3372, 3376
-row_6:  .word 3204, 3208, 3212, 3216, 3220, 3224, 3228, 3232, 3236, 3240, 3244, 3248
-row_7:  .word 3076, 3080, 3084, 3088, 3092, 3096, 3100, 3104, 3108, 3112, 3116, 3120
-row_8:  .word 2948, 2952, 2956, 2960, 2964, 2968, 2972, 2976, 2980, 2984, 2988, 2992
-row_9:  .word 2820, 2824, 2828, 2832, 2836, 2840, 2844, 2848, 2852, 2856, 2860, 2864
-row_10: .word 2692, 2696, 2700, 2704, 2708, 2712, 2716, 2720, 2724, 2728, 2732, 2736
-row_11: .word 2564, 2568, 2572, 2576, 2580, 2584, 2588, 2592, 2596, 2600, 2604, 2608
-row_12: .word 2436, 2440, 2444, 2448, 2452, 2456, 2460, 2464, 2468, 2472, 2476, 2480
-row_13: .word 2308, 2312, 2316, 2320, 2324, 2328, 2332, 2336, 2340, 2344, 2348, 2352
-row_14: .word 2180, 2184, 2188, 2192, 2196, 2200, 2204, 2208, 2212, 2216, 2220, 2224
-row_15: .word 2052, 2056, 2060, 2064, 2068, 2072, 2076, 2080, 2084, 2088, 2092, 2096
-row_16: .word 1924, 1928, 1932, 1936, 1940, 1944, 1948, 1952, 1956, 1960, 1964, 1968
-row_17: .word 1796, 1800, 1804, 1808, 1812, 1816, 1820, 1824, 1828, 1832, 1836, 1840
-row_18: .word 1668, 1672, 1676, 1680, 1684, 1688, 1692, 1696, 1700, 1704, 1708, 1712
-row_19: .word 1540, 1544, 1548, 1552, 1556, 1560, 1564, 1568, 1572, 1576, 1580, 1584
-row_20: .word 1412, 1416, 1420, 1424, 1428, 1432, 1436, 1440, 1444, 1448, 1452, 1456
-row_21: .word 1284, 1288, 1292, 1296, 1300, 1304, 1308, 1312, 1316, 1320, 1324, 1328
-row_22: .word 1156, 1160, 1164, 1168, 1172, 1176, 1180, 1184, 1188, 1192, 1196, 1200
-row_23: .word 1028, 1032, 1036, 1040, 1044, 1048, 1052, 1056, 1060, 1064, 1068, 1072
-row_24: .word 900,  904,  908,  912,  916,  920,  924,  928,  932,  936,  940,  944
-row_25: .word 772,  776,  780,  784,  788,  792,  796,  800,  804,  808,  812,  816
-row_26: .word 644,  648,  652,  656,  660,  664,  668,  672,  676,  680,  684,  688
-row_27: .word 516,  520,  524,  528,  532,  536,  540,  544,  548,  552,  556,  560
-row_28: .word 388,  392,  396,  400,  404,  408,  412,  416,  420,  424,  428,  432
-row_29: .word 260,  264,  268,  272,  276,  280,  284,  288,  292,  296,  300,  304
-row_30: .word 132,  136,  140,  144,  148,  152,  156,  160,  164,  168,  172,  176
-row_31: .word 4,    8,    12,   16,   20,   24,   28,   32,   36,   40,   44,   48
+row_3:  .word 3588, 3592, 3588, 3596, 3600, 3604, 3608, 3612, 3616, 3620, 3624, 3628
+row_4:  .word 3460, 3464, 3460, 3468, 3472, 3476, 3480, 3484, 3488, 3492, 3496, 3500
+row_5:  .word 3332, 3336, 3332, 3340, 3344, 3348, 3352, 3356, 3360, 3364, 3368, 3372
+row_6:  .word 3204, 3208, 3204, 3212, 3216, 3220, 3224, 3228, 3232, 3236, 3240, 3244
+row_7:  .word 3076, 3080, 3076, 3084, 3088, 3092, 3096, 3100, 3104, 3108, 3112, 3116
+row_8:  .word 2948, 2952, 2948, 2956, 2960, 2964, 2968, 2972, 2976, 2980, 2984, 2988
+row_9:  .word 2820, 2824, 2820, 2828, 2832, 2836, 2840, 2844, 2848, 2852, 2856, 2860
+row_10: .word 2692, 2696, 2692, 2700, 2704, 2708, 2712, 2716, 2720, 2724, 2728, 2732
+row_11: .word 2564, 2568, 2564, 2572, 2576, 2580, 2584, 2588, 2592, 2596, 2600, 2604
+row_12: .word 2436, 2440, 2436, 2444, 2448, 2452, 2456, 2460, 2464, 2468, 2472, 2476
+row_13: .word 2308, 2312, 2308, 2316, 2320, 2324, 2328, 2332, 2336, 2340, 2344, 2348
+row_14: .word 2180, 2184, 2180, 2188, 2192, 2196, 2200, 2204, 2208, 2212, 2216, 2220
+row_15: .word 2052, 2056, 2052, 2060, 2064, 2068, 2072, 2076, 2080, 2084, 2088, 2092
+row_16: .word 1924, 1928, 1924, 1932, 1936, 1940, 1944, 1948, 1952, 1956, 1960, 1964
+row_17: .word 1796, 1800, 1796, 1804, 1808, 1812, 1816, 1820, 1824, 1828, 1832, 1836
+row_18: .word 1668, 1672, 1668, 1676, 1680, 1684, 1688, 1692, 1696, 1700, 1704, 1708
+row_19: .word 1540, 1544, 1540, 1548, 1552, 1556, 1560, 1564, 1568, 1572, 1576, 1580
+row_20: .word 1412, 1416, 1412, 1420, 1424, 1428, 1432, 1436, 1440, 1444, 1448, 1452
+row_21: .word 1284, 1288, 1284, 1292, 1296, 1300, 1304, 1308, 1312, 1316, 1320, 1324
+row_22: .word 1156, 1160, 1156, 1164, 1168, 1172, 1176, 1180, 1184, 1188, 1192, 1196
+row_23: .word 1028, 1032, 1028, 1036, 1040, 1044, 1048, 1052, 1056, 1060, 1064, 1068
+row_24: .word 900,  904,  900,  908,  912,  916,  920,  924,  928,  932,  936,  940
+row_25: .word 772,  776,  772,  780,  784,  788,  792,  796,  800,  804,  808,  812
+row_26: .word 644,  648,  644,  652,  656,  660,  664,  668,  672,  676,  680,  684
+row_27: .word 516,  520,  516,  524,  528,  532,  536,  540,  544,  548,  552,  556
+row_28: .word 388,  392,  388,  396,  400,  404,  408,  412,  416,  420,  424,  428
+row_29: .word 260,  264,  260,  268,  272,  276,  280,  284,  288,  292,  296,  300
+row_30: .word 132,  136,  132,  140,  144,  148,  152,  156,  160,  164,  168,  172
+row_31: .word 4,    8,    4,    12,   16,   20,   24,   28,   32,   36,   40,   44
 
+piece_state: 
+    .word 1
 
 
 black_squares: 
@@ -225,15 +227,36 @@ end_loop2:
 jr $ra  
 checkerboard_done:
 ##############################################################################
-# DRAW TRIMINO (L - Shape [Orange])
+# DRAW TRIMINO (L - Shape)
+##############################################################################
+# jal start_the_L
+# j start_the_L_done
+# start_the_L:   
+    # la $a0, piece_state  
+    # li $t0, 4             
+    # sw $t0, 0($a0) # Set the peice state to 4  
+    # la $t0, rotation_state  # Load the address of rotation_state into $t0
+    # li $t1, 0               # Load the value 0 into $t1
+    # sw $t1, 0($t0) 
+    # li $s0, 24     # Top left pixel of the Tetrimino
+    # li $s1, 152    # Next pixel down
+    # li $s2, 280    # Next pixel down
+    # li $s3, 284    # Pixel to the right of the last one, making the 'L' shape 
+# jr $ra  
+# start_the_L_done:
+##############################################################################
+# DRAW TRIMINO (O - Shape)
 ##############################################################################
 jal start_the_L
 j start_the_L_done
-start_the_L:  
+start_the_L:    
+    la $a0, piece_state  
+    li $t0, 0             
+    sw $t0, 0($a0) # Set the peice state to 0
     la $t0, rotation_state  # Load the address of rotation_state into $t0
     li $t1, 0               # Load the value 0 into $t1
     sw $t1, 0($t0) 
-    li $s0, 24     # Top left pixel of the Tetrimino
+    li $s0, 156     # Top left pixel of the Tetrimino
     li $s1, 152    # Next pixel down
     li $s2, 280    # Next pixel down
     li $s3, 284    # Pixel to the right of the last one, making the 'L' shape 
@@ -333,104 +356,86 @@ bottom_collision_not_detected:
     j done_check_bottom                   
 
 done_check_bottom:
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-##############################################################################
-# CHECK WHEN TO POP ROW 2
-############################################################################## 
-    jal checkRowsInTakenSpots_row2     
-    jal checkRowsInTakenSpots_row2     
-    j next_row2
-checkRowsInTakenSpots_row2 :
-    la $a0, row_2                  # Address of rows
+# ##############################################################################
+# # CHECK WHEN TO POP ROW 1
+# ############################################################################## 
+    jal checkRowsInTakenSpots_row1         
+    j next_row1
+checkRowsInTakenSpots_row1 :
+    la $a0, row_1                  # Address of rows
     li $a1, 12                     # Length of rows
     li $t5, 0                      # Rows index reset
     li $s5, 1                      # Assume allMatched is true initially reset
-rowLoop_row2: 
+rowLoop_row1: 
      # Check if all rows are matched after loop
-    bge $t5, $a1, checkAllMatched_row2 
+    bge $t5, $a1, checkAllMatched_row1 
     lw $t6, 0($a0)                 # Load current row element
     la $a2, taken_spots            # Address of taken_spots, reset for each row element
     lw $a3, num_taken_spots        # Length of taken_spots, reset for each check
     li $t7, 0                      # Taken_spots index reset for each row element
     li $s4, 0                      # Match found flag reset for current row element
-takenLoop_row2:
-    bge $t7, $a3, checkMatch_row2  # End of taken_spots, check match
+takenLoop_row1:
+    bge $t7, $a3, checkMatch_row1  # End of taken_spots, check match
     lw $t8, 0($a2)                 # Load current taken_spots element
-    beq $t6, $t8, setMatch_row2    # Match found, set flag
+    beq $t6, $t8, setMatch_row1    # Match found, set flag
     addi $a2, $a2, 4               # Next taken_spots element
     addi $t7, $t7, 1               # Increment taken_spots index
-    j takenLoop_row2
-setMatch_row2:
+    j takenLoop_row1
+setMatch_row1:
     li $s4, 1                      # Set match found flag for current row element
-checkMatch_row2:
-    beqz $s4, unsetAllMatch_row2   # No match found, unset allMatched flag
+checkMatch_row1:
+    beqz $s4, unsetAllMatch_row1   # No match found, unset allMatched flag
     addi $a0, $a0, 4               # Next row element
     addi $t5, $t5, 1               # Increment rows index
-    j rowLoop_row2                 # Back to start of rowLoop
-unsetAllMatch_row2:
+    j rowLoop_row1                 # Back to start of rowLoop
+unsetAllMatch_row1:
     li $s5, 0                      # Set allMatched to false
     addi $a0, $a0, 4               # Next row element
     addi $t5, $t5, 1               # Increment rows index
-    j rowLoop_row2                 # Continue checking remaining rows
-checkAllMatched_row2:
-    beqz $s5, no_pop_row2           # If not all matched, jump to colorLocation152
-    j pop_rows_row2                 # All matched, jump to colorLocation4
-pop_rows_row2:
+    j rowLoop_row1                 # Continue checking remaining rows
+checkAllMatched_row1:
+    beqz $s5, no_pop_row1           # If not all matched, jump to colorLocation152
+    j pop_rows_row1                 # All matched, jump to colorLocation4
+pop_rows_row1:
          lw $t0, ADDR_DSPL          # Load the base address of the display into $t0.
-         la $t1, row_2              # Load the address of the rows array into $t1.
+         la $t1, row_1              # Load the address of the rows array into $t1.
          li $t2, 12                 # Load the length of the rows array into $t2.
          li $t3, 0                  # Index for iterating through rows.
-         li $t4, 0xEABE6C           # White color.
-color_row2:
-         bge $t3, $t2, endProgram_row2  # If we've colored all rows, exit the loop.
+         li $t4, 0xEABE6C           # Color.
+color_row1:
+         bge $t3, $t2, endProgram_row1  # If we've colored all rows, exit the loop.
          lw $t5, 0($t1)            # Load the current row's offset into $t5.
          add $t6, $t0, $t5         # Calculate the actual memory address to color.
          sw $t4, 0($t6)            # Write white to the calculated address.
          addi $t1, $t1, 4          # Move to the next element in the rows array.
          addi $t3, $t3, 1          # Increment our index.
-          j color_row2             # Jump back to the start of the loop to color the next row.
-endProgram_row2:
-        la $a0, row_2            # Address of rows
+          j color_row1             # Jump back to the start of the loop to color the next row.
+endProgram_row1:
+        la $a0, row_1            # Address of rows
         li $a1, 12               # Length of rows
         la $a2, taken_spots      # Address of taken_spots
         lw $a3, num_taken_spots  # Length of taken_spots
         li $t0, 0
-iterateTakenSpots_row_2:
-        bge $t0, $a3, exit_row_2  # If done iterating through taken_spots, exit the loop
+iterateTakenSpots_row1:
+        bge $t0, $a3, exit_row1  # If done iterating through taken_spots, exit the loop
         lw $t1, 0($a2)            # Load the current taken_spot element
-        la $t2, row_2             # Reset address of rows for each taken_spot element
+        la $t2, row_1             # Reset address of rows for each taken_spot element
         li $t3, 0                 # Reset index for iterating through rows
-checkAgainstRows_row_2:
-        bge $t3, $a1, incrementTaken_row_2
+checkAgainstRows_row1:
+        bge $t3, $a1, incrementTaken_row1
         lw $t4, 0($t2)         
-        beq $t1, $t4, markAsRemoved_row_2  
+        beq $t1, $t4, markAsRemoved_row1  
         addi $t2, $t2, 4          # Move to the next row element
         addi $t3, $t3, 1          # Increment rows index
-        j checkAgainstRows_row_2
-markAsRemoved_row_2:  
+        j checkAgainstRows_row1
+markAsRemoved_row1:  
         li $t5, -4                # The value used to mark elements as "removed"
         sw $t5, 0($a2)            # Mark the current taken_spot element as "removed"
-incrementTaken_row_2:
+incrementTaken_row1:
         addi $a2, $a2, 4          # Move to the next taken_spot element
         addi $t0, $t0, 1          # Increment taken_spots index
-        j iterateTakenSpots_row_2
-exit_row_2:
+        j iterateTakenSpots_row1
+exit_row1:
         li $v0, 32                      # Set syscall number for sleep operation
         li $a0, 500                    # Set sleep duration in milliseconds
         syscall                         # Execute the syscall to sleep 
@@ -440,22 +445,22 @@ exit_row_2:
         lw $t2, num_taken_spots         # Load the length of the taken_spots array into $t2.
         li $t3, 0                       # Initialize index for iterating through taken_spots.
         li $t4, 0xEABE6C                # Load the color value for red into $t4.
-color_spots_and_add_row2:
-    bge $t3, $t2, end_loop_row2             # Check if all spots have been colored; if so, exit loop.
+color_spots_and_add_row1:
+    bge $t3, $t2, end_loop_row1             # Check if all spots have been colored; if so, exit loop.
     lw $t5, 0($t1)                      # Load the current offset from the taken_spots array into $t5.
     li $t6, -4
-    beq $t5, $t6, skip_coloring_and_adding_row2
-    li $t7, 3716
-    bge $t5, $t7, skip_coloring_and_adding_row2
+    beq $t5, $t6, skip_coloring_and_adding_row1
+    li $t7, 3844
+    bge $t5, $t7, skip_coloring_and_adding_row1
     add $t8, $t0, $t5
     sw $t4, 0($t8)
     addi $t5, $t5, 128
     sw $t5, 0($t1)
-skip_coloring_and_adding_row2:
+skip_coloring_and_adding_row1:
     addi $t1, $t1, 4                 # Move to the next element in the taken_spots array.
     addi $t3, $t3, 1                 # Increment the index.
-    j color_spots_and_add_row2            # Jump back to color the next spot and add 128.
-end_loop_row2: 
+    j color_spots_and_add_row1            # Jump back to color the next spot and add 128.
+end_loop_row1: 
         li $v0, 32                   # Set syscall number for sleep operation
         li $a0, 500                 # Set sleep duration in milliseconds
         syscall                      # Execute the syscall to sleep  
@@ -465,46 +470,22 @@ end_loop_row2:
     lw $t2, num_taken_spots         # Load the number of elements in ground into $t2
     li $t3, 0                       # Initialize index for iterating through ground
     li $t4, 0xFDA403                # Load the green color value into $t4
-iterate_row2:
-    bge $t3, $t2, finish_row2       # If all ground spots have been checked, exit loop
+iterate_row1:
+    bge $t3, $t2, finish_row1       # If all ground spots have been checked, exit loop
     lw $t5, 0($t1)                  # Load the current ground offset into $t5
     add $t6, $t0, $t5               # Calculate the memory address to color
     sw $t4, 0($t6)                  # Write the green color to the calculated address
     addi $t1, $t1, 4                # Move to the next element in ground
     addi $t3, $t3, 1                # Increment the ground index
-    j iterate_row2                  # Jump back to iterate through the next ground spot
-finish_row2:
+    j iterate_row1                  # Jump back to iterate through the next ground spot
+finish_row1:
     jal checkerboard_repainter
     j sleepy
-no_pop_row2:
+no_pop_row1:
     jr $ra                         # Return from procedure
-next_row2:
-##############################################################################
-# CHECK WHEN TO POP ROW 3
-##############################################################################  
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+next_row1:
 
-    
-    
-    
-    
-    
-    
+
     
     
     
