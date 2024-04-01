@@ -44,6 +44,8 @@ row_31: .word 4,    8,    4,    12,   16,   20,   24,   28,   32,   36,   40,   
 
 piece_state: 
     .word 1
+pause_state: 
+    .word 1
 
 actionCounter: .word 0
 
@@ -227,6 +229,9 @@ end_loop2:
     sw $t1, 0($t0) 		# paint the first pixle of wall because for some reason its grey
 jr $ra  
 checkerboard_done:
+
+ 
+
 ##############################################################################
 # DRAW TRIMINO 
 ##############################################################################
@@ -714,7 +719,6 @@ action6_21:
     j end_21
 
 
-
 end_21:    
     add $s0, $s0, $t0
     add $s1, $s1, $t0
@@ -740,6 +744,7 @@ game_loop:
     lw $t1, num_ground     # Load the array length into $t1
     li $t2, 0              # Initialize index to 0 (for array iteration)
     li $t5, 0              # Initialize match found flag to 0
+
 
 
 
@@ -847,7 +852,13 @@ pop_rows_row1:
          la $t1, row_1              # Load the address of the rows array into $t1.
          li $t2, 12                 # Load the length of the rows array into $t2.
          li $t3, 0                  # Index for iterating through rows.
-         li $t4, 0xEABE6C           # Color.
+         li $t4, 0xEABE6C           # Color. 
+         li $v0, 31    # async play note syscall
+        li $a0, 45    # midi pitch
+        li $a1, 1000  # duration
+        li $a2, 0     # instrument
+        li $a3, 100   # volume
+        syscall
 color_row1:
          bge $t3, $t2, endProgram_row1  # If we've colored all rows, exit the loop.
          lw $t5, 0($t1)            # Load the current row's offset into $t5.
@@ -942,6 +953,8 @@ next_row1:
     
     
     
+
+
     
     
     
@@ -950,12 +963,13 @@ next_row1:
     
     
     
+
+
     
     
-    
-    
-    
-    
+
+
+
     
     
     
@@ -1018,27 +1032,141 @@ next_row1:
 
 keyboard_input:  
     lw $a0, 4($t0)                # Load second word from keyboard 
+    
     # Check for 'D' (move right)
     li $t9, 0x64                  # ASCII for 'D'
     beq $a0, $t9, move_right
+    
     # Check for 'A' (move left)
     li $t9, 0x61                  # ASCII for 'A'
     beq $a0, $t9, move_left
+    
     # Check for 'S' (move down)
     li $t9, 0x73                  # ASCII for 'S'
     beq $a0, $t9, move_down
+    
     # Check for 'W' (move up)
     li $t9, 0x77                  # ASCII for 'W'
     beq $a0, $t9, rotate
-   # Check for 'L' key
-    li $t9, 108                   # ASCII code for 'L'
+    
+        
+    # Check for 'P' key
+    li $t9, 112       # Load ASCII code for 'P' into $t9
+    beq $a0, $t9, pause_or_unpause   # If 'P' is pressed, branch to the rotate label
+
+    
+    
     beq $a0, $t9, Exit
     b game_loop
 #----------------  2a,b, 3. Check for collisions, Update & Draw ------------------
 
 
+
+
+
+pause_or_unpause: 
+    # Check the current pause state
+    la $t0, pause_state       # Load the address of pause_state into $t0
+    lw $t1, 0($t0)            # Load the current pause state
+    
+    # Toggle the pause state
+    li $t2, -1                # Set $t2 to -1
+    bne $t1, $t2, set_paused  # If pause_state is not -1, set it to -1 (pause the game)
+    j unset_paused            # Otherwise, set pause_state to 0 (unpause the game)
+
+set_paused:
+    # Set pause_state to -1 (game is paused)
+    sw $t2, 0($t0)           # Store -1 in pause_state
+
+    li $t9, 0xFDA403      # Set the color code for white
+    lw $t7, ADDR_DSPL        # Load base address of the display
+    
+    sw $t9, 1088($t7) 
+    sw $t9, 1092($t7) 
+    sw $t9, 964($t7) 
+    sw $t9, 836($t7) 
+    sw $t9, 832($t7) 
+    sw $t9, 828($t7) 
+    sw $t9, 956($t7) 
+    sw $t9, 1084($t7) 
+    sw $t9, 1212($t7)        
+    sw $t9, 1340($t7)
+    
+    li $v0, 33    # async play note syscall
+    li $a0, 30    # midi pitch
+    li $a1, 100  # duration
+    li $a2, 0     # instrument
+    li $a3, 100   # volume
+    syscall     
+
+    j wait_for_p_press       # Jump to wait for 'P' press to unpause
+     # Jump to wait for 'P' press
+
+unset_paused:
+    # Set pause_state to 0 to indicate the game is not paused
+    
+    
+    li $t2, 0                # Set $t2 to 0
+    sw $t2, 0($t0)           # Store 0 in pause_state
+    j game_loop              # Return to the game loop
+
+wait_for_p_press:
+    lw $t0, ADDR_KBRD         # $t0 = base address for keyboard
+    lw $t8, 0($t0)            # Check if a key is pressed
+    
+    
+    
+    
+    beqz $t8, wait_for_p_press # If no key is pressed, loop
+
+    lw $a0, 4($t0)            # Load the pressed key code
+    li $t9, 112               # ASCII for 'P'
+    bne $a0, $t9, wait_for_p_press # If 'P' is not pressed, keep waiting
+
+    # 'P' is pressed again, toggle pause state
+    la $t0, pause_state
+    lw $t1, 0($t0)
+    bne $t1, $t2, unset_paused  # If pause_state is -1, set it to 0
+    
+    li $t9, 0xFFEDD8      # Set the color code for white
+    lw $t7, ADDR_DSPL        # Load base address of the display
+    
+    
+    
+    
+    
+    sw $t9, 1088($t7) 
+    sw $t9, 1092($t7) 
+    sw $t9, 964($t7) 
+    sw $t9, 836($t7) 
+    sw $t9, 832($t7) 
+    sw $t9, 828($t7) 
+    sw $t9, 956($t7) 
+    sw $t9, 1084($t7) 
+    sw $t9, 1212($t7)        
+    sw $t9, 1340($t7)
+    
+    
+    
+    
+    j game_loop               # Return to the game loop
+
+    
+    
+    
+    
+    
+
+
+
 move_right: 
     jal checkerboard_repainter
+    li $v0, 31    # async play note syscall
+    li $a0, 90    # midi pitch
+    li $a1, 100  # duration
+    li $a2, 0     # instrument
+    li $a3, 100   # volume 
+    syscall
     
     # Offset positions for moving down
     addi $s0, $s0, 4 
@@ -1091,6 +1219,8 @@ wall_collision_right:
     addi $s2, $s2, -4  
     addi $s3, $s3, -4
     
+    
+    
     jal paint_block
     j end_collision_right
 
@@ -1111,7 +1241,13 @@ end_collision_right:
     
     
 move_left: 
-    jal checkerboard_repainter
+    jal checkerboard_repainter 
+    li $v0, 31    # async play note syscall
+    li $a0, 90    # midi pitch
+    li $a1, 100  # duration
+    li $a2, 0     # instrument
+    li $a3, 100   # volume 
+    syscall
     
     # Offset positions for moving down
     addi $s0, $s0, -4 
@@ -1183,7 +1319,13 @@ end_collision_left:
 
    
 move_down: 
-    jal checkerboard_repainter
+    jal checkerboard_repainter 
+    li $v0, 31    # async play note syscall
+    li $a0, 90    # midi pitch
+    li $a1, 100  # duration
+    li $a2, 0     # instrument
+    li $a3, 100   # volume 
+    syscall
     
     # Offset positions for moving down
     addi $s0, $s0, 128 
@@ -1285,7 +1427,12 @@ end_collision_down:
    
    
 rotate: 
-    # Load the current rotation state
+    li $v0, 31    # async play note syscall
+    li $a0, 80    # midi pitch
+    li $a1, 100  # duration
+    li $a2, 0     # instrument
+    li $a3, 100   # volume
+    syscall
     lw $t4, rotation_state
     
     # Increment the rotation state
@@ -2010,8 +2157,10 @@ no_collision_Z_state_1:
     j end_collision_Z_state_1
 collision_found_Z_state_1:
     # Reverse the offset adjustment due to collision
-    addi $s0, $s0, 252
-    addi $s1, $s1, 4
+    addi $s0, $s0, -4
+    addi $s1, $s1, 4 
+    addi $s2, $s2, -4
+    addi $s3, $s3, -260 
     # No adjustment needed for $s2 and $s3 if they weren't changed
     # Load the address of rotation_state into $t0
     la $t0, rotation_state
@@ -2860,7 +3009,3 @@ sleepy:
 
 
 
-
-
-    #5. Go back to 1
-    b game_loop
