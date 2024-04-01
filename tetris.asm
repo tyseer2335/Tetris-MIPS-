@@ -227,6 +227,78 @@ end_loop2:
 jr $ra  
 checkerboard_done:
 ##############################################################################
+# DRAW TRIMINO (O - Shape)
+##############################################################################
+# jal start_the_L
+# j start_the_L_done
+# start_the_L:    
+    # la $a0, piece_state  
+    # li $t0, 0             
+    # sw $t0, 0($a0) # Set the peice state to 0
+    # la $t0, rotation_state  # Load the address of rotation_state into $t0
+    # li $t1, 0               # Load the value 0 into $t1
+    # sw $t1, 0($t0) 
+    # li $s0, 156     # Top left pixel of the Tetrimino
+    # li $s1, 152    # Next pixel down
+    # li $s2, 280    # Next pixel down
+    # li $s3, 284    # Pixel to the right of the last one, making the 'L' shape 
+# jr $ra  
+# start_the_L_done:  
+##############################################################################
+# DRAW TRIMINO (I - Shape)
+##############################################################################
+# jal start_the_L
+# j start_the_L_done
+# start_the_L:   
+    # la $a0, piece_state  
+    # li $t0, 1             
+    # sw $t0, 0($a0) # Set the peice state to 4  
+    # la $t0, rotation_state  # Load the address of rotation_state into $t0
+    # li $t1, 0               # Load the value 0 into $t1
+    # sw $t1, 0($t0) 
+    # li $s0, 24     # Top left pixel of the Tetrimino
+    # li $s1, 152    # Next pixel down
+    # li $s2, 280    # Next pixel down
+    # li $s3, 408    # Pixel to the right of the last one, making the 'L' shape 
+# jr $ra  
+# start_the_L_done:
+##############################################################################
+# DRAW TRIMINO (S - Shape)
+##############################################################################
+# jal start_the_L
+# j start_the_L_done
+# start_the_L:   
+    # la $a0, piece_state  
+    # li $t0, 2             
+    # sw $t0, 0($a0) # Set the peice state to 0
+    # la $t0, rotation_state  # Load the address of rotation_state into $t0
+    # li $t1, 0               # Load the value 0 into $t1
+    # sw $t1, 0($t0) 
+    # li $s0, 156     # Top left pixel of the Tetrimino
+    # li $s1, 152    # Next pixel down
+    # li $s2, 280    # Next pixel down
+    # li $s3, 276    # Pixel to the right of the last one, making the 'L' shape  
+# jr $ra  
+# start_the_L_done:  
+##############################################################################
+# DRAW TRIMINO (Z - Shape)
+##############################################################################
+# jal start_the_L
+# j start_the_L_done
+# start_the_L:    
+    # la $a0, piece_state  
+    # li $t0, 3             
+    # sw $t0, 0($a0) # Set the peice state to 0
+    # la $t0, rotation_state  # Load the address of rotation_state into $t0
+    # li $t1, 0               # Load the value 0 into $t1
+    # sw $t1, 0($t0) 
+    # li $s0, 152     # Top left pixel of the Tetrimino
+    # li $s1, 148    # Next pixel down
+    # li $s2, 280    # Next pixel down
+    # li $s3, 284    # Pixel to the right of the last one, making the 'L' shape 
+# jr $ra  
+# start_the_L_done:
+# ##############################################################################
 # DRAW TRIMINO (L - Shape)
 ##############################################################################
 # jal start_the_L
@@ -244,22 +316,23 @@ checkerboard_done:
     # li $s3, 284    # Pixel to the right of the last one, making the 'L' shape 
 # jr $ra  
 # start_the_L_done:
-##############################################################################
-# DRAW TRIMINO (O - Shape)
-##############################################################################
+# ##############################################################################
+# DRAW TRIMINO (T - Shape)
+# #############################################################################
 jal start_the_L
 j start_the_L_done
 start_the_L:    
     la $a0, piece_state  
-    li $t0, 0             
+    la $a0, piece_state  
+    li $t0, 6             
     sw $t0, 0($a0) # Set the peice state to 0
     la $t0, rotation_state  # Load the address of rotation_state into $t0
     li $t1, 0               # Load the value 0 into $t1
     sw $t1, 0($t0) 
-    li $s0, 156     # Top left pixel of the Tetrimino
+    li $s0, 284     # Top left pixel of the Tetrimino
     li $s1, 152    # Next pixel down
     li $s2, 280    # Next pixel down
-    li $s3, 284    # Pixel to the right of the last one, making the 'L' shape 
+    li $s3, 276    # Pixel to the right of the last one, making the 'L' shape 
 jr $ra  
 start_the_L_done:
 # ----------------------------------------------------------------------------
@@ -826,9 +899,6 @@ piece_collision:
 
     
     
-    
-    
-    
     jal start_the_L
     jal paint_block
     j end_collision_down
@@ -852,335 +922,1504 @@ rotate:
     mfhi $t4                # Use the remainder to keep the state within [0,3]
     sw $t4, rotation_state  # Store the updated state back
 
+
+
+
+
+
+
+
+
+
+
+
+
+ la $a0, piece_state  # Load the address of piece_state into $a0
+    lw $t0, 0($a0)       # Load the value of piece_state into $t0
+
+    # Check the value of piece_state and jump to the corresponding label
+    li $t1, 0
+    beq $t0, $t1, state_zero
+    li $t1, 1
+    beq $t0, $t1, state_one
+    li $t1, 2
+    beq $t0, $t1, state_two
+    li $t1, 3
+    beq $t0, $t1, state_three
+    li $t1, 4
+    beq $t0, $t1, state_four
+    li $t1, 5
+    beq $t0, $t1, state_five
+    li $t1, 6
+    beq $t0, $t1, state_six
+    j rotation_next  
+    
+state_zero:
+# ##############################################################################
+# # ROTATE THE O
+# #############################################################################
+    li $t2, 10
+    j rotation_next
+state_one:
+# ##############################################################################
+# # ROTATE THE I
+# #############################################################################
+   # Based on the rotation state, select the Tetrimino's color
+    lw $t0, ADDR_DSPL       # Base address for the display
+    beq $t4, 0, rotate_I_state_1
+    beq $t4, 1, rotate_I_state_2
+    beq $t4, 2, rotate_I_state_3
+    beq $t4, 3, rotate_I_state_4
+rotate_I_state_2: 
+    jal checkerboard_repainter 
+    addi $s0, $s0, 124 
+    addi $s1, $s1, 0 
+    addi $s2, $s2, -124
+    addi $s3, $s3, -248
+    la $t0, walls          # Load the address of the words array into $t0
+    lw $t1, num_walls      # Load the array length into $t1
+    li $t2, 0              # Initialize index to 0 (for array iteration)
+    li $t5, 0              # Initialize match found flag to 0
+find_collision_I_state_2:
+    beq $t2, $t1, check_collision_I_state_2 # If index equals array length, check for match
+    lw $t4, 0($t0)         # Load the current word from the array into $t4
+    beq $t4, $s0, match_collision_I_state_2  # Compare $t4 with $s0, $s1, $s2, $s3
+    beq $t4, $s1, match_collision_I_state_2
+    beq $t4, $s2, match_collision_I_state_2
+    beq $t4, $s3, match_collision_I_state_2
+    addi $t0, $t0, 4       # Move to the next word in the array
+    addi $t2, $t2, 1       # Increment the index
+    j find_collision_I_state_2               # Jump back to the start of the loop
+match_collision_I_state_2:
+    li $t5, 1              # Set match found flag
+    j check_collision_I_state_2           
+check_collision_I_state_2:
+    # Determine pixel location based on match
+    beq $t5, 1, found_collision_I_state_2  # If match found, jump to collision
+    j no_collision_I_state_2          # Otherwise, no collision
+no_collision_I_state_2:
+    jal paint_block
+    j end_collision_I_state_2                
+found_collision_I_state_2:
+    addi $s0, $s0, -124 
+    addi $s1, $s1, 0 
+    addi $s2, $s2, 124
+    addi $s3, $s3, 248
+    # Load the address of rotation_state into $t0
+    la $t0, rotation_state
+    # Load the current value of rotation_state into $t1
+    lw $t1, 0($t0)
+    # Check if rotation_state is 0, to wrap around to 3
+    beq $t1, 0, wrap_around_I_state_2
+    # If not 0, simply decrement rotation_state
+    addi $t1, $t1, -1
+    j store_update_I_state_2
+wrap_around_I_state_2:
+    # Wrap around to 3 if it was 0
+    li $t1, 3
+store_update_I_state_2:
+    sw $t1, 0($t0)
+    jal paint_block
+    j end_collision_I_state_2                  
+end_collision_I_state_2: 
+    j sleepy
+rotate_I_state_3: 
+    jal checkerboard_repainter 
+    addi $s0, $s0, -124 
+    addi $s1, $s1, 0 
+    addi $s2, $s2, 124
+    addi $s3, $s3, 248
+    la $t0, walls          # Load the address of the words array into $t0
+    lw $t1, num_walls      # Load the array length into $t1
+    li $t2, 0              # Initialize index to 0 (for array iteration)
+    li $t5, 0              # Initialize match found flag to 0
+find_collision_I_state_3:
+    beq $t2, $t1, check_collision_I_state_3 # If index equals array length, check for match
+    lw $t4, 0($t0)         # Load the current word from the array into $t4
+    beq $t4, $s0, match_collision_I_state_3  # Compare $t4 with $s0, $s1, $s2, $s3
+    beq $t4, $s1, match_collision_I_state_3
+    beq $t4, $s2, match_collision_I_state_3
+    beq $t4, $s3, match_collision_I_state_3
+    addi $t0, $t0, 4       # Move to the next word in the array
+    addi $t2, $t2, 1       # Increment the index
+    j find_collision_I_state_3               # Jump back to the start of the loop
+match_collision_I_state_3:
+    li $t5, 1              # Set match found flag
+    j check_collision_I_state_3           
+check_collision_I_state_3:
+    # Determine pixel location based on match
+    beq $t5, 1, found_collision_I_state_3  # If match found, jump to collision
+    j no_collision_I_state_3          # Otherwise, no collision
+no_collision_I_state_3:
+    jal paint_block
+    j end_collision_I_state_3                
+found_collision_I_state_3:
+    addi $s0, $s0, 124 
+    addi $s1, $s1, 0 
+    addi $s2, $s2, -124
+    addi $s3, $s3, -248
+    # Load the address of rotation_state into $t0
+    la $t0, rotation_state
+    # Load the current value of rotation_state into $t1
+    lw $t1, 0($t0)
+    # Check if rotation_state is 0, to wrap around to 3
+    beq $t1, 0, wrap_around_I_state_3
+    # If not 0, simply decrement rotation_state
+    addi $t1, $t1, -1
+    j store_update_I_state_3
+wrap_around_I_state_3:
+    # Wrap around to 3 if it was 0
+    li $t1, 3
+store_update_I_state_3:
+    # Store the updated value back to rotation_state
+    sw $t1, 0($t0)
+    jal paint_block
+    j end_collision_I_state_3                  
+end_collision_I_state_3:
+    j sleepy
+rotate_I_state_4:
+    jal checkerboard_repainter  # Refresh the game board before attempting rotation
+    # Offset the blocks for collision detection or positioning
+    addi $s0, $s0, 124 
+    addi $s1, $s1, 0 
+    addi $s2, $s2, -124
+    addi $s3, $s3, -248
+    # Prepare for collision detection with the array (assuming walls or similar)
+    la $t0, walls              # Load the address of the walls array
+    lw $t1, num_walls          # Load the number of elements in the walls array
+    li $t2, 0                  # Initialize index for array iteration
+    li $t5, 0                  # Initialize collision flag to 0
+find_collision_I_state_4:
+    beq $t2, $t1, check_collision_I_state_4 # End loop if we've checked all elements
+    lw $t4, 0($t0)         # Load current element for comparison
+    beq $t4, $s0, match_collision_I_state_4
+    beq $t4, $s1, match_collision_I_state_4
+    # $s2 comparison could be added here if $s2 is also subject to change
+    beq $t4, $s3, match_collision_I_state_4
+    addiu $t0, $t0, 4       # Move to the next element
+    addiu $t2, $t2, 1       # Increment index
+    j find_collision_I_state_4           # Repeat for next element
+match_collision_I_state_4:
+    li $t5, 1              # Collision detected
+    j check_collision_I_state_4
+check_collision_I_state_4:
+    beq $t5, 1, collision_found_I_state_4  # Branch if collision detected
+    j no_collision_I_state_4
+no_collision_I_state_4:
+    # If no collision, proceed with painting the Tetrimino
+    jal paint_block
+    j end_collision_I_state_4
+collision_found_I_state_4:
+    # Reverse the offset adjustment due to collision
+    addi $s0, $s0, -124 
+    addi $s1, $s1, 0 
+    addi $s2, $s2, 124
+    addi $s3, $s3, 248
+    # Load the address of rotation_state into $t0
+    la $t0, rotation_state
+    # Load the current value of rotation_state into $t1
+    lw $t1, 0($t0)
+    # Check if rotation_state is 0, to wrap around to 3
+    beq $t1, 0, wrap_around_I_state_4
+    # If not 0, simply decrement rotation_state
+    addi $t1, $t1, -1
+    j store_update_I_state_4
+    wrap_around_I_state_4:
+    # Wrap around to 3 if it was 0
+    li $t1, 3
+    store_update_I_state_4:
+    # Store the updated value back to rotation_state
+    sw $t1, 0($t0)
+    jal paint_block
+    j end_collision_I_state_4
+end_collision_I_state_4:
+    j sleepy
+rotate_I_state_1:
+    jal checkerboard_repainter  # Refresh the game board before attempting rotation
+    # Temporarily adjust the blocks for collision detection or positioning
+    addi $s0, $s0, -124 
+    addi $s1, $s1, 0 
+    addi $s2, $s2, 124
+    addi $s3, $s3, 248
+    # Since $s2 and $s3 are not being offset, they're not adjusted here
+    # Prepare for collision detection with the array (assuming walls or similar)
+    la $t0, walls              # Load the address of the walls array
+    lw $t1, num_walls          # Load the number of elements in the walls array
+    li $t2, 0                  # Initialize index for array iteration
+    li $t5, 0                  # Initialize collision flag to 0
+find_collision_I_state_1:
+    beq $t2, $t1, check_collision_I_state_1 # End loop if we've checked all elements
+    lw $t4, 0($t0)             # Load current element for comparison
+    beq $t4, $s0, match_collision_I_state_1
+    beq $t4, $s1, match_collision_I_state_1
+    # Checks for $s2 and $s3 could be added here if they are subject to change
+    addiu $t0, $t0, 4          # Move to the next element
+    addiu $t2, $t2, 1          # Increment index
+    j find_collision_I_state_1 # Repeat for next element
+match_collision_I_state_1:
+    li $t5, 1                  # Collision detected
+    j check_collision_I_state_1
+check_collision_I_state_1:
+    beq $t5, 1, collision_found_I_state_1  # Branch if collision detected
+    j no_collision_I_state_1
+no_collision_I_state_1:
+    # If no collision, proceed with painting the Tetrimino
+    jal paint_block
+    j end_collision_I_state_1
+collision_found_I_state_1:
+    # Reverse the offset adjustment due to collision
+    addi $s0, $s0, 124 
+    addi $s1, $s1, 0 
+    addi $s2, $s2, -124
+    addi $s3, $s3, -248
+    # No adjustment needed for $s2 and $s3 if they weren't changed
+    # Load the address of rotation_state into $t0
+    la $t0, rotation_state
+    # Load the current value of rotation_state into $t1
+    lw $t1, 0($t0)
+    # Check if rotation_state is 0, to wrap around to 3
+    beq $t1, 0, wrap_around_I_state_1
+    # If not 0, simply decrement rotation_state
+    addi $t1, $t1, -1
+    j store_update_I_state_1
+wrap_around_I_state_1:
+    # Wrap around to 3 if it was 0
+    li $t1, 3
+store_update_I_state_1:
+    # Store the updated value back to rotation_state
+    sw $t1, 0($t0)
+    jal paint_block
+    j end_collision_I_state_1
+end_collision_I_state_1:
+    j sleepy
+    li $t2, 20
+    j rotation_next
+state_two:
+# ##############################################################################
+# # ROTATE THE S
+# #############################################################################
+    # Based on the rotation state, select the Tetrimino's color
+    lw $t0, ADDR_DSPL       # Base address for the display
+    beq $t4, 0, rotate_S_state_1
+    beq $t4, 1, rotate_S_state_2
+    beq $t4, 2, rotate_S_state_3
+    beq $t4, 3, rotate_S_state_4
+rotate_S_state_2: 
+    jal checkerboard_repainter 
+    addi $s0, $s0, 0 
+    addi $s1, $s1, -128
+    addi $s2, $s2, -128
+    addi $s3, $s3, 8  
+    la $t0, walls          # Load the address of the words array into $t0
+    lw $t1, num_walls      # Load the array length into $t1
+    li $t2, 0              # Initialize index to 0 (for array iteration)
+    li $t5, 0              # Initialize match found flag to 0
+find_collision_S_state_2:
+    beq $t2, $t1, check_collision_S_state_2 # If index equals array length, check for match
+    lw $t4, 0($t0)         # Load the current word from the array into $t4
+    beq $t4, $s0, match_collision_S_state_2  # Compare $t4 with $s0, $s1, $s2, $s3
+    beq $t4, $s1, match_collision_S_state_2
+    beq $t4, $s2, match_collision_S_state_2
+    beq $t4, $s3, match_collision_S_state_2
+    addi $t0, $t0, 4       # Move to the next word in the array
+    addi $t2, $t2, 1       # Increment the index
+    j find_collision_S_state_2               # Jump back to the start of the loop
+match_collision_S_state_2:
+    li $t5, 1              # Set match found flag
+    j check_collision_S_state_2           
+check_collision_S_state_2:
+    # Determine pixel location based on match
+    beq $t5, 1, found_collision_S_state_2  # If match found, jump to collision
+    j no_collision_S_state_2          # Otherwise, no collision
+no_collision_S_state_2:
+    jal paint_block
+    j end_collision_S_state_2                
+found_collision_S_state_2:
+    addi $s0, $s0, 0 
+    addi $s1, $s1, 128
+    addi $s2, $s2, 128
+    addi $s3, $s3, -8 
+    # Load the address of rotation_state into $t0
+    la $t0, rotation_state
+    # Load the current value of rotation_state into $t1
+    lw $t1, 0($t0)
+    # Check if rotation_state is 0, to wrap around to 3
+    beq $t1, 0, wrap_around_S_state_2
+    # If not 0, simply decrement rotation_state
+    addi $t1, $t1, -1
+    j store_update_S_state_2
+wrap_around_S_state_2:
+    # Wrap around to 3 if it was 0
+    li $t1, 3
+store_update_S_state_2:
+    sw $t1, 0($t0)
+    jal paint_block
+    j end_collision_S_state_2                  
+end_collision_S_state_2: 
+    j sleepy
+rotate_S_state_3: 
+    jal checkerboard_repainter 
+    addi $s0, $s0, 0 
+    addi $s1, $s1, 128
+    addi $s2, $s2, 128
+    addi $s3, $s3, -8 
+    la $t0, walls          # Load the address of the words array into $t0
+    lw $t1, num_walls      # Load the array length into $t1
+    li $t2, 0              # Initialize index to 0 (for array iteration)
+    li $t5, 0              # Initialize match found flag to 0
+find_collision_S_state_3:
+    beq $t2, $t1, check_collision_S_state_3 # If index equals array length, check for match
+    lw $t4, 0($t0)         # Load the current word from the array into $t4
+    beq $t4, $s0, match_collision_S_state_3  # Compare $t4 with $s0, $s1, $s2, $s3
+    beq $t4, $s1, match_collision_S_state_3
+    beq $t4, $s2, match_collision_S_state_3
+    beq $t4, $s3, match_collision_S_state_3
+    addi $t0, $t0, 4       # Move to the next word in the array
+    addi $t2, $t2, 1       # Increment the index
+    j find_collision_S_state_3               # Jump back to the start of the loop
+match_collision_S_state_3:
+    li $t5, 1              # Set match found flag
+    j check_collision_S_state_3           
+check_collision_S_state_3:
+    # Determine pixel location based on match
+    beq $t5, 1, found_collision_S_state_3  # If match found, jump to collision
+    j no_collision_S_state_3          # Otherwise, no collision
+no_collision_S_state_3:
+    jal paint_block
+    j end_collision_S_state_3                
+found_collision_S_state_3:
+    addi $s0, $s0, 0 
+    addi $s1, $s1, -128
+    addi $s2, $s2, -128
+    addi $s3, $s3, 8 
+    # Load the address of rotation_state into $t0
+    la $t0, rotation_state
+    # Load the current value of rotation_state into $t1
+    lw $t1, 0($t0)
+    # Check if rotation_state is 0, to wrap around to 3
+    beq $t1, 0, wrap_around_S_state_3
+    # If not 0, simply decrement rotation_state
+    addi $t1, $t1, -1
+    j store_update_S_state_3
+wrap_around_S_state_3:
+    # Wrap around to 3 if it was 0
+    li $t1, 3
+store_update_S_state_3:
+    # Store the updated value back to rotation_state
+    sw $t1, 0($t0)
+    jal paint_block
+    j end_collision_S_state_3                  
+end_collision_S_state_3:
+    j sleepy
+rotate_S_state_4:
+    jal checkerboard_repainter  # Refresh the game board before attempting rotation
+    # Offset the blocks for collision detection or positioning
+    addi $s0, $s0, -4 
+    addi $s1, $s1, -132
+    addi $s2, $s2, -132
+    addi $s3, $s3, 4  
+    # Prepare for collision detection with the array (assuming walls or similar)
+    la $t0, walls              # Load the address of the walls array
+    lw $t1, num_walls          # Load the number of elements in the walls array
+    li $t2, 0                  # Initialize index for array iteration
+    li $t5, 0                  # Initialize collision flag to 0
+find_collision_S_state_4:
+    beq $t2, $t1, check_collision_S_state_4 # End loop if we've checked all elements
+    lw $t4, 0($t0)         # Load current element for comparison
+    beq $t4, $s0, match_collision_S_state_4
+    beq $t4, $s1, match_collision_S_state_4
+    # $s2 comparison could be added here if $s2 is also subject to change
+    beq $t4, $s3, match_collision_S_state_4
+    addiu $t0, $t0, 4       # Move to the next element
+    addiu $t2, $t2, 1       # Increment index
+    j find_collision_S_state_4           # Repeat for next element
+match_collision_S_state_4:
+    li $t5, 1              # Collision detected
+    j check_collision_S_state_4
+check_collision_S_state_4:
+    beq $t5, 1, collision_found_S_state_4  # Branch if collision detected
+    j no_collision_S_state_4
+no_collision_S_state_4:
+    # If no collision, proceed with painting the Tetrimino
+    jal paint_block
+    j end_collision_S_state_4
+collision_found_S_state_4:
+    # Reverse the offset adjustment due to collision
+    addi $s0, $s0, 4 
+    addi $s1, $s1, 132
+    addi $s2, $s2, 132
+    addi $s3, $s3, -4 
+    # Load the address of rotation_state into $t0
+    la $t0, rotation_state
+    # Load the current value of rotation_state into $t1
+    lw $t1, 0($t0)
+    # Check if rotation_state is 0, to wrap around to 3
+    beq $t1, 0, wrap_around_S_state_4
+    # If not 0, simply decrement rotation_state
+    addi $t1, $t1, -1
+    j store_update_S_state_4
+    wrap_around_S_state_4:
+    # Wrap around to 3 if it was 0
+    li $t1, 3
+    store_update_S_state_4:
+    # Store the updated value back to rotation_state
+    sw $t1, 0($t0)
+    jal paint_block
+    j end_collision_S_state_4
+end_collision_S_state_4:
+    j sleepy
+rotate_S_state_1:
+    jal checkerboard_repainter  # Refresh the game board before attempting rotation
+    # Temporarily adjust the blocks for collision detection or positioning
+    addi $s0, $s0, 4 
+    addi $s1, $s1, 132
+    addi $s2, $s2, 132
+    addi $s3, $s3, -4 
+    # Since $s2 and $s3 are not being offset, they're not adjusted here
+    # Prepare for collision detection with the array (assuming walls or similar)
+    la $t0, walls              # Load the address of the walls array
+    lw $t1, num_walls          # Load the number of elements in the walls array
+    li $t2, 0                  # Initialize index for array iteration
+    li $t5, 0                  # Initialize collision flag to 0
+find_collision_S_state_1:
+    beq $t2, $t1, check_collision_S_state_1 # End loop if we've checked all elements
+    lw $t4, 0($t0)             # Load current element for comparison
+    beq $t4, $s0, match_collision_S_state_1
+    beq $t4, $s1, match_collision_S_state_1
+    # Checks for $s2 and $s3 could be added here if they are subject to change
+    addiu $t0, $t0, 4          # Move to the next element
+    addiu $t2, $t2, 1          # Increment index
+    j find_collision_S_state_1 # Repeat for next element
+match_collision_S_state_1:
+    li $t5, 1                  # Collision detected
+    j check_collision_S_state_1
+check_collision_S_state_1:
+    beq $t5, 1, collision_found_S_state_1  # Branch if collision detected
+    j no_collision_S_state_1
+no_collision_S_state_1:
+    # If no collision, proceed with painting the Tetrimino
+    jal paint_block
+    j end_collision_S_state_1
+collision_found_S_state_1:
+    # Reverse the offset adjustment due to collision
+    addi $s0, $s0, -4 
+    addi $s1, $s1, -132
+    addi $s2, $s2, -132
+    addi $s3, $s3, 4 
+    # No adjustment needed for $s2 and $s3 if they weren't changed
+    # Load the address of rotation_state into $t0
+    la $t0, rotation_state
+    # Load the current value of rotation_state into $t1
+    lw $t1, 0($t0)
+    # Check if rotation_state is 0, to wrap around to 3
+    beq $t1, 0, wrap_around_S_state_1
+    # If not 0, simply decrement rotation_state
+    addi $t1, $t1, -1
+    j store_update_S_state_1
+wrap_around_S_state_1:
+    # Wrap around to 3 if it was 0
+    li $t1, 3
+store_update_S_state_1:
+    # Store the updated value back to rotation_state
+    sw $t1, 0($t0)
+    jal paint_block
+    j end_collision_S_state_1
+end_collision_S_state_1:
+    j sleepy
+    li $t2, 30
+    j rotation_next
+
+state_three:
+# ##############################################################################
+# # ROTATE THE Z
+# #############################################################################
+    # Based on the rotation state, select the Tetrimino's color
+    lw $t0, ADDR_DSPL       # Base address for the display
+    beq $t4, 0, rotate_Z_state_1
+    beq $t4, 1, rotate_Z_state_2
+    beq $t4, 2, rotate_Z_state_3
+    beq $t4, 3, rotate_Z_state_4
+rotate_Z_state_2: 
+    jal checkerboard_repainter 
+    addi $s0, $s0, 0 
+    addi $s1, $s1, 8 
+    addi $s2, $s2, 0
+    addi $s3, $s3, -256  
+    la $t0, walls          # Load the address of the words array into $t0
+    lw $t1, num_walls      # Load the array length into $t1
+    li $t2, 0              # Initialize index to 0 (for array iteration)
+    li $t5, 0              # Initialize match found flag to 0
+find_collision_Z_state_2:
+    beq $t2, $t1, check_collision_Z_state_2 # If index equals array length, check for match
+    lw $t4, 0($t0)         # Load the current word from the array into $t4
+    beq $t4, $s0, match_collision_Z_state_2  # Compare $t4 with $s0, $s1, $s2, $s3
+    beq $t4, $s1, match_collision_Z_state_2
+    beq $t4, $s2, match_collision_Z_state_2
+    beq $t4, $s3, match_collision_Z_state_2
+    addi $t0, $t0, 4       # Move to the next word in the array
+    addi $t2, $t2, 1       # Increment the index
+    j find_collision_Z_state_2               # Jump back to the start of the loop
+match_collision_Z_state_2:
+    li $t5, 1              # Set match found flag
+    j check_collision_Z_state_2           
+check_collision_Z_state_2:
+    # Determine pixel location based on match
+    beq $t5, 1, found_collision_Z_state_2  # If match found, jump to collision
+    j no_collision_Z_state_2          # Otherwise, no collision
+no_collision_Z_state_2:
+    jal paint_block
+    j end_collision_Z_state_2                
+found_collision_Z_state_2:
+    addi $s0, $s0, 0 
+    addi $s1, $s1, -8 
+    addi $s2, $s2, 0
+    addi $s3, $s3, 256 
+    # Load the address of rotation_state into $t0
+    la $t0, rotation_state
+    # Load the current value of rotation_state into $t1
+    lw $t1, 0($t0)
+    # Check if rotation_state is 0, to wrap around to 3
+    beq $t1, 0, wrap_around_Z_state_2
+    # If not 0, simply decrement rotation_state
+    addi $t1, $t1, -1
+    j store_update_Z_state_2
+wrap_around_Z_state_2:
+    # Wrap around to 3 if it was 0
+    li $t1, 3
+store_update_Z_state_2:
+    sw $t1, 0($t0)
+    jal paint_block
+    j end_collision_Z_state_2                  
+end_collision_Z_state_2: 
+    j sleepy
+rotate_Z_state_3: 
+    jal checkerboard_repainter 
+    addi $s0, $s0, 0 
+    addi $s1, $s1, -8 
+    addi $s2, $s2, 0
+    addi $s3, $s3, 256  
+    la $t0, walls          # Load the address of the words array into $t0
+    lw $t1, num_walls      # Load the array length into $t1
+    li $t2, 0              # Initialize index to 0 (for array iteration)
+    li $t5, 0              # Initialize match found flag to 0
+find_collision_Z_state_3:
+    beq $t2, $t1, check_collision_Z_state_3 # If index equals array length, check for match
+    lw $t4, 0($t0)         # Load the current word from the array into $t4
+    beq $t4, $s0, match_collision_Z_state_3  # Compare $t4 with $s0, $s1, $s2, $s3
+    beq $t4, $s1, match_collision_Z_state_3
+    beq $t4, $s2, match_collision_Z_state_3
+    beq $t4, $s3, match_collision_Z_state_3
+    addi $t0, $t0, 4       # Move to the next word in the array
+    addi $t2, $t2, 1       # Increment the index
+    j find_collision_Z_state_3               # Jump back to the start of the loop
+match_collision_Z_state_3:
+    li $t5, 1              # Set match found flag
+    j check_collision_Z_state_3           
+check_collision_Z_state_3:
+    # Determine pixel location based on match
+    beq $t5, 1, found_collision_Z_state_3  # If match found, jump to collision
+    j no_collision_Z_state_3          # Otherwise, no collision
+no_collision_Z_state_3:
+    jal paint_block
+    j end_collision_Z_state_3                
+found_collision_Z_state_3:
+    addi $s0, $s0, 0 
+    addi $s1, $s1, 8 
+    addi $s2, $s2, 0
+    addi $s3, $s3, -256 
+    # Load the address of rotation_state into $t0
+    la $t0, rotation_state
+    # Load the current value of rotation_state into $t1
+    lw $t1, 0($t0)
+    # Check if rotation_state is 0, to wrap around to 3
+    beq $t1, 0, wrap_around_Z_state_3
+    # If not 0, simply decrement rotation_state
+    addi $t1, $t1, -1
+    j store_update_Z_state_3
+wrap_around_Z_state_3:
+    # Wrap around to 3 if it was 0
+    li $t1, 3
+store_update_Z_state_3:
+    # Store the updated value back to rotation_state
+    sw $t1, 0($t0)
+    jal paint_block
+    j end_collision_Z_state_3                  
+end_collision_Z_state_3:
+    j sleepy
+rotate_Z_state_4:
+    jal checkerboard_repainter  # Refresh the game board before attempting rotation
+    # Offset the blocks for collision detection or positioning
+    addi $s0, $s0, -4 
+    addi $s1, $s1, 4 
+    addi $s2, $s2, -4
+    addi $s3, $s3, -260 
+    # Prepare for collision detection with the array (assuming walls or similar)
+    la $t0, walls              # Load the address of the walls array
+    lw $t1, num_walls          # Load the number of elements in the walls array
+    li $t2, 0                  # Initialize index for array iteration
+    li $t5, 0                  # Initialize collision flag to 0
+find_collision_Z_state_4:
+    beq $t2, $t1, check_collision_Z_state_4 # End loop if we've checked all elements
+    lw $t4, 0($t0)         # Load current element for comparison
+    beq $t4, $s0, match_collision_Z_state_4
+    beq $t4, $s1, match_collision_Z_state_4
+    # $s2 comparison could be added here if $s2 is also subject to change
+    beq $t4, $s3, match_collision_Z_state_4
+    addiu $t0, $t0, 4       # Move to the next element
+    addiu $t2, $t2, 1       # Increment index
+    j find_collision_Z_state_4           # Repeat for next element
+match_collision_Z_state_4:
+    li $t5, 1              # Collision detected
+    j check_collision_Z_state_4
+check_collision_Z_state_4:
+    beq $t5, 1, collision_found_Z_state_4  # Branch if collision detected
+    j no_collision_Z_state_4
+no_collision_Z_state_4:
+    # If no collision, proceed with painting the Tetrimino
+    jal paint_block
+    j end_collision_Z_state_4
+collision_found_Z_state_4:
+    # Reverse the offset adjustment due to collision
+    addi $s0, $s0, 4 
+    addi $s1, $s1, -4 
+    addi $s2, $s2, 4
+    addi $s3, $s3, 260 
+    # Load the address of rotation_state into $t0
+    la $t0, rotation_state
+    # Load the current value of rotation_state into $t1
+    lw $t1, 0($t0)
+    # Check if rotation_state is 0, to wrap around to 3
+    beq $t1, 0, wrap_around_Z_state_4
+    # If not 0, simply decrement rotation_state
+    addi $t1, $t1, -1
+    j store_update_Z_state_4
+    wrap_around_Z_state_4:
+    # Wrap around to 3 if it was 0
+    li $t1, 3
+    store_update_Z_state_4:
+    # Store the updated value back to rotation_state
+    sw $t1, 0($t0)
+    jal paint_block
+    j end_collision_Z_state_4
+end_collision_Z_state_4:
+    j sleepy
+rotate_Z_state_1:
+    jal checkerboard_repainter  # Refresh the game board before attempting rotation
+    # Temporarily adjust the blocks for collision detection or positioning
+    addi $s0, $s0, 4
+    addi $s1, $s1, -4 
+    addi $s2, $s2, 4
+    addi $s3, $s3, 260 
+    # Since $s2 and $s3 are not being offset, they're not adjusted here
+    # Prepare for collision detection with the array (assuming walls or similar)
+    la $t0, walls              # Load the address of the walls array
+    lw $t1, num_walls          # Load the number of elements in the walls array
+    li $t2, 0                  # Initialize index for array iteration
+    li $t5, 0                  # Initialize collision flag to 0
+find_collision_Z_state_1:
+    beq $t2, $t1, check_collision_Z_state_1 # End loop if we've checked all elements
+    lw $t4, 0($t0)             # Load current element for comparison
+    beq $t4, $s0, match_collision_Z_state_1
+    beq $t4, $s1, match_collision_Z_state_1
+    # Checks for $s2 and $s3 could be added here if they are subject to change
+    addiu $t0, $t0, 4          # Move to the next element
+    addiu $t2, $t2, 1          # Increment index
+    j find_collision_Z_state_1 # Repeat for next element
+match_collision_Z_state_1:
+    li $t5, 1                  # Collision detected
+    j check_collision_Z_state_1
+check_collision_Z_state_1:
+    beq $t5, 1, collision_found_Z_state_1  # Branch if collision detected
+    j no_collision_Z_state_1
+no_collision_Z_state_1:
+    # If no collision, proceed with painting the Tetrimino
+    jal paint_block
+    j end_collision_Z_state_1
+collision_found_Z_state_1:
+    # Reverse the offset adjustment due to collision
+    addi $s0, $s0, 252
+    addi $s1, $s1, 4
+    # No adjustment needed for $s2 and $s3 if they weren't changed
+    # Load the address of rotation_state into $t0
+    la $t0, rotation_state
+    # Load the current value of rotation_state into $t1
+    lw $t1, 0($t0)
+    # Check if rotation_state is 0, to wrap around to 3
+    beq $t1, 0, wrap_around_Z_state_1
+    # If not 0, simply decrement rotation_state
+    addi $t1, $t1, -1
+    j store_update_Z_state_1
+wrap_around_Z_state_1:
+    # Wrap around to 3 if it was 0
+    li $t1, 3
+store_update_Z_state_1:
+    # Store the updated value back to rotation_state
+    sw $t1, 0($t0)
+    jal paint_block
+    j end_collision_Z_state_1
+end_collision_Z_state_1:
+    j sleepy
+    li $t2, 40
+    j rotation_next
+state_four:
+# #############################################################################
+# ROTATE THE L
+# #############################################################################
     # Based on the rotation state, select the Tetrimino's color
     lw $t0, ADDR_DSPL       # Base address for the display
     beq $t4, 0, rotate_L_state_1
     beq $t4, 1, rotate_L_state_2
     beq $t4, 2, rotate_L_state_3
     beq $t4, 3, rotate_L_state_4
-    
-    
-    
-
 rotate_L_state_2: 
     jal checkerboard_repainter 
-    
     addi $s0, $s0, 124 
     #addi $s1, $s1, 0 
     addi $s2, $s2, -4
     addi $s3, $s3, -128  
-    
     la $t0, walls          # Load the address of the words array into $t0
     lw $t1, num_walls      # Load the array length into $t1
     li $t2, 0              # Initialize index to 0 (for array iteration)
     li $t5, 0              # Initialize match found flag to 0
-
 find_collisson_L_state_2:
     beq $t2, $t1, check_collison_L_state_2 # If index equals array length, check for match
-
     lw $t4, 0($t0)         # Load the current word from the array into $t4
-   
     beq $t4, $s0, match_collision_L_state_2  # Compare $t4 with $s0, $s1, $s2, $s3
     beq $t4, $s1, match_collision_L_state_2
     beq $t4, $s2, match_collision_L_state_2
     beq $t4, $s3, match_collision_L_state_2
-
     addi $t0, $t0, 4       # Move to the next word in the array
     addi $t2, $t2, 1       # Increment the index
     j find_collisson_L_state_2               # Jump back to the start of the loop
-
 match_collision_L_state_2:
     li $t5, 1              # Set match found flag
     j check_collison_L_state_2           
-
 check_collison_L_state_2:
     # Determine pixel location based on match
     beq $t5, 1, found_collision_L_state_2  # If match found, jump to collision
     j no_collision_L_state_2          # Otherwise, no collision
-
 no_collision_L_state_2:
     jal paint_block
     j end_collison_L_state_2                
-
 found_collision_L_state_2:
     addi $s0, $s0, -124 
     #addi $s1, $s1, 0 
     addi $s2, $s2, 4
     addi $s3, $s3, 128  
-    
     # Load the address of rotation_state into $t0
     la $t0, rotation_state
-
     # Load the current value of rotation_state into $t1
     lw $t1, 0($t0)
-
     # Check if rotation_state is 0, to wrap around to 3
-    beq $t1, 0, wrap_around
-
+    beq $t1, 0, wrap_around_L_state_2
     # If not 0, simply decrement rotation_state
     addi $t1, $t1, -1
-    j store_update
-
-    wrap_around:
+    j store_update_L_state_2
+wrap_around_L_state_2:
     # Wrap around to 3 if it was 0
     li $t1, 3
-
-    store_update:
-    # Store the updated value back to rotation_state
+store_update_L_state_2:
     sw $t1, 0($t0)
-    
-    
     jal paint_block
     j end_collison_L_state_2                  
-
 end_collison_L_state_2: 
-
     j sleepy
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 rotate_L_state_3: 
     jal checkerboard_repainter 
-    
     addi $s0, $s0, -128
     # No adjustment for $s1
     addi $s2, $s2, 4
     addi $s3, $s3, -132
-    
     la $t0, walls          # Load the address of the words array into $t0
     lw $t1, num_walls      # Load the array length into $t1
     li $t2, 0              # Initialize index to 0 (for array iteration)
     li $t5, 0              # Initialize match found flag to 0
-
 find_collisson_L_state_3:
     beq $t2, $t1, check_collison_L_state_3 # If index equals array length, check for match
-
     lw $t4, 0($t0)         # Load the current word from the array into $t4
-   
     beq $t4, $s0, match_collision_L_state_3  # Compare $t4 with $s0, $s1, $s2, $s3
     beq $t4, $s1, match_collision_L_state_3
     beq $t4, $s2, match_collision_L_state_3
     beq $t4, $s3, match_collision_L_state_3
-
     addi $t0, $t0, 4       # Move to the next word in the array
     addi $t2, $t2, 1       # Increment the index
     j find_collisson_L_state_3               # Jump back to the start of the loop
-
 match_collision_L_state_3:
     li $t5, 1              # Set match found flag
     j check_collison_L_state_3           
-
 check_collison_L_state_3:
     # Determine pixel location based on match
     beq $t5, 1, found_collision_L_state_3  # If match found, jump to collision
     j no_collision_L_state_3          # Otherwise, no collision
-
 no_collision_L_state_3:
     jal paint_block
     j end_collison_L_state_3                
-
 found_collision_L_state_3:
     addi $s0, $s0, 128
     # No adjustment for $s1
     addi $s2, $s2, -4
     addi $s3, $s3, 132 
-    
-        # Load the address of rotation_state into $t0
+    # Load the address of rotation_state into $t0
     la $t0, rotation_state
-
     # Load the current value of rotation_state into $t1
     lw $t1, 0($t0)
-
     # Check if rotation_state is 0, to wrap around to 3
-    beq $t1, 0, wrap_around
-
+    beq $t1, 0, wrap_around_L_state_3
     # If not 0, simply decrement rotation_state
     addi $t1, $t1, -1
-    j store_update
-
-    wrap_around:
+    j store_update_L_state_3
+wrap_around_L_state_3:
     # Wrap around to 3 if it was 0
     li $t1, 3
-
-    store_update:
+store_update_L_state_3:
     # Store the updated value back to rotation_state
     sw $t1, 0($t0)
-    
     jal paint_block
     j end_collison_L_state_3                  
-
 end_collison_L_state_3:
     j sleepy
-
-
-
-
-
-
-
-
-
 rotate_L_state_4:
     jal checkerboard_repainter  # Refresh the game board before attempting rotation
-
     # Offset the blocks for collision detection or positioning
     addi $s0, $s0, 256
     addi $s1, $s1, 4
     # $s2 does not change
     addi $s3, $s3, 260
-
     # Prepare for collision detection with the array (assuming walls or similar)
     la $t0, walls              # Load the address of the walls array
     lw $t1, num_walls          # Load the number of elements in the walls array
     li $t2, 0                  # Initialize index for array iteration
     li $t5, 0                  # Initialize collision flag to 0
-
 find_collision_L_state_4:
     beq $t2, $t1, check_collision_L_state_4 # End loop if we've checked all elements
-
     lw $t4, 0($t0)         # Load current element for comparison
     beq $t4, $s0, match_collision_L_state_4
     beq $t4, $s1, match_collision_L_state_4
     # $s2 comparison could be added here if $s2 is also subject to change
     beq $t4, $s3, match_collision_L_state_4
-
     addiu $t0, $t0, 4       # Move to the next element
     addiu $t2, $t2, 1       # Increment index
     j find_collision_L_state_4           # Repeat for next element
-
 match_collision_L_state_4:
     li $t5, 1              # Collision detected
     j check_collision_L_state_4
-
 check_collision_L_state_4:
     beq $t5, 1, collision_found_L_state_4  # Branch if collision detected
     j no_collision_L_state_4
-
 no_collision_L_state_4:
     # If no collision, proceed with painting the Tetrimino
     jal paint_block
     j end_collision_L_state_4
-
 collision_found_L_state_4:
     # Reverse the offset adjustment due to collision
     addi $s0, $s0, -256
     addi $s1, $s1, -4
     # No adjustment needed for $s2 if it wasn't changed
     addi $s3, $s3, -260
-
     # Load the address of rotation_state into $t0
     la $t0, rotation_state
-
     # Load the current value of rotation_state into $t1
     lw $t1, 0($t0)
-
     # Check if rotation_state is 0, to wrap around to 3
-    beq $t1, 0, wrap_around
-
+    beq $t1, 0, wrap_around_L_state_4
     # If not 0, simply decrement rotation_state
     addi $t1, $t1, -1
-    j store_update
-
-    wrap_around:
+    j store_update_L_state_4
+    wrap_around_L_state_4:
     # Wrap around to 3 if it was 0
     li $t1, 3
-
-    store_update:
+    store_update_L_state_4:
     # Store the updated value back to rotation_state
     sw $t1, 0($t0)
-
     jal paint_block
     j end_collision_L_state_4
-
 end_collision_L_state_4:
     j sleepy
-    
 rotate_L_state_1:
     jal checkerboard_repainter  # Refresh the game board before attempting rotation
-
     # Temporarily adjust the blocks for collision detection or positioning
     addi $s0, $s0, -252
     addi $s1, $s1, -4
     # Since $s2 and $s3 are not being offset, they're not adjusted here
-
     # Prepare for collision detection with the array (assuming walls or similar)
     la $t0, walls              # Load the address of the walls array
     lw $t1, num_walls          # Load the number of elements in the walls array
     li $t2, 0                  # Initialize index for array iteration
     li $t5, 0                  # Initialize collision flag to 0
-
 find_collision_L_state_1:
     beq $t2, $t1, check_collision_L_state_1 # End loop if we've checked all elements
-
     lw $t4, 0($t0)             # Load current element for comparison
     beq $t4, $s0, match_collision_L_state_1
     beq $t4, $s1, match_collision_L_state_1
     # Checks for $s2 and $s3 could be added here if they are subject to change
-
     addiu $t0, $t0, 4          # Move to the next element
     addiu $t2, $t2, 1          # Increment index
     j find_collision_L_state_1 # Repeat for next element
-
 match_collision_L_state_1:
     li $t5, 1                  # Collision detected
     j check_collision_L_state_1
-
 check_collision_L_state_1:
     beq $t5, 1, collision_found_L_state_1  # Branch if collision detected
     j no_collision_L_state_1
-
 no_collision_L_state_1:
     # If no collision, proceed with painting the Tetrimino
     jal paint_block
     j end_collision_L_state_1
-
 collision_found_L_state_1:
     # Reverse the offset adjustment due to collision
     addi $s0, $s0, 252
     addi $s1, $s1, 4
     # No adjustment needed for $s2 and $s3 if they weren't changed
-
     # Load the address of rotation_state into $t0
     la $t0, rotation_state
-
     # Load the current value of rotation_state into $t1
     lw $t1, 0($t0)
-
     # Check if rotation_state is 0, to wrap around to 3
-    beq $t1, 0, wrap_around
-
+    beq $t1, 0, wrap_around_L_state_1
     # If not 0, simply decrement rotation_state
     addi $t1, $t1, -1
-    j store_update
-
-    wrap_around:
+    j store_update_L_state_1
+wrap_around_L_state_1:
     # Wrap around to 3 if it was 0
     li $t1, 3
-
-    store_update:
+store_update_L_state_1:
     # Store the updated value back to rotation_state
     sw $t1, 0($t0)
-
-
-
     jal paint_block
     j end_collision_L_state_1
-
 end_collision_L_state_1:
     j sleepy
+    li $t2, 50
+    j rotation_next
+state_five:
+# #############################################################################
+# ROTATE THE J
+# #############################################################################
+# Based on the rotation state, select the Tetrimino's color
+lw $t0, ADDR_DSPL       # Base address for the display
+beq $t4, 0, rotate_J_state_1
+beq $t4, 1, rotate_J_state_2
+beq $t4, 2, rotate_J_state_3
+beq $t4, 3, rotate_J_state_4
+rotate_J_state_2: 
+    jal checkerboard_repainter 
+    addi $s0, $s0, 260 
+    addi $s1, $s1, -4 
+    addi $s2, $s2, 0
+    addi $s3, $s3, 0  
+    la $t0, walls          # Load the address of the words array into $t0
+    lw $t1, num_walls      # Load the array length into $t1
+    li $t2, 0              # Initialize index to 0 (for array iteration)
+    li $t5, 0              # Initialize match found flag to 0
+find_collisson_J_state_2:
+    beq $t2, $t1, check_collison_J_state_2 # If index equals array length, check for match
+    lw $t4, 0($t0)         # Load the current word from the array into $t4
+    beq $t4, $s0, match_collision_J_state_2  # Compare $t4 with $s0, $s1, $s2, $s3
+    beq $t4, $s1, match_collision_J_state_2
+    beq $t4, $s2, match_collision_J_state_2
+    beq $t4, $s3, match_collision_J_state_2
+    addi $t0, $t0, 4       # Move to the next word in the array
+    addi $t2, $t2, 1       # Increment the index
+    j find_collisson_J_state_2               # Jump back to the start of the loop
+match_collision_J_state_2:
+    li $t5, 1              # Set match found flag
+    j check_collison_J_state_2           
+check_collison_J_state_2:
+    # Determine pixel location based on match
+    beq $t5, 1, found_collision_J_state_2  # If match found, jump to collision
+    j no_collision_J_state_2          # Otherwise, no collision
+no_collision_J_state_2:
+    jal paint_block
+    j end_collison_J_state_2                
+found_collision_J_state_2:
+    addi $s0, $s0, -260 
+    addi $s1, $s1, 4 
+    addi $s2, $s2, 0
+    addi $s3, $s3, 0  
+    # Load the address of rotation_state into $t0
+    la $t0, rotation_state
+    # Load the current value of rotation_state into $t1
+    lw $t1, 0($t0)
+    # Check if rotation_state is 0, to wrap around to 3
+    beq $t1, 0, wrap_around_J_state_2
+    # If not 0, simply decrement rotation_state
+    addi $t1, $t1, -1
+    j store_update_J_state_2
+wrap_around_J_state_2:
+    # Wrap around to 3 if it was 0
+    li $t1, 3
+store_update_J_state_2:
+    sw $t1, 0($t0)
+    jal paint_block
+    j end_collison_J_state_2                  
+end_collison_J_state_2: 
+    j sleepy
+rotate_J_state_3: 
+    jal checkerboard_repainter 
+    addi $s0, $s0, -256 
+    addi $s1, $s1, -124
+    addi $s2, $s2, 0
+    addi $s3, $s3, -124  
+    la $t0, walls          # Load the address of the words array into $t0
+    lw $t1, num_walls      # Load the array length into $t1
+    li $t2, 0              # Initialize index to 0 (for array iteration)
+    li $t5, 0              # Initialize match found flag to 0
+find_collisson_J_state_3:
+    beq $t2, $t1, check_collison_J_state_3 # If index equals array length, check for match
+    lw $t4, 0($t0)         # Load the current word from the array into $t4
+    beq $t4, $s0, match_collision_J_state_3  # Compare $t4 with $s0, $s1, $s2, $s3
+    beq $t4, $s1, match_collision_J_state_3
+    beq $t4, $s2, match_collision_J_state_3
+    beq $t4, $s3, match_collision_J_state_3
+    addi $t0, $t0, 4       # Move to the next word in the array
+    addi $t2, $t2, 1       # Increment the index
+    j find_collisson_J_state_3               # Jump back to the start of the loop
+match_collision_J_state_3:
+    li $t5, 1              # Set match found flag
+    j check_collison_J_state_3           
+check_collison_J_state_3:
+    # Determine pixel location based on match
+    beq $t5, 1, found_collision_J_state_3  # If match found, jump to collision
+    j no_collision_J_state_3          # Otherwise, no collision
+no_collision_J_state_3:
+    jal paint_block
+    j end_collison_J_state_3                
+found_collision_J_state_3:
+    addi $s0, $s0, 256 
+    addi $s1, $s1, 124
+    addi $s2, $s2, 0
+    addi $s3, $s3, 124 
+    # Load the address of rotation_state into $t0
+    la $t0, rotation_state
+    # Load the current value of rotation_state into $t1
+    lw $t1, 0($t0)
+    # Check if rotation_state is 0, to wrap around to 3
+    beq $t1, 0, wrap_around_J_state_3
+    # If not 0, simply decrement rotation_state
+    addi $t1, $t1, -1
+    j store_update_J_state_3
+wrap_around_J_state_3:
+    # Wrap around to 3 if it was 0
+    li $t1, 3
+store_update_J_state_3:
+    # Store the updated value back to rotation_state
+    sw $t1, 0($t0)
+    jal paint_block
+    j end_collison_J_state_3                  
+end_collison_J_state_3:
+    j sleepy
+rotate_J_state_4:
+    jal checkerboard_repainter  # Refresh the game board before attempting rotation
+    # Offset the blocks for collision detection or positioning
+    addi $s0, $s0, 128 
+    addi $s1, $s1, 124
+    addi $s2, $s2, 4
+    addi $s3, $s3, 0 
+    # Prepare for collision detection with the array (assuming walls or similar)
+    la $t0, walls              # Load the address of the walls array
+    lw $t1, num_walls          # Load the number of elements in the walls array
+    li $t2, 0                  # Initialize index for array iteration
+    li $t5, 0                  # Initialize collision flag to 0
+find_collision_J_state_4:
+    beq $t2, $t1, check_collision_J_state_4 # End loop if we've checked all elements
+    lw $t4, 0($t0)         # Load current element for comparison
+    beq $t4, $s0, match_collision_J_state_4
+    beq $t4, $s1, match_collision_J_state_4
+    # $s2 comparison could be added here if $s2 is also subject to change
+    beq $t4, $s3, match_collision_J_state_4
+    addiu $t0, $t0, 4       # Move to the next element
+    addiu $t2, $t2, 1       # Increment index
+    j find_collision_J_state_4           # Repeat for next element
+match_collision_J_state_4:
+    li $t5, 1              # Collision detected
+    j check_collision_J_state_4
+check_collision_J_state_4:
+    beq $t5, 1, collision_found_J_state_4  # Branch if collision detected
+    j no_collision_J_state_4
+no_collision_J_state_4:
+    # If no collision, proceed with painting the Tetrimino
+    jal paint_block
+    j end_collision_J_state_4
+collision_found_J_state_4:
+    # Reverse the offset adjustment due to collision
+    addi $s0, $s0, -128 
+    addi $s1, $s1, -124
+    addi $s2, $s2, -4
+    addi $s3, $s3, 260 
+    # No adjustment needed for $s2 if it wasn't changed
+    addi $s3, $s3, -260
+    # Load the address of rotation_state into $t0
+    la $t0, rotation_state
+    # Load the current value of rotation_state into $t1
+    lw $t1, 0($t0)
+    # Check if rotation_state is 0, to wrap around to 3
+    beq $t1, 0, wrap_around_J_state_4
+    # If not 0, simply decrement rotation_state
+    addi $t1, $t1, -1
+    j store_update_J_state_4
+wrap_around_J_state_4:
+    # Wrap around to 3 if it was 0
+    li $t1, 3
+store_update_J_state_4:
+    # Store the updated value back to rotation_state
+    sw $t1, 0($t0)
+    jal paint_block
+    j end_collision_J_state_4
+end_collision_J_state_4:
+    j sleepy
+rotate_J_state_1:
+    jal checkerboard_repainter  # Refresh the game board before attempting rotation
+    # Temporarily adjust the blocks for collision detection or positioning
+    addi $s0, $s0, -132 
+    addi $s1, $s1, 4
+    addi $s2, $s2, -4
+    addi $s3, $s3, 124
+    # Since $s2 and $s3 are not being offset, they're not adjusted here
+    # Prepare for collision detection with the array (assuming walls or similar)
+    la $t0, walls              # Load the address of the walls array
+    lw $t1, num_walls          # Load the number of elements in the walls array
+    li $t2, 0                  # Initialize index for array iteration
+    li $t5, 0                  # Initialize collision flag to 0
+find_collision_J_state_1:
+    beq $t2, $t1, check_collision_J_state_1 # End loop if we've checked all elements
+    lw $t4, 0($t0)             # Load current element for comparison
+    beq $t4, $s0, match_collision_J_state_1
+    beq $t4, $s1, match_collision_J_state_1
+    # Checks for $s2 and $s3 could be added here if they are subject to change
+    addiu $t0, $t0, 4          # Move to the next element
+    addiu $t2, $t2, 1          # Increment index
+    j find_collision_J_state_1 # Repeat for next element
+match_collision_J_state_1:
+    li $t5, 1                  # Collision detected
+    j check_collision_J_state_1
+check_collision_J_state_1:
+    beq $t5, 1, collision_found_J_state_1  # Branch if collision detected
+    j no_collision_J_state_1
+no_collision_J_state_1:
+    # If no collision, proceed with painting the Tetrimino
+    jal paint_block
+    j end_collision_J_state_1
+collision_found_J_state_1:
+    # Reverse the offset adjustment due to collision
+    addi $s0, $s0, 132 
+    addi $s1, $s1, -4
+    addi $s2, $s2, 4
+    addi $s3, $s3, -124 
+    # No adjustment needed for $s2 and $s3 if they weren't changed
+    # Load the address of rotation_state into $t0
+    la $t0, rotation_state
+    # Load the current value of rotation_state into $t1
+    lw $t1, 0($t0)
+    # Check if rotation_state is 0, to wrap around to 3
+    beq $t1, 0, wrap_around_J_state_1
+    # If not 0, simply decrement rotation_state
+    addi $t1, $t1, -1
+    j store_update_J_state_1
+wrap_around_J_state_1:
+    # Wrap around to 3 if it was 0
+    li $t1, 3
+store_update_J_state_1:
+    # Store the updated value back to rotation_state
+    sw $t1, 0($t0)
+    jal paint_block
+    j end_collision_J_state_1
+end_collision_J_state_1:
+    j sleepy
+    li $t2, 60
+    j rotation_next
+state_six:
+# #############################################################################
+# ROTATE THE T
+# #############################################################################
+# Based on the rotation state, select the Tetrimino's color
+lw $t0, ADDR_DSPL       # Base address for the display
+beq $t4, 0, rotate_T_state_1
+beq $t4, 1, rotate_T_state_2
+beq $t4, 2, rotate_T_state_3
+beq $t4, 3, rotate_T_state_4
+rotate_T_state_2: 
+    jal checkerboard_repainter 
+    addi $s0, $s0, -128
+    addi $s1, $s1, 0
+    addi $s2, $s2, 0
+    addi $s3, $s3, -252 
+    la $t0, walls          # Load the address of the words array into $t0
+    lw $t1, num_walls      # Load the array length into $t1
+    li $t2, 0              # Initialize index to 0 (for array iteration)
+    li $t5, 0              # Initialize match found flag to 0
+find_collisson_T_state_2:
+    beq $t2, $t1, check_collison_T_state_2 # If index equals array length, check for match
+    lw $t4, 0($t0)         # Load the current word from the array into $t4
+    beq $t4, $s0, match_collision_T_state_2  # Compare $t4 with $s0, $s1, $s2, $s3
+    beq $t4, $s1, match_collision_T_state_2
+    beq $t4, $s2, match_collision_T_state_2
+    beq $t4, $s3, match_collision_T_state_2
+    addi $t0, $t0, 4       # Move to the next word in the array
+    addi $t2, $t2, 1       # Increment the index
+    j find_collisson_T_state_2               # Jump back to the start of the loop
+match_collision_T_state_2:
+    li $t5, 1              # Set match found flag
+    j check_collison_T_state_2           
+check_collison_T_state_2:
+    # Determine pixel location based on match
+    beq $t5, 1, found_collision_T_state_2  # If match found, jump to collision
+    j no_collision_T_state_2          # Otherwise, no collision
+no_collision_T_state_2:
+    jal paint_block
+    j end_collison_T_state_2                
+found_collision_T_state_2:
+    addi $s0, $s0, 128
+    addi $s1, $s1, 0
+    addi $s2, $s2, 0
+    addi $s3, $s3, 252 
+    # Load the address of rotation_state into $t0
+    la $t0, rotation_state
+    # Load the current value of rotation_state into $t1
+    lw $t1, 0($t0)
+    # Check if rotation_state is 0, to wrap around to 3
+    beq $t1, 0, wrap_around_T_state_2
+    # If not 0, simply decrement rotation_state
+    addi $t1, $t1, -1
+    j store_update_T_state_2
+wrap_around_T_state_2:
+    # Wrap around to 3 if it was 0
+    li $t1, 3
+store_update_T_state_2:
+    sw $t1, 0($t0)
+    jal paint_block
+    j end_collison_T_state_2                  
+end_collison_T_state_2: 
+    j sleepy
+rotate_T_state_3: 
+    jal checkerboard_repainter 
+    addi $s0, $s0, 0 
+    addi $s1, $s1, 0
+    addi $s2, $s2, 0
+    addi $s3, $s3, 124 
+    la $t0, walls          # Load the address of the words array into $t0
+    lw $t1, num_walls      # Load the array length into $t1
+    li $t2, 0              # Initialize index to 0 (for array iteration)
+    li $t5, 0              # Initialize match found flag to 0
+find_collisson_T_state_3:
+    beq $t2, $t1, check_collison_T_state_3 # If index equals array length, check for match
+    lw $t4, 0($t0)         # Load the current word from the array into $t4
+    beq $t4, $s0, match_collision_T_state_3  # Compare $t4 with $s0, $s1, $s2, $s3
+    beq $t4, $s1, match_collision_T_state_3
+    beq $t4, $s2, match_collision_T_state_3
+    beq $t4, $s3, match_collision_T_state_3
+    addi $t0, $t0, 4       # Move to the next word in the array
+    addi $t2, $t2, 1       # Increment the index
+    j find_collisson_T_state_3               # Jump back to the start of the loop
+match_collision_T_state_3:
+    li $t5, 1              # Set match found flag
+    j check_collison_T_state_3           
+check_collison_T_state_3:
+    # Determine pixel location based on match
+    beq $t5, 1, found_collision_T_state_3  # If match found, jump to collision
+    j no_collision_T_state_3          # Otherwise, no collision
+no_collision_T_state_3:
+    jal paint_block
+    j end_collison_T_state_3                
+found_collision_T_state_3:
+    addi $s0, $s0, 0 
+    addi $s1, $s1, 0
+    addi $s2, $s2, 0
+    addi $s3, $s3, -124 
+    # Load the address of rotation_state into $t0
+    la $t0, rotation_state
+    # Load the current value of rotation_state into $t1
+    lw $t1, 0($t0)
+    # Check if rotation_state is 0, to wrap around to 3
+    beq $t1, 0, wrap_around_T_state_3
+    # If not 0, simply decrement rotation_state
+    addi $t1, $t1, -1
+    j store_update_T_state_3
+wrap_around_T_state_3:
+    # Wrap around to 3 if it was 0
+    li $t1, 3
+store_update_T_state_3:
+    # Store the updated value back to rotation_state
+    sw $t1, 0($t0)
+    jal paint_block
+    j end_collison_T_state_3                  
+end_collison_T_state_3:
+    j sleepy
+rotate_T_state_4:
+    jal checkerboard_repainter  # Refresh the game board before attempting rotation
+    # Offset the blocks for collision detection or positioning
+    addi $s0, $s0, -132 
+    addi $s1, $s1, 0
+    addi $s2, $s2, 0
+    addi $s3, $s3, 0 
+    # Prepare for collision detection with the array (assuming walls or similar)
+    la $t0, walls              # Load the address of the walls array
+    lw $t1, num_walls          # Load the number of elements in the walls array
+    li $t2, 0                  # Initialize index for array iteration
+    li $t5, 0                  # Initialize collision flag to 0
+find_collision_T_state_4:
+    beq $t2, $t1, check_collision_T_state_4 # End loop if we've checked all elements
+    lw $t4, 0($t0)         # Load current element for comparison
+    beq $t4, $s0, match_collision_T_state_4
+    beq $t4, $s1, match_collision_T_state_4
+    # $s2 comparison could be added here if $s2 is also subject to change
+    beq $t4, $s3, match_collision_T_state_4
+    addiu $t0, $t0, 4       # Move to the next element
+    addiu $t2, $t2, 1       # Increment index
+    j find_collision_T_state_4           # Repeat for next element
+match_collision_T_state_4:
+    li $t5, 1              # Collision detected
+    j check_collision_T_state_4
+check_collision_T_state_4:
+    beq $t5, 1, collision_found_T_state_4  # Branch if collision detected
+    j no_collision_T_state_4
+no_collision_T_state_4:
+    # If no collision, proceed with painting the Tetrimino
+    jal paint_block
+    j end_collision_T_state_4
+collision_found_T_state_4:
+    # Reverse the offset adjustment due to collision
+    addi $s0, $s0, 132 
+    addi $s1, $s1, 0
+    addi $s2, $s2, 0
+    addi $s3, $s3, 0
+    # Load the address of rotation_state into $t0
+    la $t0, rotation_state
+    # Load the current value of rotation_state into $t1
+    lw $t1, 0($t0)
+    # Check if rotation_state is 0, to wrap around to 3
+    beq $t1, 0, wrap_around_T_state_4
+    # If not 0, simply decrement rotation_state
+    addi $t1, $t1, -1
+    j store_update_T_state_4
+wrap_around_T_state_4:
+    # Wrap around to 3 if it was 0
+    li $t1, 3
+store_update_T_state_4:
+    # Store the updated value back to rotation_state
+    sw $t1, 0($t0)
+    jal paint_block
+    j end_collision_T_state_4
+end_collision_T_state_4:
+    j sleepy
+rotate_T_state_1:
+    jal checkerboard_repainter  # Refresh the game board before attempting rotation
+    # Temporarily adjust the blocks for collision detection or positioning
+    addi $s0, $s0, 260 
+    addi $s1, $s1, 0
+    addi $s2, $s2, 0
+    addi $s3, $s3, 128 
+    # Since $s2 and $s3 are not being offset, they're not adjusted here
+    # Prepare for collision detection with the array (assuming walls or similar)
+    la $t0, walls              # Load the address of the walls array
+    lw $t1, num_walls          # Load the number of elements in the walls array
+    li $t2, 0                  # Initialize index for array iteration
+    li $t5, 0                  # Initialize collision flag to 0
+find_collision_T_state_1:
+    beq $t2, $t1, check_collision_T_state_1 # End loop if we've checked all elements
+    lw $t4, 0($t0)             # Load current element for comparison
+    beq $t4, $s0, match_collision_T_state_1
+    beq $t4, $s1, match_collision_T_state_1
+    # Checks for $s2 and $s3 could be added here if they are subject to change
+    addiu $t0, $t0, 4          # Move to the next element
+    addiu $t2, $t2, 1          # Increment index
+    j find_collision_T_state_1 # Repeat for next element
+match_collision_T_state_1:
+    li $t5, 1                  # Collision detected
+    j check_collision_T_state_1
+check_collision_T_state_1:
+    beq $t5, 1, collision_found_T_state_1  # Branch if collision detected
+    j no_collision_T_state_1
+no_collision_T_state_1:
+    # If no collision, proceed with painting the Tetrimino
+    jal paint_block
+    j end_collision_T_state_1
+collision_found_T_state_1:
+    # Reverse the offset adjustment due to collision
+    addi $s0, $s0, -260 
+    addi $s1, $s1, 0
+    addi $s2, $s2, 0
+    addi $s3, $s3, -128 
+    # No adjustment needed for $s2 and $s3 if they weren't changed
+    # Load the address of rotation_state into $t0
+    la $t0, rotation_state
+    # Load the current value of rotation_state into $t1
+    lw $t1, 0($t0)
+    # Check if rotation_state is 0, to wrap around to 3
+    beq $t1, 0, wrap_around_T_state_1
+    # If not 0, simply decrement rotation_state
+    addi $t1, $t1, -1
+    j store_update_T_state_1
+wrap_around_T_state_1:
+    # Wrap around to 3 if it was 0
+    li $t1, 3
+store_update_T_state_1:
+    # Store the updated value back to rotation_state
+    sw $t1, 0($t0)
+    jal paint_block
+    j end_collision_T_state_1
+end_collision_T_state_1:
+    j sleepy
+    li $t2, 70
+    j rotation_next
+rotation_next:
+    j sleepy
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    
+    
     
     
     
