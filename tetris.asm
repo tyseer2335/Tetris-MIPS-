@@ -45,6 +45,7 @@ row_31: .word 4,    8,    4,    12,   16,   20,   24,   28,   32,   36,   40,   
 piece_state: 
     .word 1
 
+actionCounter: .word 0
 
 black_squares: 
     .word 4, 12, 20, 28, 36, 136, 144, 152, 160, 168, 260, 268, 276, 284, 292, 392, 400, 408, 416, 424, 516, 524, 532,  
@@ -227,101 +228,261 @@ end_loop2:
 jr $ra  
 checkerboard_done:
 ##############################################################################
-# DRAW TRIMINO (O - Shape)
+# DRAW TRIMINO 
 ##############################################################################
-# jal start_the_L
-# j start_the_L_done
-# start_the_L:    
-    # la $a0, piece_state  
-    # li $t0, 0             
-    # sw $t0, 0($a0) # Set the peice state to 0
-    # la $t0, rotation_state  # Load the address of rotation_state into $t0
-    # li $t1, 0               # Load the value 0 into $t1
-    # sw $t1, 0($t0) 
-    # li $s0, 156     # Top left pixel of the Tetrimino
-    # li $s1, 152    # Next pixel down
-    # li $s2, 280    # Next pixel down
-    # li $s3, 284    # Pixel to the right of the last one, making the 'L' shape 
-# jr $ra  
-# start_the_L_done:  
+
+    jal start_the_L
+    j exit_program  # Label to cleanly exit the program
+
+start_the_L:
+    la $a0, actionCounter
+    lw $t0, 0($a0)
+
+    addi $t0, $t0, 1  # Increment actionCounter
+    andi $t0, $t0, 0x00000007  # Ensure the counter cycles between 0 and 6
+    sw $t0, 0($a0)
+
+    # Depending on the value in $t0, jump to the corresponding action
+    li $t3, 0
+    beq $t0, $t3, action0
+    li $t3, 1
+    beq $t0, $t3, action1
+    li $t3, 2
+    beq $t0, $t3, action2
+    li $t3, 3
+    beq $t0, $t3, action3
+    li $t3, 4
+    beq $t0, $t3, action4
+    li $t3, 5
+    beq $t0, $t3, action5
+    li $t3, 6
+    beq $t0, $t3, action6
+
+    j start_the_L_done  # In case none of the conditions are met, though this shouldn't happen with correct setup.
+    
+    
+    
+action0:
+##############################################################################
+# DRAW TRIMINO (O - Shape)
+##############################################################################   
+
+
+    li $t9, 0xFFEDD8              # White color for painting squares
+    lw $t7, ADDR_DSPL 
+    sw $t9, 196($t7)    
+    sw $t9, 192($t7)  
+    sw $t9, 320($t7)  
+    sw $t9, 324($t7) 
+
+
+
+    la $a0, piece_state  
+    li $t0, 0             
+    sw $t0, 0($a0) # Set the peice state to 0
+    la $t0, rotation_state  # Load the address of rotation_state into $t0
+    li $t1, 0               # Load the value 0 into $t1
+    sw $t1, 0($t0) 
+    li $s0, 156     # Top left pixel of the Tetrimino
+    li $s1, 152    # Next pixel down
+    li $s2, 280    # Next pixel down
+    li $s3, 284    # Pixel to the right of the last one, making the 'L' shape 
+    
+    
+    li $t9, 0x378CE7            # White color for painting squares
+    lw $t7, ADDR_DSPL             # Load base address of the display into $t0 
+    sw $t9, 64($t7)    
+    sw $t9, 192($t7)  
+    sw $t9, 320($t7)  
+    sw $t9, 448($t7) 
+
+    
+    j continue_after_action
+    
+    
+
+action1:
 ##############################################################################
 # DRAW TRIMINO (I - Shape)
-##############################################################################
-# jal start_the_L
-# j start_the_L_done
-# start_the_L:   
-    # la $a0, piece_state  
-    # li $t0, 1             
-    # sw $t0, 0($a0) # Set the peice state to 4  
-    # la $t0, rotation_state  # Load the address of rotation_state into $t0
-    # li $t1, 0               # Load the value 0 into $t1
-    # sw $t1, 0($t0) 
-    # li $s0, 24     # Top left pixel of the Tetrimino
-    # li $s1, 152    # Next pixel down
-    # li $s2, 280    # Next pixel down
-    # li $s3, 408    # Pixel to the right of the last one, making the 'L' shape 
-# jr $ra  
-# start_the_L_done:
+############################################################################## 
+
+
+    li $t9, 0xFFEDD8              # White color for painting squares
+    lw $t7, ADDR_DSPL             # Load base address of the display into $t0 
+    sw $t9, 64($t7)    
+    sw $t9, 192($t7)  
+    sw $t9, 320($t7)  
+    sw $t9, 448($t7) 
+
+
+
+    la $a0, piece_state  
+    li $t0, 1             
+    sw $t0, 0($a0) # Set the peice state to 4  
+    la $t0, rotation_state  # Load the address of rotation_state into $t0
+    li $t1, 0               # Load the value 0 into $t1
+    sw $t1, 0($t0) 
+    li $s0, 24     # Top left pixel of the Tetrimino
+    li $s1, 152    # Next pixel down
+    li $s2, 280    # Next pixel down
+    li $s3, 408    # Pixel to the right of the last one, making the 'L' shape 
+    
+    
+    li $t9, 0xFF204E              # White color for painting squares
+    lw $t7, ADDR_DSPL             # Load base address of the display into $t0 
+    sw $t9, 196($t7)    
+    sw $t9, 192($t7)  
+    sw $t9, 320($t7)  
+    sw $t9, 316($t7) 
+
+
+    
+    j continue_after_action
+
+action2:
 ##############################################################################
 # DRAW TRIMINO (S - Shape)
 ##############################################################################
-# jal start_the_L
-# j start_the_L_done
-# start_the_L:   
-    # la $a0, piece_state  
-    # li $t0, 2             
-    # sw $t0, 0($a0) # Set the peice state to 0
-    # la $t0, rotation_state  # Load the address of rotation_state into $t0
-    # li $t1, 0               # Load the value 0 into $t1
-    # sw $t1, 0($t0) 
-    # li $s0, 156     # Top left pixel of the Tetrimino
-    # li $s1, 152    # Next pixel down
-    # li $s2, 280    # Next pixel down
-    # li $s3, 276    # Pixel to the right of the last one, making the 'L' shape  
-# jr $ra  
-# start_the_L_done:  
+    li $t9, 0xFFEDD8              # White color for painting squares
+    lw $t7, ADDR_DSPL             # Load base address of the display into $t0 
+    sw $t9, 196($t7)    
+    sw $t9, 192($t7)  
+    sw $t9, 320($t7)  
+    sw $t9, 316($t7) 
+
+
+    la $a0, piece_state  
+    li $t0, 2             
+    sw $t0, 0($a0) # Set the peice state to 0
+    la $t0, rotation_state  # Load the address of rotation_state into $t0
+    li $t1, 0               # Load the value 0 into $t1
+    sw $t1, 0($t0) 
+    li $s0, 156     # Top left pixel of the Tetrimino
+    li $s1, 152    # Next pixel down
+    li $s2, 280    # Next pixel down
+    li $s3, 276    # Pixel to the right of the last one, making the 'L' shape  
+    li $a1, 10
+    
+    
+    
+    li $t9, 0x87A922              # White color for painting squares
+    lw $t7, ADDR_DSPL             # Load base address of the display into $t0 
+    sw $t9, 192($t7)    
+    sw $t9, 188($t7)  
+    sw $t9, 320($t7)  
+    sw $t9, 324($t7) 
+    
+    
+    j continue_after_action
+
+action3:
 ##############################################################################
 # DRAW TRIMINO (Z - Shape)
-##############################################################################
-# jal start_the_L
-# j start_the_L_done
-# start_the_L:    
-    # la $a0, piece_state  
-    # li $t0, 3             
-    # sw $t0, 0($a0) # Set the peice state to 0
-    # la $t0, rotation_state  # Load the address of rotation_state into $t0
-    # li $t1, 0               # Load the value 0 into $t1
-    # sw $t1, 0($t0) 
-    # li $s0, 152     # Top left pixel of the Tetrimino
-    # li $s1, 148    # Next pixel down
-    # li $s2, 280    # Next pixel down
-    # li $s3, 284    # Pixel to the right of the last one, making the 'L' shape 
-# jr $ra  
-# start_the_L_done:
-# ##############################################################################
+##############################################################################    
+
+    li $t9, 0xFFEDD8              # White color for painting squares
+    lw $t7, ADDR_DSPL             # Load base address of the display into $t0 
+    sw $t9, 192($t7)    
+    sw $t9, 188($t7)  
+    sw $t9, 320($t7)  
+    sw $t9, 324($t7) 
+
+
+    la $a0, piece_state  
+    li $t0, 3             
+    sw $t0, 0($a0) # Set the peice state to 0
+    la $t0, rotation_state  # Load the address of rotation_state into $t0
+    li $t1, 0               # Load the value 0 into $t1
+    sw $t1, 0($t0) 
+    li $s0, 152     # Top left pixel of the Tetrimino
+    li $s1, 148    # Next pixel down
+    li $s2, 280    # Next pixel down
+    li $s3, 284    # Pixel to the right of the last one, making the 'L' shape 
+    
+    
+    
+    
+    
+    
+    li $t9, 0xF6995C              # White color for painting squares
+    lw $t7, ADDR_DSPL             # Load base address of the display into $t0 
+    sw $t9, 64($t7)    
+    sw $t9, 192($t7)  
+    sw $t9, 320($t7)  
+    sw $t9, 324($t7) 
+    
+    
+    
+    
+    
+    j continue_after_action
+    
+action4:
+# ############################################################################
 # DRAW TRIMINO (L - Shape)
-##############################################################################
-# jal start_the_L
-# j start_the_L_done
-# start_the_L:   
-    # la $a0, piece_state  
-    # li $t0, 4             
-    # sw $t0, 0($a0) # Set the peice state to 4  
-    # la $t0, rotation_state  # Load the address of rotation_state into $t0
-    # li $t1, 0               # Load the value 0 into $t1
-    # sw $t1, 0($t0) 
-    # li $s0, 24     # Top left pixel of the Tetrimino
-    # li $s1, 152    # Next pixel down
-    # li $s2, 280    # Next pixel down
-    # li $s3, 284    # Pixel to the right of the last one, making the 'L' shape 
-# jr $ra  
-# start_the_L_done:
+############################################################################## 
+
+
+
+
+
+    li $t9, 0xFFEDD8              # White color for painting squares
+    lw $t7, ADDR_DSPL             # Load base address of the display into $t0 
+    sw $t9, 64($t7)    
+    sw $t9, 192($t7)  
+    sw $t9, 320($t7)  
+    sw $t9, 324($t7) 
+
+
+
+
+
+    la $a0, piece_state  
+    li $t0, 4             
+    sw $t0, 0($a0) # Set the peice state to 4  
+    la $t0, rotation_state  # Load the address of rotation_state into $t0
+    li $t1, 0               # Load the value 0 into $t1
+    sw $t1, 0($t0) 
+    li $s0, 24     # Top left pixel of the Tetrimino
+    li $s1, 152    # Next pixel down
+    li $s2, 280    # Next pixel down
+    li $s3, 284    # Pixel to the right of the last one, making the 'L' shape 
+    li $a1, 10
+    
+    
+    
+    li $t9, 0x7469B6              # White color for painting squares
+    lw $t7, ADDR_DSPL             # Load base address of the display into $t0 
+    sw $t9, 324($t7)    
+    sw $t9, 192($t7)  
+    sw $t9, 320($t7)  
+    sw $t9, 316($t7) 
+    
+    
+    
+    
+    
+    
+    
+    
+    j continue_after_action
+
+action5:
 # ##############################################################################
 # DRAW TRIMINO (T - Shape)
-# #############################################################################
-jal start_the_L
-j start_the_L_done
-start_the_L:    
+# ############################################################################# 
+
+
+    li $t9, 0xFFEDD8              # White color for painting squares
+    lw $t7, ADDR_DSPL             # Load base address of the display into $t0 
+    sw $t9, 324($t7)    
+    sw $t9, 192($t7)  
+    sw $t9, 320($t7)  
+    sw $t9, 316($t7) 
+
+    
+
+
     la $a0, piece_state  
     la $a0, piece_state  
     li $t0, 6             
@@ -333,16 +494,228 @@ start_the_L:
     li $s1, 152    # Next pixel down
     li $s2, 280    # Next pixel down
     li $s3, 276    # Pixel to the right of the last one, making the 'L' shape 
-jr $ra  
+    
+    
+    
+    li $t9, 0xFF7ED4              # White color for painting squares
+    lw $t7, ADDR_DSPL             # Load base address of the display into $t0 
+    sw $t9, 64($t7)    
+    sw $t9, 192($t7)  
+    sw $t9, 320($t7)  
+    sw $t9, 316($t7) 
+
+    
+    
+    
+
+    
+    
+    
+    
+    j continue_after_action
+
+action6:
+# ##############################################################################
+# DRAW TRIMINO (J - Shape)
+# #############################################################################     
+
+
+
+    
+    li $t9, 0xFFEDD8              # White color for painting squares
+    lw $t7, ADDR_DSPL             # Load base address of the display into $t0 
+    sw $t9, 64($t7)    
+    sw $t9, 192($t7)  
+    sw $t9, 320($t7)  
+    sw $t9, 316($t7) 
+
+
+
+
+    la $a0, piece_state  
+    li $t0, 5             
+    sw $t0, 0($a0) # Set the peice state to 4  
+    la $t0, rotation_state  # Load the address of rotation_state into $t0
+    li $t1, 0               # Load the value 0 into $t1
+    sw $t1, 0($t0) 
+    li $s0, 24     # Top left pixel of the Tetrimino
+    li $s1, 152    # Next pixel down
+    li $s2, 280    # Next pixel down
+    li $s3, 276
+    
+    
+    
+
+    li $t9, 0xFFF455              # White color for painting squares
+    lw $t7, ADDR_DSPL             # Load base address of the display into $t0 
+    sw $t9, 196($t7)    
+    sw $t9, 192($t7)  
+    sw $t9, 320($t7)  
+    sw $t9, 324($t7) 
+
+
+    
+    
+    
+    
+    
+    
+    
+    j continue_after_action
+    
+    
+    
+    
+    
+    
+    
+
+
+continue_after_action:
+    jr $ra  # Return from procedure, ensuring we don't fall through to other actions
+
 start_the_L_done:
+    jr $ra  # Return from the main procedure
+
+exit_program:
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # ----------------------------------------------------------------------------
 # REPAINT BLOCK FUNCTION
 # ----------------------------------------------------------------------------      
 jal paint_block
 j done_paint 
 paint_block: 
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    la $t1, piece_state   # Load address of piece_state
+    lw $t0, 0($t1)        # Load value of piece_state into $t0
+
+    # Compare piece_state and jump to the corresponding action
+    li $t2, 0
+    beq $t0, $t2, action0_21 
+    li $t2, 1
+    beq $t0, $t2, action1_21
+    li $t2, 2
+    beq $t0, $t2, action2_21
+    li $t2, 3
+    beq $t0, $t2, action3_21
+    li $t2, 4
+    beq $t0, $t2, action4_21
+    li $t2, 5
+    beq $t0, $t2, action5_21
+    li $t2, 6
+    beq $t0, $t2, action6_21
+
+
+
+# Define what happens in each action
+action0_21:
     lw $t0, ADDR_DSPL      # Load base address for the display
-    li $t1, 0xFDA403       # Load t1 with the colour Orange
+    li $t1, 0xFFF455      # Load t1 with the colour Orange
+    j end_21
+
+action1_21:
+    lw $t0, ADDR_DSPL      # Load base address for the display
+    li $t1, 0x378CE7       # Load t1 with the colour Orange
+    j end_21
+
+action2_21:
+    lw $t0, ADDR_DSPL      # Load base address for the display
+    li $t1, 0xFF204E       # Load t1 with the colour Orange
+    j end_21
+
+action3_21:
+    lw $t0, ADDR_DSPL      # Load base address for the display
+    li $t1, 0x87A922       # Load t1 with the colour Orange
+    j end_21
+
+action4_21:
+    lw $t0, ADDR_DSPL      # Load base address for the display
+    li $t1, 0xF6995C       # Load t1 with the colour Orange
+    j end_21
+
+action5_21:
+    lw $t0, ADDR_DSPL      # Load base address for the display
+    li $t1, 0xFF7ED4       # Load t1 with the colour Orange
+    j end_21
+
+action6_21:
+    lw $t0, ADDR_DSPL      # Load base address for the display
+    li $t1, 0x7469B6       # Load t1 with the colour Orange
+    j end_21
+
+
+
+end_21:    
     add $s0, $s0, $t0
     add $s1, $s1, $t0
     add $s2, $s2, $t0
