@@ -1,7 +1,3 @@
-################ CSC258H1F Winter 2024 Assembly Final Project ##################
-# This file contains our implementation of Tetris.
-# Student 1: Tyseer Toufiq, 1009364064
-
 ######################## Bitmap Display Configuration ########################
 # - Unit width in pixels:       8
 # - Unit height in pixels:      8
