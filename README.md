@@ -6,8 +6,6 @@ This project is an implementation of the popular strategy game Tetris, made usin
 - Use the A, S, D keys to move around.
 - Use W to rotate the piece.
 - Use P to Pause the Game.
-- Graphical interface showcasing the battle progress.
-- Background music and sound effects for an immersive experience. 
 ![Gameplay Screenshot](GameplayScreenshot1.png)
 
 ## Installation
